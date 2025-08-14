@@ -18,17 +18,13 @@ import {
   Calendar
 } from "lucide-react";
 import { JobActions } from "~/components/JobActions";
-import type { PageProps } from "next/types";
 
-// Define a type that extends PageProps with our specific params
-type JobPageProps = {
-  params: {
-    id: string;
-  };
-  searchParams: Record<string, string | string[] | undefined>;
+// Simple params type without extending PageProps
+interface Params {
+  id: string;
 }
 
-export default async function JobPage({ params }: JobPageProps) {
+export default async function JobPage({ params }: { params: Params }) {
   try {
     const job = await api.jobs.getById({ id: params.id });
 
