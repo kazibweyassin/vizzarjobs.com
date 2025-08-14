@@ -18,11 +18,14 @@ import {
   Calendar
 } from "lucide-react";
 import { JobActions } from "~/components/JobActions";
+import type { PageProps } from "next/types";
 
-interface JobPageProps {
+// Define a type that extends PageProps with our specific params
+type JobPageProps = {
   params: {
     id: string;
   };
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export default async function JobPage({ params }: JobPageProps) {
