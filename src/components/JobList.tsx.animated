@@ -1,0 +1,226 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import { JobFilters, type JobFiltersState } from "~/components/JobFilters";
+import { api } from "~/trpc/react";
+import { Loader2, Search, Filter } from "lucide-react";
+import { motion } from "framer-motion";
+
+interface JobListProps {
+  showFilters?: boolean;
+  initialFilters?: Partial<JobFiltersState>;
+  limit?: number;
+}
+
+export function JobList({ 
+  showFilters = true, 
+  initialFilters = {},
+  limit = 20 
+}: JobListProps) {
+  const [filters, setFilters] = useState<JobFiltersState>({
+    search: "",
+    location: "",
+    visaSponsorship: undefined,
+    jobType: undefined,
+    experienceLevel: undefined,
+    techStack: [],
+    ...initialFilters,
+  });
+  
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // Build the query input from filters
+  const queryInput = useMemo(() => ({
+    ...filters,
+    // Only include non-empty values
+    search: filters.search || undefined,
+    location: filters.location || undefined,
+    techStack: filters.techStack.length > 0 ? filters.techStack : undefined,
+    limit,
+  }), [filters, limit]);
+
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = api.jobs.getAll.useInfiniteQuery(
+    queryInput,
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
+
+  const jobs = useMemo(
+    () => data?.pages.flatMap((page) => page.jobs) ?? [],
+    [data]
+  );
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      void fetchNextPage();
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-lg font-semibold mb-2">
+            Error loading jobs
+          </div>
+          <p className="text-gray-600">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters Sidebar - Desktop */}
+          {showFilters && (
+            <div className="hidden lg:block lg:w-80 flex-shrink-0">
+              <div className="sticky top-8">
+                <JobFilters
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Mobile Filter Toggle */}
+            {showFilters && (
+              <div className="lg:hidden mb-6">
+                <button
+                  onClick={() => setShowMobileFilters(!showMobileFilters)}
+                  className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <Filter className="w-4 h-4" />
+                  Filters
+                  {(filters.search || filters.location || filters.visaSponsorship !== undefined || 
+                    filters.jobType || filters.experienceLevel || filters.techStack.length > 0) && (
+                    <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1 ml-2">
+                      Active
+                    </span>
+                  )}
+                </button>
+                
+                {showMobileFilters && (
+                  <div className="mt-4">
+                    <JobFilters
+                      filters={filters}
+                      onFiltersChange={setFilters}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Results Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {filters.visaSponsorship === true ? "Visa Sponsored Jobs" : "All Jobs"}
+                </h1>
+                {!isLoading && (
+                  <p className="text-gray-600 mt-1">
+                    {jobs.length} jobs found
+                    {filters.search && ` for "${filters.search}"`}
+                    {filters.location && ` in ${filters.location}`}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Loading State */}
+            {isLoading && (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                <span className="ml-2 text-gray-600">Loading jobs...</span>
+              </div>
+            )}
+
+            {/* No Results */}
+            {!isLoading && jobs.length === 0 && (
+              <div className="text-center py-12">
+                <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No jobs found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your filters or search terms to find more jobs.
+                </p>
+                <button
+                  onClick={() => setFilters({
+                    search: "",
+                    location: "",
+                    visaSponsorship: undefined,
+                    jobType: undefined,
+                    experienceLevel: undefined,
+                    techStack: [],
+                  })}
+                  className="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            )}
+
+            {/* Jobs Grid */}
+            {!isLoading && jobs.length > 0 && (
+              <>
+                <motion.div 
+                  className="grid gap-6 md:grid-cols-2 xl:grid-cols-1"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ staggerChildren: 0.1 }}
+                >
+                  {jobs.map((job, index) => (
+                    <div key={job.id} className="bg-white rounded-xl p-4 shadow">
+                      <h3 className="text-lg font-bold">{job.title}</h3>
+                      <p>{job.companyRelation ? job.companyRelation.name : "Company"}</p>
+                    </div>
+                  ))}
+                </motion.div>
+
+                {/* Load More Button */}
+                {hasNextPage && (
+                  <motion.div 
+                    className="flex justify-center mt-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <motion.button
+                      onClick={handleLoadMore}
+                      disabled={isFetchingNextPage}
+                      className="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 disabled:bg-blue-300 transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {isFetchingNextPage ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Loading more...
+                        </>
+                      ) : (
+                        "Load more jobs"
+                      )}
+                    </motion.button>
+                  </motion.div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

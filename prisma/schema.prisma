@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  website     String?
+  logo        String?
+  size        String?
+  industry    String?
+  location    String?
+  createdAt   DateTime @default(now())
+  jobs        Job[]
+
+  @@index([name])
+}
+
+model Job {
+  id              String           @id @default(cuid())
+  title           String
+  company         String
+  description     String
+  requirements    String[]
+  location        String
+  country         String
+  visaSponsorship Boolean          @default(false)
+  salaryMin       Int?
+  salaryMax       Int?
+  jobType         JobType
+  experienceLevel ExperienceLevel
+  techStack       String[]
+  applicationUrl  String
+  companyId       String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  companyRelation Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  applications    JobApplication[]
+
+  @@index([title])
+  @@index([location])
+  @@index([visaSponsorship])
+  @@index([jobType])
+  @@index([experienceLevel])
+}
+
+model JobApplication {
+  id        String            @id @default(cuid())
+  jobId     String
+  userId    String
+  status    ApplicationStatus @default(PENDING)
+  appliedAt DateTime          @default(now())
+  job       Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, userId])
+  @@index([userId])
+  @@index([jobId])
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  refresh_token_expires_in Int?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id              String           @id @default(cuid())
+  name            String?
+  email           String?          @unique
+  emailVerified   DateTime?
+  image           String?
+  role            UserRole         @default(JOB_SEEKER)
+  profileComplete Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  accounts        Account[]
+  applications    JobApplication[]
+  sessions        Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model ContactRequest {
+  id                       String               @id @default(cuid())
+  companyName              String
+  contactName              String
+  contactEmail             String
+  contactPhone             String?
+  website                  String?
+  industry                 String
+  companySize              String
+  location                 String
+  description              String
+  visaSponsorshipConfirmed Boolean              @default(false)
+  requestType              ContactRequestType   @default(ADD_COMPANY)
+  status                   ContactRequestStatus @default(PENDING)
+  adminNotes               String?
+  createdAt                DateTime             @default(now())
+  reviewedAt               DateTime?
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([contactEmail])
+}
+
+enum JobType {
+  FULL_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum ExperienceLevel {
+  JUNIOR
+  MID
+  SENIOR
+}
+
+enum UserRole {
+  JOB_SEEKER
+  EMPLOYER
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  REJECTED
+}
+
+enum ContactRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ContactRequestType {
+  ADD_COMPANY
+  GENERAL_INQUIRY
+}
