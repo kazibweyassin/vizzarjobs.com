@@ -19,12 +19,13 @@ import {
 } from "lucide-react";
 import { JobActions } from "~/components/JobActions";
 
-// Simple params type without extending PageProps
-interface Params {
-  id: string;
+// This follows the official Next.js type for App Router page props
+type Props = {
+  params: { id: string }
+  searchParams: Record<string, string | string[] | undefined>
 }
 
-export default async function JobPage({ params }: { params: Params }) {
+export default async function JobPage({ params, searchParams }: Props) {
   try {
     const job = await api.jobs.getById({ id: params.id });
 
