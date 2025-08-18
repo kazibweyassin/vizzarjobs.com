@@ -295,7 +295,7 @@ export function HeroSearch() {
       {/* Popular searches */}
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-sm font-medium text-gray-500">Popular:</span>
-        {['Software Engineer', 'Data Scientist', 'Product Manager', 'UI/UX Designer', 'DevOps'].map((term) => (
+        {['Software Engineer', 'Data Scientist', 'Nurse', 'Doctor', 'Engineer'].map((term) => (
           <button
             key={term}
             type="button"

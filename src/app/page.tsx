@@ -198,10 +198,10 @@ export default async function HomePage() {
           <div className="max-w-4xl">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Find Your Next
-              <span className="text-blue-400"> Tech Role</span>
+              <span className="text-blue-400">Role</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-slate-300 leading-relaxed">
-              Connecting African tech talent with global opportunities. 
+              Connecting African  talent with global opportunities. 
               Join thousands of developers building careers worldwide.
             </p>
             
@@ -456,7 +456,7 @@ export default async function HomePage() {
               Success Stories
             </h2>
             <p className="text-xl text-gray-600">
-              African developers finding amazing opportunities worldwide
+              African youth finding amazing opportunities worldwide
             </p>
           </div>
           

@@ -34,7 +34,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-gray-300 mb-6 max-w-sm">
-              Connecting African tech talent with global opportunities. Find your dream job with visa sponsorship.
+              Connecting talent with global opportunities. Find your dream job with visa sponsorship.
             </p>
             <div className="flex items-center gap-4">
               <a 

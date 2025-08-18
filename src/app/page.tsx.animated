@@ -68,7 +68,7 @@ export default async function HomePage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
-              Find Your Dream Tech Job
+              Find Your Dream Job Abroad
               <motion.span 
                 className="block text-green-300"
                 initial={{ y: 20, opacity: 0 }}
@@ -84,7 +84,7 @@ export default async function HomePage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              VizzarJobs connects African tech professionals with international opportunities. 
+              VizzarJobs connects African  professionals with international opportunities. 
               Discover jobs that sponsor work visas and advance your global career.
             </motion.p>
             

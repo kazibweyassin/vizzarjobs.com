@@ -49,7 +49,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900">Access Top Talent</h3>
                     <p className="text-gray-600 text-sm">
-                      Connect with skilled African tech professionals seeking visa sponsorship
+                      Connect with skilled African  professionals seeking visa sponsorship
                     </p>
                   </div>
                 </div>
