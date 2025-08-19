@@ -28,6 +28,7 @@ interface JobCardProps {
   };
 }
 
+export default JobCard;
 export function JobCard({ job }: JobCardProps) {
   const [saved, setSaved] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
