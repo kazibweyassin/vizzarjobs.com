@@ -9,12 +9,13 @@ import JobCard from "~/components/JobCard";
 import { Button } from "~/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
-type CompanyPageParams = {
-  params: { id: string };
-  searchParams?: Record<string, string | string[] | undefined>;
+// This follows the official Next.js type for App Router page props
+type CompanyParams = {
+  params: { id: string }
+  searchParams: Record<string, string | string[] | undefined>
 }
 
-export const generateMetadata = async ({ params }: CompanyPageParams): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: CompanyParams): Promise<Metadata> => {
   try {
     const company = await api.companies.getById({ id: params.id });
     
@@ -37,7 +38,7 @@ export const generateMetadata = async ({ params }: CompanyPageParams): Promise<M
   }
 };
 
-export default async function CompanyPage({ params }: { params: { id: string } }) {
+export default async function CompanyPage({ params, searchParams }: CompanyParams) {
   try {
     const company = await api.companies.getById({ id: params.id });
     
