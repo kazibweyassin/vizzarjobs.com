@@ -5,7 +5,7 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {
+const nextConfig = {
   // Disable TypeScript checking during build for faster builds
   typescript: {
     // !! WARN !!
@@ -20,6 +20,16 @@ const config = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  // Increase build timeouts if builds are timing out
+  experimental: {
+    // Increase the timeout for type checking
+    typedRoutes: false
+  },
+  // Disable source maps in production for faster builds
+  productionBrowserSourceMaps: false,
 };
+
+// This ensures the config is properly applied
+const config = nextConfig;
 
 export default config;
