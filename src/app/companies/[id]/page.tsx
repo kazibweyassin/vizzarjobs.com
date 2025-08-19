@@ -14,9 +14,9 @@ import { Skeleton } from "~/components/ui/skeleton";
 
 // Remove the type that was causing issues
 export default function CompanyPage() {
-  const params = useParams();
+const params = useParams<{ id: string }>();
   const router = useRouter();
-  const id = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+  const id = params?.id ?? "";
   
   const { data: company, isLoading: isLoadingCompany, error: companyError } = 
     api.companies.getById.useQuery({ id }, { enabled: !!id });
