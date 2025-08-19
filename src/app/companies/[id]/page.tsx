@@ -9,7 +9,7 @@ import JobCard from "~/components/JobCard";
 import { Button } from "~/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
-export const generateMetadata = async ({ params }: { params: { id: string } }): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   try {
     const company = await api.companies.getById({ id: params.id });
     
@@ -32,7 +32,14 @@ export const generateMetadata = async ({ params }: { params: { id: string } }): 
   }
 };
 
-export default async function CompanyPage({ params }: { params: { id: string } }) {
+interface Props {
+  params: {
+    id: string;
+  };
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
+export default async function CompanyPage({ params }: Props) {
   try {
     const company = await api.companies.getById({ id: params.id });
     
