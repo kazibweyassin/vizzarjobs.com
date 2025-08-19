@@ -19,16 +19,18 @@ import {
 } from "lucide-react";
 import { JobActions } from "~/components/JobActions";
 
-// @ts-ignore - Disabling TypeScript for PageProps constraint issues
+// Updated Props type for Next.js 15
 type Props = {
-  params: { id: string }
-  searchParams: Record<string, string | string[] | undefined>
+  params: Promise<{ id: string }>; // params is now a Promise
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-// @ts-ignore - Disabling TypeScript for page component params
 export default async function JobPage({ params, searchParams }: Props) {
   try {
-    const job = await api.jobs.getById({ id: params.id });
+    // Await the params since it's now a Promise in Next.js 15
+    const { id } = await params;
+    
+    const job = await api.jobs.getById({ id });
 
     const formatSalary = (min?: number | null, max?: number | null) => {
       if (!min && !max) return "Salary not specified";
