@@ -19,8 +19,8 @@ export default async function DashboardPage() {
   }
   
   try {
-    const stats = await api.applications.getUserStats();
-    const recentApplications = await api.applications.getRecent({ limit: 3 });
+    const stats = await api.applications.getApplicationStats();
+    const { applications: recentApplications } = await api.applications.getMyApplications({ limit: 3 });
     
     return (
       <div className="container py-8">

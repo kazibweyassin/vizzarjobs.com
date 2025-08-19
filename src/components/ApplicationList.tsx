@@ -78,18 +78,16 @@ export default function ApplicationList({ applications, emptyMessage }: Applicat
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const utils = api.useContext();
-  const updateNotesMutation = api.applications.updateNotes.useMutation({
+  const updateNotesMutation = api.applications.updateStatus.useMutation({
     onSuccess: () => {
-      utils.applications.getUserApplications.invalidate();
-      utils.applications.getRecent.invalidate();
+      utils.applications.getMyApplications.invalidate();
     },
   });
   
-  const withdrawMutation = api.applications.withdraw.useMutation({
+  const withdrawMutation = api.applications.deleteApplication.useMutation({
     onSuccess: () => {
-      utils.applications.getUserApplications.invalidate();
-      utils.applications.getUserStats.invalidate();
-      utils.applications.getRecent.invalidate();
+      utils.applications.getMyApplications.invalidate();
+      utils.applications.getApplicationStats.invalidate();
     },
   });
   

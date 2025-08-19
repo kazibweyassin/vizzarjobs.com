@@ -1,0 +1,336 @@
+import { z } from "zod";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import { JobType, ExperienceLevel } from "@prisma/client";
+
+export const jobsRouter = createTRPCRouter({
+  // EXISTING ENDPOINTS
+  getAll: publicProcedure
+    .input(
+      z.object({
+        location: z.string().optional(),
+        visaSponsorship: z.boolean().optional(),
+        techStack: z.array(z.string()).optional(),
+        jobType: z.nativeEnum(JobType).optional(),
+        experienceLevel: z.nativeEnum(ExperienceLevel).optional(),
+        search: z.string().optional(),
+        salaryMin: z.number().optional(),
+        salaryMax: z.number().optional(),
+        postedWithin: z.enum(['day', 'week', 'month', 'any']).optional(),
+        limit: z.number().min(1).max(100).default(50),
+        cursor: z.string().optional(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const { 
+        location, 
+        visaSponsorship, 
+        techStack, 
+        jobType, 
+        experienceLevel, 
+        search,
+        salaryMin,
+        salaryMax,
+        postedWithin,
+        limit, 
+        cursor 
+      } = input;
+
+      // Calculate date filters based on postedWithin
+      let dateFilter = {};
+      if (postedWithin) {
+        const now = new Date();
+        let dateThreshold = new Date();
+        
+        switch (postedWithin) {
+          case 'day':
+            dateThreshold.setDate(now.getDate() - 1);
+            break;
+          case 'week':
+            dateThreshold.setDate(now.getDate() - 7);
+            break;
+          case 'month':
+            dateThreshold.setMonth(now.getMonth() - 1);
+            break;
+          case 'any':
+          default:
+            // No date filter
+            break;
+        }
+        
+        if (postedWithin !== 'any') {
+          dateFilter = {
+            createdAt: {
+              gte: dateThreshold
+            }
+          };
+        }
+      }
+      
+      // Create salary filters
+      let salaryFilter = {};
+      if (salaryMin !== undefined || salaryMax !== undefined) {
+        if (salaryMin !== undefined && salaryMax !== undefined) {
+          // Jobs where range overlaps with filtered range
+          salaryFilter = {
+            OR: [
+              // Job max salary is within our range
+              {
+                salaryMax: {
+                  gte: salaryMin,
+                  ...(salaryMax ? { lte: salaryMax } : {})
+                }
+              },
+              // Job min salary is within our range
+              {
+                salaryMin: {
+                  ...(salaryMin ? { gte: salaryMin } : {}),
+                  lte: salaryMax
+                }
+              },
+              // Our range is within job's range
+              {
+                AND: [
+                  { salaryMin: { lte: salaryMin } },
+                  { salaryMax: { gte: salaryMax } }
+                ]
+              }
+            ]
+          };
+        } else if (salaryMin !== undefined) {
+          // Only min salary specified
+          salaryFilter = {
+            OR: [
+              { salaryMin: { gte: salaryMin } },
+              { salaryMax: { gte: salaryMin } }
+            ]
+          };
+        } else if (salaryMax !== undefined) {
+          // Only max salary specified
+          salaryFilter = {
+            OR: [
+              { salaryMax: { lte: salaryMax } },
+              { salaryMin: { lte: salaryMax } }
+            ]
+          };
+        }
+      }
+      
+      const where = {
+        AND: [
+          {
+            OR: [
+              { title: { contains: search || "", mode: "insensitive" } },
+              { description: { contains: search || "", mode: "insensitive" } },
+              { company: { contains: search || "", mode: "insensitive" } },
+              { skills: { hasSome: search ? [search] : [] } }
+            ]
+          },
+          location ? { location: { contains: location, mode: "insensitive" } } : {},
+          visaSponsorship !== undefined ? { visaSponsorship } : {},
+          jobType ? { jobType } : {},
+          experienceLevel ? { experienceLevel } : {},
+          techStack && techStack.length > 0 ? { skills: { hasSome: techStack } } : {},
+          dateFilter,
+          salaryFilter
+        ]
+      };
+      
+      // Get the total count for pagination info
+      const totalCount = await ctx.db.job.count({ where });
+      
+      const jobs = await ctx.db.job.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        where,
+        include: {
+          _count: {
+            select: {
+              applications: true
+            }
+          },
+          companyRelation: true
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (jobs.length > limit) {
+        const nextItem = jobs.pop();
+        nextCursor = nextItem?.id;
+      }
+
+      return {
+        jobs,
+        nextCursor,
+        totalCount,
+      };
+    }),
+    
+  // NEW ENDPOINTS
+  getByCompany: publicProcedure
+    .input(z.object({ companyId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const jobs = await ctx.db.job.findMany({
+          where: {
+            companyId: input.companyId,
+            isActive: true,
+          },
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          },
+          orderBy: {
+            createdAt: "desc"
+          },
+        });
+
+        return jobs;
+      } catch (error) {
+        console.error("Error fetching company jobs:", error);
+        return [];
+      }
+    }),
+
+  getRecommended: protectedProcedure
+    .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const userId = ctx.session.user.id;
+        
+        // Get user profile data
+        const user = await ctx.db.user.findUnique({
+          where: { id: userId },
+          select: {
+            skills: true,
+            jobPreferences: true,
+            jobApplications: {
+              take: 5,
+              orderBy: { appliedAt: 'desc' },
+              include: { job: true }
+            }
+          }
+        });
+        
+        if (!user) {
+          return [];
+        }
+        
+        const userSkills = user.skills || [];
+        const preferredLocations = user.jobPreferences?.preferredLocations || [];
+        const preferredJobTypes = user.jobPreferences?.preferredJobTypes || [];
+        
+        // Collect skills from recently applied jobs
+        const recentJobSkills = user.jobApplications.flatMap(app => app.job.skills || []);
+        const allRelevantSkills = [...new Set([...userSkills, ...recentJobSkills])];
+        
+        // Find jobs that match user skills and preferences
+        const jobs = await ctx.db.job.findMany({
+          where: {
+            AND: [
+              { isActive: true },
+              {
+                OR: [
+                  allRelevantSkills.length > 0 ? { skills: { hasSome: allRelevantSkills } } : {},
+                  preferredLocations.length > 0 ? { location: { in: preferredLocations } } : {},
+                  preferredJobTypes.length > 0 ? { jobType: { in: preferredJobTypes } } : {}
+                ]
+              },
+              // Exclude jobs user has already applied to
+              {
+                id: {
+                  notIn: user.jobApplications.map(app => app.job.id)
+                }
+              }
+            ]
+          },
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          },
+          orderBy: [
+            { createdAt: "desc" }
+          ],
+          take: input.limit
+        });
+        
+        return jobs;
+      } catch (error) {
+        console.error("Error getting recommended jobs:", error);
+        return [];
+      }
+    }),
+
+  getPopular: publicProcedure
+    .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const jobs = await ctx.db.job.findMany({
+          where: {
+            isActive: true,
+          },
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          },
+          orderBy: [
+            { viewCount: "desc" },
+            { createdAt: "desc" }
+          ],
+          take: input.limit
+        });
+        
+        return jobs;
+      } catch (error) {
+        console.error("Error getting popular jobs:", error);
+        return [];
+      }
+    }),
+
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const job = await ctx.db.job.findUnique({
+          where: { id: input.id },
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          }
+        });
+        
+        if (!job) {
+          throw new Error("Job not found");
+        }
+        
+        // Increment view count
+        await ctx.db.job.update({
+          where: { id: input.id },
+          data: { viewCount: { increment: 1 } }
+        });
+        
+        return job;
+      } catch (error) {
+        console.error("Error fetching job:", error);
+        throw error;
+      }
+    }),
+});

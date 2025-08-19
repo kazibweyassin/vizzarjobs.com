@@ -211,4 +211,26 @@ export const companiesRouter = createTRPCRouter({
         }
       });
     }),
+    
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const company = await ctx.db.company.findUnique({
+          where: { id: input.id },
+          include: {
+            _count: {
+              select: {
+                jobs: true
+              }
+            }
+          }
+        });
+        
+        return company;
+      } catch (error) {
+        console.error("Error fetching company:", error);
+        return null;
+      }
+    }),
 });

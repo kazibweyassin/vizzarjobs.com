@@ -21,8 +21,8 @@ export default async function ApplicationDashboardPage() {
   }
   
   try {
-    const applications = await api.applications.getUserApplications();
-    const stats = await api.applications.getUserStats();
+    const { applications } = await api.applications.getMyApplications({});
+    const stats = await api.applications.getApplicationStats();
     
     return (
       <div className="container py-8">

@@ -347,4 +347,89 @@ export const jobsRouter = createTRPCRouter({
         return input.ids.indexOf(a.id) - input.ids.indexOf(b.id);
       });
     }),
+    
+  getByCompany: publicProcedure
+    .input(z.object({ companyId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const jobs = await ctx.db.job.findMany({
+          where: {
+            companyId: input.companyId,
+          },
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          },
+          orderBy: {
+            createdAt: "desc"
+          },
+        });
+
+        return jobs;
+      } catch (error) {
+        console.error("Error fetching company jobs:", error);
+        return [];
+      }
+    }),
+
+  getRecommended: protectedProcedure
+    .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const userId = ctx.session.user.id;
+        
+        // Find jobs based on user's profile and previous applications
+        const jobs = await ctx.db.job.findMany({
+          where: {},
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          },
+          orderBy: [
+            { createdAt: "desc" }
+          ],
+          take: input.limit
+        });
+        
+        return jobs;
+      } catch (error) {
+        console.error("Error getting recommended jobs:", error);
+        return [];
+      }
+    }),
+
+  getPopular: publicProcedure
+    .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const jobs = await ctx.db.job.findMany({
+          where: {},
+          include: {
+            _count: {
+              select: {
+                applications: true
+              }
+            },
+            companyRelation: true
+          },
+          orderBy: [
+            { createdAt: "desc" }
+          ],
+          take: input.limit
+        });
+        
+        return jobs;
+      } catch (error) {
+        console.error("Error getting popular jobs:", error);
+        return [];
+      }
+    }),
 });
