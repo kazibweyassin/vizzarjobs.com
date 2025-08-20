@@ -649,7 +649,7 @@ export default async function HomePage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Join thousands of African tech professionals who have found their dream jobs with visa sponsorship through VizzarJobs.
+            Join thousands of African  professionals who have found their dream jobs with visa sponsorship through VizzarJobs.
           </motion.p>
           <motion.div 
             className="flex flex-col sm:flex-row gap-4 justify-center"

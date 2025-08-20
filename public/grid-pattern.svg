@@ -1,0 +1,18 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0H2V2H0V0Z" fill="currentColor"/>
+  <path d="M25 0H27V2H25V0Z" fill="currentColor"/>
+  <path d="M50 0H52V2H50V0Z" fill="currentColor"/>
+  <path d="M75 0H77V2H75V0Z" fill="currentColor"/>
+  <path d="M0 25H2V27H0V25Z" fill="currentColor"/>
+  <path d="M25 25H27V27H25V25Z" fill="currentColor"/>
+  <path d="M50 25H52V27H50V25Z" fill="currentColor"/>
+  <path d="M75 25H77V27H75V25Z" fill="currentColor"/>
+  <path d="M0 50H2V52H0V50Z" fill="currentColor"/>
+  <path d="M25 50H27V52H25V50Z" fill="currentColor"/>
+  <path d="M50 50H52V52H50V50Z" fill="currentColor"/>
+  <path d="M75 50H77V52H75V50Z" fill="currentColor"/>
+  <path d="M0 75H2V77H0V75Z" fill="currentColor"/>
+  <path d="M25 75H27V77H25V75Z" fill="currentColor"/>
+  <path d="M50 75H52V77H50V75Z" fill="currentColor"/>
+  <path d="M75 75H77V77H75V75Z" fill="currentColor"/>
+</svg>

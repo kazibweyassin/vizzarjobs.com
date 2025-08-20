@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { type Job, type Company } from "@prisma/client";
-import { Badge } from "~/components/ui/badge";
+import { Badge } from "~/components/ui/premium-badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import { motion } from "framer-motion";
 import { 
   MapPin, 
   DollarSign, 
@@ -14,7 +15,9 @@ import {
   Award,
   Bookmark,
   Share2,
-  CheckCircle
+  CheckCircle,
+  Shield,
+  Sparkles
 } from "lucide-react";
 import { saveJob, removeJob, isJobSaved } from "~/lib/savedJobs";
 import { hasApplied, getApplicationStatus, getStatusLabel, getStatusColor } from "~/lib/applications";

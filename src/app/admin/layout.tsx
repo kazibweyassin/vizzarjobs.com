@@ -10,15 +10,28 @@ export default async function AdminLayout({
 }) {
   const session = await auth();
   
+  // Debug the session to see what's in it
+  console.log("Admin layout session:", JSON.stringify(session, null, 2));
+  
   // Check if user is authenticated and has ADMIN role
   // We use type assertion here because we've updated the schema
   // but TypeScript types may not be up to date yet
   if (!session?.user || (session.user.role as string) !== 'ADMIN') {
+    // Show more information about why access is denied
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
+        <div className="text-center max-w-lg p-6 bg-white rounded-lg shadow-md">
           <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
-          <p className="text-gray-600 mt-2">You don't have permission to access this page.</p>
+          <p className="text-gray-600 mt-2 mb-4">You don't have permission to access this page.</p>
+          
+          {/* Show debug information */}
+          <div className="bg-gray-100 p-4 rounded-md text-left mt-4">
+            <h2 className="font-semibold mb-2 text-sm">Debug Information:</h2>
+            <p className="text-xs"><strong>Email:</strong> {session?.user?.email || "Not logged in"}</p>
+            <p className="text-xs"><strong>Role:</strong> {session?.user?.role || "No role"}</p>
+            <p className="text-xs"><strong>User ID:</strong> {session?.user?.id || "No ID"}</p>
+            <p className="text-xs"><strong>Name:</strong> {session?.user?.name || "No name"}</p>
+          </div>
         </div>
       </div>
     );

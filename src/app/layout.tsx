@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -11,14 +11,15 @@ import { RoleSelector } from "~/components/RoleSelector";
 import { Footer } from "~/components/Footer";
 
 export const metadata: Metadata = {
-  title: "VizzarJobs - Visa-Sponsored Tech Jobs for African Professionals",
-  description: "Find visa-sponsored tech jobs worldwide. Connecting African tech talent with global opportunities.",
+  title: "VizzarJobs | Premium Visa-Sponsored Tech Opportunities",
+  description: "Exclusive visa-sponsored tech positions for elite African professionals. Join our curated talent network for global career advancement.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Geist({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  display: "swap",
+  variable: "--font-sans",
 });
 
 export default async function RootLayout({
@@ -27,12 +28,13 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html lang="en" className={`${geist.variable}`}>
-      <body className="min-h-screen bg-gray-50">
+    <html lang="en" className={`${inter.variable}`}>
+      <body className="min-h-screen bg-gradient-to-br from-white via-[#f8faff] to-[#f0f4ff]">
+        <div className="fixed inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-[0.02] pointer-events-none" />
         <SessionProvider session={session}>
           <TRPCReactProvider>
             <Navigation />
-            <main>{children}</main>
+            <main className="relative z-10">{children}</main>
             <Footer />
             <RoleSelector />
           </TRPCReactProvider>
