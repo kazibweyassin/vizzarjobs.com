@@ -155,7 +155,60 @@ export function PremiumHero() {
             >
               How It Works
             </Link>
+            <Link 
+              href="/why-us" 
+              className="inline-flex items-center gap-2 px-8 py-3 text-gray-700 bg-white border border-gray-200 rounded-lg font-medium hover:bg-gray-50 hover:border-gray-300 transition duration-300"
+            >
+              Why Choose Us
+            </Link>
           </motion.div>
+        </motion.div>
+        
+        {/* Logo Ticker */}
+        <motion.div 
+          variants={itemVariants}
+          className="mt-16 pt-8 border-t border-gray-100"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { delay: 0.8 } }}
+        >
+          <p className="text-center text-sm font-large text-gray-500 mb-6">
+            Trusted by leading global companies to source top talent
+          </p>
+          
+          <div className="relative w-full overflow-hidden">
+            <div className="logo-ticker-container">
+              <div className="logo-ticker">
+                {[1, 2, 3].map((_, i) => (
+                  <div key={i} className="flex space-x-12 items-center">
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/cousera.svg" alt="Company 1" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/cloudflare.svg" alt="Company 2" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/logo3.svg" alt="Company 3" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/mind.svg" alt="Company 4" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/logo5.svg" alt="Company 5" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/weather.svg" alt="Company 6" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/cloudflare.svg" alt="Company 7" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                    <div className="w-32 h-12 bg-white rounded-lg p-2 flex items-center justify-center">
+                      <img src="/companies/github.svg" alt="Company 8" className="h-8 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-200" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>

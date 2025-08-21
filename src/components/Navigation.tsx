@@ -25,6 +25,7 @@ export function Navigation() {
   const navigation = [
     { name: "Jobs", href: "/jobs", icon: Search },
     { name: "Companies", href: "/companies", icon: Building2 },
+    { name: "Why Us", href: "/why-us", icon: FileText },
   ];
 
   const handleSignOut = async () => {

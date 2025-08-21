@@ -31,6 +31,33 @@
   animation: marquee 30s linear infinite;
 }
 
+/* Logo ticker animation */
+.logo-ticker-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+}
+
+.logo-ticker {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 40s linear infinite;
+}
+
+.logo-ticker > div {
+  display: inline-flex;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 /* Premium UI Elements */
 .premium-gradient {
   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
