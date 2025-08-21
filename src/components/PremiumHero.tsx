@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, Globe, Sparkles, ArrowRight, Shield, Award, Briefcase } from "lucide-react";
 import { motion, easeInOut } from "framer-motion";
+import { jobEvents } from "~/lib/analytics";
 
 export function PremiumHero() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,6 +22,9 @@ export function PremiumHero() {
     
     // Encode the search query for URL
     const encodedQuery = encodeURIComponent(searchQuery.trim());
+    
+    // Track the search event for analytics
+    jobEvents.search(searchQuery.trim(), 0);
     
     // Redirect to jobs page with search query
     router.push(`/jobs?search=${encodedQuery}`);

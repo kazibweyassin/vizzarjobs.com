@@ -3,6 +3,7 @@ import Link from "next/link";
 import { api } from "~/trpc/server";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { JobViewTracker } from "~/components/analytics/JobViewTracker";
 import { 
   MapPin, 
   DollarSign, 
@@ -68,6 +69,8 @@ export default async function JobPage({ params, searchParams }: Props) {
 
     return (
       <div className="min-h-screen bg-gray-50">
+        {/* Analytics tracking - invisible component */}
+        <JobViewTracker jobId={job.id} jobTitle={job.title} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Back Button */}
           <div className="mb-6">
@@ -204,7 +207,7 @@ export default async function JobPage({ params, searchParams }: Props) {
                 <CardContent className="space-y-4">
                   <div className="flex flex-col gap-4">
                     {/* Job Actions component (client-side) */}
-                    <JobActions jobId={job.id} applicationUrl={job.applicationUrl} />
+                    <JobActions jobId={job.id} applicationUrl={job.applicationUrl} jobTitle={job.title} />
                     
                     <div className="text-center">
                       <p className="text-sm text-gray-600">

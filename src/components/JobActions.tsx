@@ -8,13 +8,15 @@ import {
   hasApplied,
   type ApplicationStatus
 } from "~/lib/applications";
+import { jobEvents, trackEvent } from "~/lib/analytics";
 
 interface JobActionProps {
   jobId: string;
   applicationUrl?: string;
+  jobTitle?: string;
 }
 
-export function JobActions({ jobId, applicationUrl }: JobActionProps) {
+export function JobActions({ jobId, applicationUrl, jobTitle = "Job Position" }: JobActionProps) {
   const [saved, setSaved] = useState(false);
   const [applied, setApplied] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
@@ -28,8 +30,22 @@ export function JobActions({ jobId, applicationUrl }: JobActionProps) {
   const handleSaveToggle = () => {
     if (saved) {
       removeJob(jobId);
+      // Track unsave action
+      trackEvent({
+        action: 'unsave_job',
+        category: 'jobs',
+        label: jobTitle,
+        job_id: jobId
+      });
     } else {
       saveJob(jobId);
+      // Track save action
+      trackEvent({
+        action: 'save_job',
+        category: 'jobs',
+        label: jobTitle,
+        job_id: jobId
+      });
     }
     setSaved(!saved);
   };
@@ -41,6 +57,16 @@ export function JobActions({ jobId, applicationUrl }: JobActionProps) {
   const copyJobLink = () => {
     navigator.clipboard.writeText(`${window.location.origin}/jobs/${jobId}`);
     setShowShareMenu(false);
+    
+    // Track share action
+    trackEvent({
+      action: 'share_job',
+      category: 'jobs',
+      label: 'copy_link',
+      job_id: jobId,
+      job_title: jobTitle
+    });
+    
     // You could add a toast notification here
   };
   
@@ -53,6 +79,15 @@ export function JobActions({ jobId, applicationUrl }: JobActionProps) {
     );
     window.open(`mailto:?subject=${subject}&body=${body}`);
     setShowShareMenu(false);
+    
+    // Track share action
+    trackEvent({
+      action: 'share_job',
+      category: 'jobs',
+      label: 'email',
+      job_id: jobId,
+      job_title: jobTitle
+    });
   };
   
   const handleApply = () => {
@@ -60,6 +95,9 @@ export function JobActions({ jobId, applicationUrl }: JobActionProps) {
       // Track the application in our system
       trackApplication(jobId);
       setApplied(true);
+      
+      // Track in Google Analytics
+      jobEvents.apply(jobId, jobTitle);
       
       // Open the application URL
       window.open(applicationUrl, "_blank");

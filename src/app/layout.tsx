@@ -9,6 +9,7 @@ import { auth } from "~/server/auth";
 import { Navigation } from "~/components/Navigation";
 import { RoleSelector } from "~/components/RoleSelector";
 import { Footer } from "~/components/Footer";
+import { GoogleAnalytics } from "~/components/analytics/GoogleAnalytics";
 
 export const metadata: Metadata = {
   title: "VizzarJobs | Premium Visa-Sponsored Tech Opportunities",
@@ -33,6 +34,7 @@ export default async function RootLayout({
         <div className="fixed inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-[0.02] pointer-events-none" />
         <SessionProvider session={session}>
           <TRPCReactProvider>
+            <GoogleAnalytics />
             <Navigation />
             <main className="relative z-10">{children}</main>
             <Footer />
