@@ -23,6 +23,7 @@ import { PremiumFeatures } from "~/components/PremiumFeatures";
 import { PremiumTestimonials } from "~/components/PremiumTestimonials";
 import { PremiumHowItWorks } from "~/components/PremiumHowItWorks";
 import { PremiumCard } from "~/components/ui/premium-card";
+import HomePageClient from "~/components/HomePageClient";
 
 // Define proper TypeScript interfaces
 interface Company {
@@ -87,6 +88,8 @@ export default async function HomePage() {
   } catch (error) {
     console.error('Error fetching jobs:', error);
     // Enhanced fallback data with more realistic information
+    
+  // Store the content in a variable so we can wrap it with the client component
     featuredJobs = [
       {
         id: '1',

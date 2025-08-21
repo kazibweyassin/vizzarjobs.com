@@ -5,6 +5,7 @@ import { Award, Globe, ShieldCheck, Users, Briefcase, ArrowRight, Star, Trending
 import Link from "next/link";
 
 export default function WhyUsPage() {
+  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -87,6 +88,7 @@ export default function WhyUsPage() {
 
   return (
     <div className="bg-white">
+      
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white pt-20 pb-16">
         {/* Decorative elements */}

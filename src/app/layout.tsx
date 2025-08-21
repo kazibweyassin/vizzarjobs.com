@@ -10,6 +10,7 @@ import { Navigation } from "~/components/Navigation";
 import { RoleSelector } from "~/components/RoleSelector";
 import { Footer } from "~/components/Footer";
 import { GoogleAnalytics } from "~/components/analytics/GoogleAnalytics";
+import { LeadCaptureWrapper } from "~/components/LeadCaptureWrapper";
 
 export const metadata: Metadata = {
   title: "VizzarJobs | Premium Visa-Sponsored Tech Opportunities",
@@ -36,9 +37,11 @@ export default async function RootLayout({
           <TRPCReactProvider>
             <GoogleAnalytics />
             <Navigation />
-            <main className="relative z-10">{children}</main>
-            <Footer />
-            <RoleSelector />
+            <LeadCaptureWrapper>
+              <main className="relative z-10">{children}</main>
+              <Footer />
+              <RoleSelector />
+            </LeadCaptureWrapper>
           </TRPCReactProvider>
         </SessionProvider>
       </body>
