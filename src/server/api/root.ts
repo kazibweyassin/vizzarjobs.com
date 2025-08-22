@@ -4,6 +4,7 @@ import { companiesRouter } from "~/server/api/routers/companies";
 import { applicationsRouter } from "~/server/api/routers/applications";
 import { usersRouter } from "~/server/api/routers/users";
 import { contactRouter } from "~/server/api/routers/contact";
+import { matchingRouter } from "~/server/api/routers/matching";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**

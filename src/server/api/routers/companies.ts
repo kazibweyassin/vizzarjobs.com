@@ -2,6 +2,97 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
 
 export const companiesRouter = createTRPCRouter({
+  // Verification-related endpoints
+  getPendingVerifications: protectedProcedure
+    .input(z.object({ 
+      status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]).default("PENDING") 
+    }))
+    .query(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view verification queue");
+      }
+      
+      return ctx.db.company.findMany({
+        where: {
+          verificationStatus: input.status,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+    
+  verifyCompany: protectedProcedure
+    .input(z.object({ 
+      companyId: z.string(),
+      notes: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can verify companies");
+      }
+      
+      return ctx.db.company.update({
+        where: {
+          id: input.companyId,
+        },
+        data: {
+          verificationStatus: "APPROVED",
+          verified: true,
+          verificationDate: new Date(),
+          verificationNotes: input.notes,
+        },
+      });
+    }),
+    
+  rejectCompany: protectedProcedure
+    .input(z.object({ 
+      companyId: z.string(),
+      notes: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can reject companies");
+      }
+      
+      return ctx.db.company.update({
+        where: {
+          id: input.companyId,
+        },
+        data: {
+          verificationStatus: "REJECTED",
+          verified: false,
+          verificationDate: new Date(),
+          verificationNotes: input.notes,
+        },
+      });
+    }),
+    
+  requestMoreInfo: protectedProcedure
+    .input(z.object({ 
+      companyId: z.string(),
+      notes: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can request more information");
+      }
+      
+      return ctx.db.company.update({
+        where: {
+          id: input.companyId,
+        },
+        data: {
+          verificationStatus: "NEED_MORE_INFO",
+          verified: false,
+          verificationNotes: input.notes,
+        },
+      });
+    }),
   getAll: publicProcedure
     .input(
       z.object({
@@ -232,5 +323,70 @@ export const companiesRouter = createTRPCRouter({
         console.error("Error fetching company:", error);
         return null;
       }
+    }),
+  
+  // Verification-related endpoints
+  getPendingVerifications: protectedProcedure
+    .input(z.object({ 
+      status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]).default("PENDING") 
+    }))
+    .query(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view verification queue");
+      }
+      
+      return ctx.db.company.findMany({
+        where: {
+          verificationStatus: input.status,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+    
+  getVerifiedCompanies: publicProcedure
+    .query(async ({ ctx }) => {
+      return ctx.db.company.findMany({
+        where: {
+          verified: true,
+        },
+        orderBy: {
+          name: "asc",
+        },
+      });
+    }),
+    
+  getVerificationStats: protectedProcedure
+    .query(async ({ ctx }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view verification stats");
+      }
+      
+      const pending = await ctx.db.company.count({
+        where: { verificationStatus: "PENDING" },
+      });
+      
+      const approved = await ctx.db.company.count({
+        where: { verificationStatus: "APPROVED" },
+      });
+      
+      const rejected = await ctx.db.company.count({
+        where: { verificationStatus: "REJECTED" },
+      });
+      
+      const needMoreInfo = await ctx.db.company.count({
+        where: { verificationStatus: "NEED_MORE_INFO" },
+      });
+      
+      return {
+        pending,
+        approved,
+        rejected,
+        needMoreInfo,
+        total: pending + approved + rejected + needMoreInfo,
+      };
     }),
 });

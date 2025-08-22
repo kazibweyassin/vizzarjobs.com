@@ -8,46 +8,46 @@ datasource db {
 }
 
 model Company {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  website     String?
-  logo        String?
-  size        String?
-  industry    String?
-  location    String?
-  createdAt   DateTime @default(now())
-  jobs        Job[]
-
-  @@index([name])
+  id                String              @id @default(cuid())
+  name              String
+  description       String?
+  website           String?
+  logo              String?
+  size              String?
+  industry          String?
+  location          String?
+  verificationStatus VerificationStatus @default(PENDING)
+  verificationDate  DateTime?
+  verificationNotes String?
+  verified          Boolean             @default(false)
+  reputation        Int                 @default(0)
+  premium           Boolean             @default(false)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  jobs              Job[]
 }
 
 model Job {
-  id              String           @id @default(cuid())
+  id              String         @id @default(cuid())
   title           String
-  company         String
-  description     String
-  requirements    String[]
-  location        String
-  country         String
-  visaSponsorship Boolean          @default(false)
-  salaryMin       Int?
-  salaryMax       Int?
-  jobType         JobType
-  experienceLevel ExperienceLevel
-  techStack       String[]
-  applicationUrl  String
+  description     String?
+  company         Company        @relation(fields: [companyId], references: [id])
   companyId       String
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  companyRelation Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  applications    JobApplication[]
-
-  @@index([title])
-  @@index([location])
-  @@index([visaSponsorship])
-  @@index([jobType])
-  @@index([experienceLevel])
+  location        String?
+  type            String?
+  salary          String?
+  requirements    String?
+  skills          String[]
+  experienceLevel String?
+  remote          Boolean        @default(false)
+  visaSponsorship Boolean        @default(true)
+  featured        Boolean        @default(false)
+  premium         Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  applications    Application[]
+  
+  @@index([companyId])
 }
 
 model JobApplication {
@@ -89,20 +89,37 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
-  id              String           @id @default(cuid())
-  name            String?
-  email           String?          @unique
-  emailVerified   DateTime?
-  image           String?
-  role            UserRole         @default(JOB_SEEKER)
-  profileComplete Boolean          @default(false)
-  createdAt       DateTime         @default(now())
-  accounts        Account[]
-  applications    JobApplication[]
-  sessions        Session[]
+  id                 String              @id @default(cuid())
+  name               String?
+  email              String?             @unique
+  emailVerified      DateTime?
+  image              String?
+  role               UserRole            @default(USER)
+  bio                String?
+  location           String?
+  resume             String?
+  website            String?
+  githubUrl          String?
+  linkedinUrl        String?
+  skills             String[]
+  verificationStatus VerificationStatus  @default(PENDING)
+  verified           Boolean             @default(false)
+  premium            Boolean             @default(false)
+  premiumTier        String?
+  reputation         Int                 @default(0)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  accounts           Account[]
+  sessions           Session[]
+  applications       Application[]
+  matchingPreferences MatchingPreferences?
+  
+  @@index([email])
 }
 
 model VerificationToken {
@@ -158,12 +175,17 @@ enum ApplicationStatus {
   PENDING
   REVIEWED
   REJECTED
+  SHORTLISTED
+  INTERVIEW
+  OFFER
+  HIRED
 }
 
 enum ContactRequestStatus {
   PENDING
   APPROVED
   REJECTED
+  NEED_MORE_INFO
 }
 
 enum ContactRequestType {
