@@ -143,11 +143,12 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">123 Innovation Avenue, Lagos, Nigeria</span>
+                <span className="text-gray-300">1 Dock Road, V&A Waterfront, Cape Town, 8001, South Africa</span>
               </li>
+        
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href="tel:+234800123456" className="text-gray-300 hover:text-blue-400">+234 800 123 456</a>
+                <a href="tel:+234800123456" className="text-gray-300 hover:text-blue-400">+27 68 664 3827</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />
