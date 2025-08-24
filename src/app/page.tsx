@@ -17,7 +17,7 @@ import {
   Target,
   Sparkles
 } from "lucide-react";
-import { PremiumHero } from "~/components/PremiumHero";
+import {PremiumHero}  from "~/components/PremiumHero";
 import { PremiumStats } from "~/components/PremiumStats";
 import { PremiumFeatures } from "~/components/PremiumFeatures";
 import { PremiumTestimonials } from "~/components/PremiumTestimonials";
