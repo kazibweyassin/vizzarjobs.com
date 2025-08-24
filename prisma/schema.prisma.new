@@ -31,15 +31,13 @@ model Job {
   id              String         @id @default(cuid())
   title           String
   description     String?
-  company         Company        @relation(fields: [companyId], references: [id], map: "companyRelation")
+  company Company @relation(fields: [companyId], references: [id]) @map(" companyRelation\)
   companyId       String
   location        String?
-  country         String?
   type            String?
   salary          String?
-  requirements    String[]       @default([])
-  skills          String[]       @default([])
-  techStack       String[]       @default([])
+  requirements    String?
+  skills          String[]
   experienceLevel String?
   remote          Boolean        @default(false)
   visaSponsorship Boolean        @default(true)
@@ -114,7 +112,6 @@ model User {
   premium            Boolean             @default(false)
   premiumTier        String?
   reputation         Int                 @default(0)
-  profileComplete     Boolean             @default(false)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   accounts           Account[]

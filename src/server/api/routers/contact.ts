@@ -107,6 +107,10 @@ export const contactRouter = createTRPCRouter({
             size: updatedRequest.companySize,
             industry: updatedRequest.industry,
             location: updatedRequest.location,
+            verified: true,
+            verificationStatus: "APPROVED",
+            verificationDate: new Date(),
+            verificationNotes: `Auto-approved from contact request ID: ${updatedRequest.id}`,
           },
         });
       }

@@ -5,10 +5,15 @@ import { cn } from "~/lib/utils";
 import { Badge } from "~/components/ui/badge";
 import { X } from "lucide-react";
 
-export interface MultiSelectProps {
-  options: { label: string; value: string }[];
-  value: { label: string; value: string }[];
-  onChange: (value: { label: string; value: string }[]) => void;
+export interface MultiSelectOption {
+  value: string;
+  label: string;
+}
+
+interface MultiSelectProps {
+  options: MultiSelectOption[];
+  value: MultiSelectOption[];
+  onChange: (value: MultiSelectOption[]) => void;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
@@ -21,116 +26,131 @@ export function MultiSelect({
   placeholder = "Select options",
   className,
   disabled = false,
-  ...props
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [search, setSearch] = React.useState("");
+  const ref = React.useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Backspace" && !searchQuery && value.length > 0) {
-      const newValue = [...value];
-      newValue.pop();
-      onChange(newValue);
-    }
+  const handleRemove = (option: MultiSelectOption) => {
+    onChange(value.filter((item) => item.value !== option.value));
   };
 
-  // Filter options based on search query
-  const filteredOptions = options.filter(
-    option =>
-      !value.some(val => val.value === option.value) &&
-      option.label.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Toggle option selection
-  const toggleOption = (option: { label: string; value: string }) => {
-    const isSelected = value.some(val => val.value === option.value);
-    
-    if (isSelected) {
-      onChange(value.filter(val => val.value !== option.value));
+  const handleSelect = (option: MultiSelectOption) => {
+    if (value.find((item) => item.value === option.value)) {
+      onChange(value.filter((item) => item.value !== option.value));
     } else {
       onChange([...value, option]);
     }
-    
-    setSearchQuery("");
+    setSearch("");
   };
 
-  // Remove selected option
-  const removeOption = (e: React.MouseEvent, option: { label: string; value: string }) => {
-    e.stopPropagation();
-    onChange(value.filter(val => val.value !== option.value));
-  };
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+
+  // Filter options based on search
+  const filteredOptions = options.filter((option) => 
+    option.label.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div className="relative" {...props}>
+    <div className={cn("relative", className)} ref={ref}>
       <div
+        onClick={() => !disabled && setOpen(!open)}
         className={cn(
-          "flex flex-wrap min-h-10 items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
-          open && "ring-2 ring-ring ring-offset-2",
-          disabled && "cursor-not-allowed opacity-50",
+          "flex min-h-10 w-full flex-wrap items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm",
+          disabled ? "opacity-50 cursor-not-allowed" : "cursor-text",
           className
         )}
-        onClick={() => !disabled && setOpen(true)}
-        onKeyDown={handleKeyDown}
-        tabIndex={disabled ? -1 : 0}
       >
-        {value.length === 0 && !searchQuery && (
-          <span className="text-muted-foreground">{placeholder}</span>
-        )}
-        
-        {value.map(option => (
-          <Badge
-            key={option.value}
-            variant="secondary"
-            className="flex items-center gap-1 px-2"
-          >
-            {option.label}
-            <X
-              className="h-3 w-3 cursor-pointer"
-              onClick={e => !disabled && removeOption(e, option)}
-            />
-          </Badge>
-        ))}
-        
-        {open && (
-          <input
-            className="flex-1 outline-none min-w-[80px] bg-transparent"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            autoFocus
-            disabled={disabled}
-          />
+        {value.length > 0 ? (
+          <>
+            {value.map((item) => (
+              <Badge
+                key={item.value}
+                variant="secondary"
+                className="flex items-center gap-1"
+              >
+                {item.label}
+                {!disabled && (
+                  <X
+                    className="h-3 w-3 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemove(item);
+                    }}
+                  />
+                )}
+              </Badge>
+            ))}
+            {!disabled && (
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-1 bg-transparent outline-none min-w-20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen(true);
+                }}
+                placeholder={value.length > 0 ? "" : placeholder}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            {!disabled && (
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-1 bg-transparent outline-none"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen(true);
+                }}
+                placeholder={placeholder}
+              />
+            )}
+            {disabled && <span className="text-muted-foreground">{placeholder}</span>}
+          </>
         )}
       </div>
-      
+
       {open && !disabled && (
-        <>
-          <div
-            className="fixed inset-0 z-50"
-            onClick={() => setOpen(false)}
-          />
-          <div className="absolute z-50 w-full mt-1 rounded-md border bg-popover shadow-md">
-            <ul className="overflow-auto p-1 max-h-[200px]">
-              {filteredOptions.length > 0 ? (
-                filteredOptions.map(option => (
-                  <li
-                    key={option.value}
-                    className="flex cursor-pointer items-center rounded-sm px-2 py-1.5 hover:bg-accent"
-                    onClick={() => {
-                      toggleOption(option);
-                      setOpen(true); // Keep the dropdown open after selection
-                    }}
-                  >
-                    {option.label}
-                  </li>
-                ))
-              ) : (
-                <li className="px-2 py-1.5 text-muted-foreground">
-                  {searchQuery ? "No options found" : "No options available"}
-                </li>
-              )}
-            </ul>
+        <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+          <div className="max-h-60 overflow-y-auto p-1">
+            {filteredOptions.length === 0 ? (
+              <div className="px-2 py-1 text-sm text-gray-500">No options found</div>
+            ) : (
+              filteredOptions.map((option) => (
+                <div
+                  key={option.value}
+                  onClick={() => handleSelect(option)}
+                  className={cn(
+                    "flex cursor-pointer items-center justify-between rounded-sm px-2 py-1.5 text-sm",
+                    value.some((item) => item.value === option.value)
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "hover:bg-muted"
+                  )}
+                >
+                  {option.label}
+                  {value.some((item) => item.value === option.value) && (
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                  )}
+                </div>
+              ))
+            )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

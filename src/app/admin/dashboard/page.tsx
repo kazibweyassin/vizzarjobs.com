@@ -1,254 +1,266 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "~/components/ui/card";
-import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
-import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import {
-  CheckCircle,
-  XCircle,
+  BarChart3,
+  Users,
+  Building,
+  CheckCircle2,
+  AlertTriangle,
   Clock,
-  Building2,
-  User,
-  FileSpreadsheet,
-  BarChart3
+  CalendarClock,
+  LineChart
 } from "lucide-react";
 
-export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<string>("overview");
-
-  // Get verification stats
-  const { data: companyStats, isLoading: loadingCompanyStats } = api.companies.getVerificationStats.useQuery();
-  const { data: verifiedUsers, isLoading: loadingUserStats } = api.users.getVerifiedUsers.useQuery();
-
-  // Get recent companies
-  const { data: recentCompanies } = api.companies.getPendingVerifications.useQuery({
-    status: "PENDING"
-  });
-
+export default function AdminDashboardPage() {
+  const [timeRange, setTimeRange] = useState<"day" | "week" | "month" | "year">("week");
+  
+  // Fetch company verification stats
+  const { data: companyStats } = api.companies.getVerificationStats.useQuery();
+  
+  // Fetch user stats (to be implemented)
+  const { data: userStats } = api.users.getVerifiedUsers.useQuery();
+  
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full max-w-xl mx-auto mb-8 grid grid-cols-4">
-          <TabsTrigger value="overview">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="companies">
-            <Building2 className="h-4 w-4 mr-2" />
-            Companies
-          </TabsTrigger>
-          <TabsTrigger value="users">
-            <User className="h-4 w-4 mr-2" />
-            Users
-          </TabsTrigger>
-          <TabsTrigger value="reports">
-            <FileSpreadsheet className="h-4 w-4 mr-2" />
-            Reports
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Overview Tab */}
-        <TabsContent value="overview">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center">
-                  <Clock className="h-8 w-8 text-yellow-500" />
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-500">Pending Companies</p>
-                    <h3 className="text-2xl font-bold">
-                      {loadingCompanyStats ? "..." : companyStats?.pending || 0}
-                    </h3>
+      
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <Clock className="h-8 w-8 text-yellow-500" />
+              <div className="ml-4">
+                <p className="text-sm text-gray-500">Pending Verifications</p>
+                <h3 className="text-2xl font-bold">
+                  {companyStats?.pending || 0}
+                </h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <CheckCircle2 className="h-8 w-8 text-green-500" />
+              <div className="ml-4">
+                <p className="text-sm text-gray-500">Verified Companies</p>
+                <h3 className="text-2xl font-bold">
+                  {companyStats?.approved || 0}
+                </h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <Users className="h-8 w-8 text-blue-500" />
+              <div className="ml-4">
+                <p className="text-sm text-gray-500">Verified Users</p>
+                <h3 className="text-2xl font-bold">
+                  {userStats || 0}
+                </h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <AlertTriangle className="h-8 w-8 text-red-500" />
+              <div className="ml-4">
+                <p className="text-sm text-gray-500">Rejected Applications</p>
+                <h3 className="text-2xl font-bold">
+                  {companyStats?.rejected || 0}
+                </h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Activity */}
+        <div className="lg:col-span-2">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle>Verification Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-8">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium">Recent Verifications</h3>
+                  <div className="flex space-x-1">
+                    {["day", "week", "month", "year"].map((range) => (
+                      <Button 
+                        key={range}
+                        variant={timeRange === range ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setTimeRange(range as "day" | "week" | "month" | "year")}
+                        className="text-xs h-8"
+                      >
+                        {range.charAt(0).toUpperCase() + range.slice(1)}
+                      </Button>
+                    ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center">
-                  <CheckCircle className="h-8 w-8 text-green-500" />
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-500">Verified Companies</p>
-                    <h3 className="text-2xl font-bold">
-                      {loadingCompanyStats ? "..." : companyStats?.approved || 0}
-                    </h3>
-                  </div>
+                
+                {/* Placeholder for verification activity chart */}
+                <div className="h-[300px] bg-gray-50 rounded-md flex items-center justify-center border">
+                  <LineChart className="h-8 w-8 text-gray-400" />
+                  <span className="ml-2 text-gray-500">Verification activity chart</span>
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center">
-                  <XCircle className="h-8 w-8 text-red-500" />
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-500">Rejected Companies</p>
-                    <h3 className="text-2xl font-bold">
-                      {loadingCompanyStats ? "..." : companyStats?.rejected || 0}
-                    </h3>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center">
-                  <User className="h-8 w-8 text-blue-500" />
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-500">Verified Users</p>
-                    <h3 className="text-2xl font-bold">
-                      {loadingUserStats ? "..." : verifiedUsers || 0}
-                    </h3>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Pending Verifications</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {recentCompanies && recentCompanies.length > 0 ? (
-                    recentCompanies.slice(0, 5).map(company => (
-                      <div key={company.id} className="flex items-center justify-between p-3 border rounded-md">
+                
+                {/* Recent verification list */}
+                <div>
+                  <h3 className="font-medium mb-4">Latest Verification Requests</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center">
+                        <Building className="h-5 w-5 text-gray-500 mr-3" />
                         <div>
-                          <h4 className="font-medium">{company.name}</h4>
-                          <div className="text-sm text-gray-500">{company.industry || "No industry"}</div>
+                          <p className="font-medium">Acme Inc.</p>
+                          <p className="text-sm text-gray-500">Technology • 50-100 employees</p>
                         </div>
-                        <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
-                          Pending
-                        </Badge>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-center py-4 text-gray-500">No pending verifications</p>
-                  )}
+                      <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center">
+                        <Users className="h-5 w-5 text-gray-500 mr-3" />
+                        <div>
+                          <p className="font-medium">John Doe</p>
+                          <p className="text-sm text-gray-500">Software Engineer • Berlin</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-green-100 text-green-800">Verified</Badge>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center">
+                        <Building className="h-5 w-5 text-gray-500 mr-3" />
+                        <div>
+                          <p className="font-medium">TechGrowth Ltd</p>
+                          <p className="text-sm text-gray-500">SaaS • 10-50 employees</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-blue-100 text-blue-800">Need Info</Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 text-center">
+                    <Button variant="outline" asChild>
+                      <a href="/admin/verification">View All Verification Requests</a>
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-              <CardFooter>
-                <Button asChild variant="outline" className="w-full">
-                  <a href="/admin/verification">View All Verifications</a>
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Quick Links</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <a href="/admin/verification">
-                      <Building2 className="h-4 w-4 mr-2" />
-                      Company Verification
-                    </a>
-                  </Button>
-                  
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <a href="/admin/users">
-                      <User className="h-4 w-4 mr-2" />
-                      User Management
-                    </a>
-                  </Button>
-                  
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <a href="/admin/contact-requests">
-                      <Clock className="h-4 w-4 mr-2" />
-                      Contact Requests
-                    </a>
-                  </Button>
-                  
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <a href="/admin/reports">
-                      <FileSpreadsheet className="h-4 w-4 mr-2" />
-                      Generate Reports
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        {/* Companies Tab */}
-        <TabsContent value="companies">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Company Management</CardTitle>
-              <Input placeholder="Search companies..." className="w-64" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <Button asChild>
-                  <a href="/admin/verification">Go to Company Verification</a>
-                </Button>
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        {/* Users Tab */}
-        <TabsContent value="users">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>User Management</CardTitle>
-              <Input placeholder="Search users..." className="w-64" />
+        </div>
+        
+        {/* Quick Actions */}
+        <div>
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <Button asChild>
-                  <a href="/admin/verification">Go to User Verification</a>
-                </Button>
-              </div>
+            <CardContent className="space-y-2">
+              <Button className="w-full justify-start" asChild>
+                <a href="/admin/verification">
+                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                  Verify Companies
+                </a>
+              </Button>
+              <Button className="w-full justify-start" variant="outline" asChild>
+                <a href="/admin/verification?tab=users">
+                  <Users className="mr-2 h-4 w-4" />
+                  Verify Users
+                </a>
+              </Button>
+              <Button className="w-full justify-start" variant="outline" asChild>
+                <a href="/admin/jobs">
+                  <Building className="mr-2 h-4 w-4" />
+                  Manage Job Listings
+                </a>
+              </Button>
+              <Button className="w-full justify-start" variant="outline" asChild>
+                <a href="/admin/reports">
+                  <BarChart3 className="mr-2 h-4 w-4" />
+                  View Reports
+                </a>
+              </Button>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        {/* Reports Tab */}
-        <TabsContent value="reports">
+          
           <Card>
             <CardHeader>
-              <CardTitle>Reports</CardTitle>
+              <CardTitle>System Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                  <p className="font-medium">Verification Report</p>
-                  <p className="text-sm text-gray-500 mt-1">Export verification statistics</p>
-                </Button>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm font-medium">Verification Queue</span>
+                    <span className="text-sm text-gray-500">
+                      {companyStats?.pending || 0} pending
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-yellow-500 h-2 rounded-full" 
+                      style={{ 
+                        width: `${Math.min(100, ((companyStats?.pending || 0) / (companyStats?.total || 1)) * 100)}%` 
+                      }}
+                    ></div>
+                  </div>
+                </div>
                 
-                <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                  <p className="font-medium">User Activity Report</p>
-                  <p className="text-sm text-gray-500 mt-1">Export user activity data</p>
-                </Button>
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm font-medium">System Load</span>
+                    <span className="text-sm text-gray-500">Normal</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-green-500 h-2 rounded-full" 
+                      style={{ width: '35%' }}
+                    ></div>
+                  </div>
+                </div>
                 
-                <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                  <p className="font-medium">Job Posting Report</p>
-                  <p className="text-sm text-gray-500 mt-1">Export job posting statistics</p>
-                </Button>
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm font-medium">Storage Usage</span>
+                    <span className="text-sm text-gray-500">42%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-blue-500 h-2 rounded-full" 
+                      style={{ width: '42%' }}
+                    ></div>
+                  </div>
+                </div>
                 
-                <Button variant="outline" className="h-auto py-4 flex flex-col items-center">
-                  <p className="font-medium">Application Analytics</p>
-                  <p className="text-sm text-gray-500 mt-1">Export application data</p>
-                </Button>
+                <div className="pt-2">
+                  <p className="text-xs text-gray-500">Last system check: Today at 14:30</p>
+                </div>
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </div>
   );
 }

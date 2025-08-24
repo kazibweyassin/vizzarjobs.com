@@ -145,7 +145,7 @@ export const jobsRouter = createTRPCRouter({
           ]
         },
         include: {
-          companyRelation: true,
+          company: true,
           _count: {
             select: {
               applications: true
@@ -175,7 +175,7 @@ export const jobsRouter = createTRPCRouter({
       const job = await ctx.db.job.findUnique({
         where: { id: input.id },
         include: {
-          companyRelation: true,
+          company: true,
           _count: {
             select: {
               applications: true
@@ -221,7 +221,7 @@ export const jobsRouter = createTRPCRouter({
           ...input,
         },
         include: {
-          companyRelation: true
+          company: true
         }
       });
     }),
@@ -257,7 +257,7 @@ export const jobsRouter = createTRPCRouter({
         where: { id },
         data: updateData,
         include: {
-          companyRelation: true
+          company: true
         }
       });
     }),
@@ -279,7 +279,7 @@ export const jobsRouter = createTRPCRouter({
           visaSponsorship: true // Featured jobs are visa-sponsored jobs
         },
         include: {
-          companyRelation: true
+          company: true
         },
         orderBy: {
           createdAt: "desc"
@@ -333,7 +333,7 @@ export const jobsRouter = createTRPCRouter({
           }
         },
         include: {
-          companyRelation: true,
+          company: true,
           _count: {
             select: {
               applications: true
@@ -362,7 +362,7 @@ export const jobsRouter = createTRPCRouter({
                 applications: true
               }
             },
-            companyRelation: true
+            company: true
           },
           orderBy: {
             createdAt: "desc"
@@ -391,7 +391,7 @@ export const jobsRouter = createTRPCRouter({
                 applications: true
               }
             },
-            companyRelation: true
+            company: true
           },
           orderBy: [
             { createdAt: "desc" }
@@ -418,7 +418,7 @@ export const jobsRouter = createTRPCRouter({
                 applications: true
               }
             },
-            companyRelation: true
+            company: true
           },
           orderBy: [
             { createdAt: "desc" }

@@ -19,6 +19,15 @@ export default function AdminDashboard() {
   const { data: companiesData } = api.companies.getCount.useQuery();
   const { data: contactRequestsData } = api.contactRequests.getCount.useQuery();
   
+  // Get verification data
+  const { data: pendingCompanyVerifications } = api.companies.getPendingVerifications.useQuery({
+    status: "PENDING"
+  });
+  
+  const { data: pendingUserVerifications } = api.users.getPendingVerifications.useQuery({
+    status: "PENDING"
+  });
+  
   return (
     <div className="p-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -68,6 +77,24 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
             
+            <Card className="border-l-4 border-l-yellow-500">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">Pending Verifications</CardTitle>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-yellow-500">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 6v6l4 2"></path>
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {(pendingCompanyVerifications?.length || 0) + (pendingUserVerifications?.length || 0)}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  <Link href="/admin/verification" className="text-blue-500 hover:underline">Review now</Link>
+                </p>
+              </CardContent>
+            </Card>
+            
             <Card className="border-l-4 border-l-purple-500">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Companies</CardTitle>
@@ -90,7 +117,54 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </div>
-          
+
+          {/* Quick Actions Section */}
+          <div className="mt-8">
+            <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card className="hover:shadow-md transition-all">
+                <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600">
+                      <path d="M9 12l2 2 4-4"></path>
+                      <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold mb-2">Verify Companies & Users</h3>
+                  <p className="text-gray-500 text-sm mb-4">Review and approve pending verification requests</p>
+                  <Button asChild className="w-full">
+                    <Link href="/admin/verification">Go to Verification</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-all">
+                <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                  <div className="h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center mb-3">
+                    <Contact className="h-6 w-6 text-amber-600" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Review Contact Requests</h3>
+                  <p className="text-gray-500 text-sm mb-4">Process incoming company registration requests</p>
+                  <Button asChild className="w-full">
+                    <Link href="/admin/contact-requests">Manage Requests</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-all">
+                <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                  <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mb-3">
+                    <Building2 className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Manage Companies</h3>
+                  <p className="text-gray-500 text-sm mb-4">View and update all registered companies</p>
+                  <Button asChild className="w-full">
+                    <Link href="/admin/companies">View Companies</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="md:col-span-2">
               <CardHeader>
