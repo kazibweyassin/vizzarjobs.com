@@ -420,7 +420,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           <div className="pt-4 border-t border-gray-100">
             <button
               onClick={clearFilters}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm flex items-center justify-center gap-2"
+              className="w-full py-2.5 premium-gradient hover:shadow-lg text-white font-medium rounded-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
             >
               <Filter className="w-4 h-4" />
               Reset all filters

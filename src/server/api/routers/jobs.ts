@@ -136,7 +136,6 @@ export const jobsRouter = createTRPCRouter({
             search ? {
               OR: [
                 { title: { contains: search, mode: "insensitive" } },
-                { company: { contains: search, mode: "insensitive" } },
                 { description: { contains: search, mode: "insensitive" } }
               ]
             } : {},
@@ -218,7 +217,19 @@ export const jobsRouter = createTRPCRouter({
 
       return await ctx.db.job.create({
         data: {
-          ...input,
+          title: input.title,
+          description: input.description,
+          requirements: input.requirements,
+          location: input.location,
+          country: input.country,
+          visaSponsorship: input.visaSponsorship,
+          salaryMin: input.salaryMin,
+          salaryMax: input.salaryMax,
+          jobType: input.jobType,
+          experienceLevel: input.experienceLevel,
+          techStack: input.techStack,
+          applicationUrl: input.applicationUrl,
+          companyId: input.companyId,
         },
         include: {
           company: true
@@ -231,7 +242,6 @@ export const jobsRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         title: z.string().min(1).optional(),
-        company: z.string().min(1).optional(),
         description: z.string().min(1).optional(),
         requirements: z.array(z.string()).optional(),
         location: z.string().min(1).optional(),

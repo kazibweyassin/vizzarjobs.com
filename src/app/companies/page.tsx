@@ -139,7 +139,7 @@ export default function CompaniesPage() {
                 setSearchTerm("");
                 setSelectedIndustry("");
               }}
-              className="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+              className="inline-flex items-center gap-2 premium-gradient text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300"
             >
               Clear filters
             </button>
@@ -240,7 +240,7 @@ export default function CompaniesPage() {
                 <button
                   onClick={handleLoadMore}
                   disabled={isFetchingNextPage}
-                  className="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 disabled:bg-blue-300 transition-colors"
+                  className="inline-flex items-center gap-2 premium-gradient text-white px-6 py-3 rounded-lg hover:shadow-lg disabled:bg-gray-300 transition-all duration-300"
                 >
                   {isFetchingNextPage ? (
                     <>

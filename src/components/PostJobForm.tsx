@@ -72,7 +72,8 @@ export function PostJobForm() {
     },
   });
 
-  const { data: companies = [] } = api.companies.getAll.useQuery({});
+  const { data: companiesData } = api.companies.getAll.useQuery({});
+  const companies = companiesData?.companies || [];
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
@@ -245,7 +246,7 @@ export function PostJobForm() {
                   }`}
                 >
                   <option value="">Select a company</option>
-                  {companies.companies?.map((company) => (
+                  {companies.map((company) => (
                     <option key={company.id} value={company.id}>
                       {company.name}
                     </option>
@@ -445,7 +446,7 @@ export function PostJobForm() {
                   <button
                     type="button"
                     onClick={addRequirement}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-1"
+                    className="px-4 py-2 premium-gradient text-white rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-1"
                   >
                     <Plus className="w-4 h-4" />
                     Add
@@ -484,7 +485,7 @@ export function PostJobForm() {
                   <button
                     type="button"
                     onClick={addTech}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-1"
+                    className="px-4 py-2 premium-gradient text-white rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-1"
                   >
                     <Plus className="w-4 h-4" />
                     Add
@@ -550,7 +551,7 @@ export function PostJobForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-blue-300 transition-colors flex items-center gap-2"
+              className="px-6 py-3 premium-gradient text-white rounded-lg hover:shadow-lg disabled:bg-gray-300 transition-all duration-300 flex items-center gap-2"
             >
               {isSubmitting ? (
                 <>

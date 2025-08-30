@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Briefcase,
   Facebook,
@@ -26,11 +27,15 @@ export function Footer() {
           {/* Logo & Info */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
-                <Briefcase className="w-5 h-5 text-white" />
-              </div>
+            
               <span className="text-2xl font-bold text-white">
-                Vizzar<span className="text-blue-400">Jobs</span>
+                <Image
+                  src="/logowhite.png"
+                  alt="VizzarJobs"
+                  width={100}
+                  height={100}
+                  className="mr-2"
+                />
               </span>
             </Link>
             <p className="text-gray-300 mb-6 max-w-sm">
@@ -39,35 +44,35 @@ export function Footer() {
             <div className="flex items-center gap-4">
               <a 
                 href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-blue-600 transition-colors"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
                 aria-label="Facebook"
               >
                 <Facebook className="w-4 h-4" />
               </a>
               <a 
                 href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-blue-500 transition-colors"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
                 aria-label="Twitter"
               >
                 <Twitter className="w-4 h-4" />
               </a>
               <a 
                 href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-pink-600 transition-colors"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram className="w-4 h-4" />
               </a>
               <a 
                 href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-blue-700 transition-colors"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
               <a 
                 href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-600 transition-colors"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
                 aria-label="GitHub"
               >
                 <Github className="w-4 h-4" />

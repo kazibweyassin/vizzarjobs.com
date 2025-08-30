@@ -9,44 +9,71 @@
 }
 
 :root {
-  /* Premium color palette */
-  --primary: oklch(0.205 0 0); /* Refined blue */
-  --primary-darker: 225 70% 40%;
-  --accent: oklch(0.97 0 0); /* Rich purple */
-  --gold: 43 74% 49%; /* Premium gold */
-  --dark: 222 47% 11%; /* Deep navy */
-  --muted: oklch(0.97 0 0);
-  --surface: 210 40% 98%;
-  --surface-subtle: 220 33% 96%;
+  /* Core Brand Colors */
+  --color--blue: #0fddcc;
+  --color--emerald: #338632;
+  --color--bright-yellow: #ffff00;
+  --color--kale: #173b3f;
+  --color--darker-kale: #10292c;
+  --color--nandor: #475653;
+  --color--dark-green-black: #424d53;
+  --color--grey-green: #6a817c;
+  --color--light-green: #b0d6ce;
+  --color--opal-1: #e3f2ef;
+  --color--opal-2: #e7f2f0;
+
+  /* Text Colors */
+  --text--text-dark: #010101;
+  --text--text-white: #ffffff;
+  --text--text-light-green: var(--color--light-green);
+  --text--text-color-grey-green: var(--color--grey-green);
+
+  /* Border Colors */
+  --border--light-green: #b0d6ce99;
+
+  /* Container Sizes */
+  --container-small: 48rem;
+  --container-medium: 64rem;
+  --container-large: 73.125rem;
+
+  /* Legacy Support - Map to new system */
+  --primary: var(--color--blue);
+  --primary-darker: var(--color--kale);
+  --accent: var(--color--emerald);
+  --gold: var(--color--bright-yellow);
+  --dark: var(--color--darker-kale);
+  --muted: var(--color--nandor);
+  --surface: var(--color--opal-1);
+  --surface-subtle: var(--color--opal-2);
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: var(--text--text-white);
+  --foreground: var(--text--text-dark);
+  --card: var(--text--text-white);
+  --card-foreground: var(--text--text-dark);
+  --popover: var(--text--text-white);
+  --popover-foreground: var(--text--text-dark);
+  --primary-foreground: var(--text--text-white);
+  --secondary: var(--color--opal-2);
+  --secondary-foreground: var(--text--text-dark);
+  --muted-foreground: var(--color--grey-green);
+  --accent-foreground: var(--text--text-white);
+  --destructive: #ef4444;
+  --border: var(--border--light-green);
+  --input: var(--color--opal-2);
+  --ring: var(--color--blue);
+  --chart-1: var(--color--blue);
+  --chart-2: var(--color--emerald);
+  --chart-3: var(--color--kale);
+  --chart-4: var(--color--nandor);
+  --chart-5: var(--color--grey-green);
+  --sidebar: var(--color--opal-1);
+  --sidebar-foreground: var(--text--text-dark);
+  --sidebar-primary: var(--color--blue);
+  --sidebar-primary-foreground: var(--text--text-white);
+  --sidebar-accent: var(--color--opal-2);
+  --sidebar-accent-foreground: var(--text--text-dark);
+  --sidebar-border: var(--border--light-green);
+  --sidebar-ring: var(--color--blue);
 }
 
 /* Custom animations */
@@ -90,9 +117,93 @@
   }
 }
 
+/* Design System Usage Examples */
+/* 
+To use the new design system in your components:
+
+1. Background colors:
+   - Use bg-kale for dark green backgrounds
+   - Use bg-opal-1 for light green backgrounds  
+   - Use bg-opal-2 for very light green backgrounds
+
+2. Text colors:
+   - Use text-kale for dark green text
+   - Use text-emerald for bright green text
+   - Use text-light-green for muted green text
+
+3. Gradients:
+   - Use premium-gradient class for blue to kale gradient
+   - Or create custom: background: linear-gradient(135deg, var(--color--blue), var(--color--kale))
+
+4. Borders:
+   - Use border-light-green for subtle green borders
+
+5. Hover states:
+   - Use hover:text-emerald for green text on hover
+   - Use hover:bg-kale for kale background on hover
+
+Example component usage:
+<div className="bg-opal-1 text-kale border border-light-green hover:bg-kale hover:text-white transition-colors">
+  Content with design system colors
+</div>
+*/
+.premium-gradient {
+  background: linear-gradient(135deg, var(--color--blue) 0%, var(--color--kale) 100%);
+}
+
+.premium-card {
+  border: 1px solid var(--border--light-green);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(10px);
+}
+
+.text-kale {
+  color: var(--color--kale);
+}
+
+.text-emerald {
+  color: var(--color--emerald);
+}
+
+.text-light-green {
+  color: var(--color--light-green);
+}
+
+.bg-kale {
+  background-color: var(--color--kale);
+}
+
+.bg-emerald {
+  background-color: var(--color--emerald);
+}
+
+.bg-opal-1 {
+  background-color: var(--color--opal-1);
+}
+
+.bg-opal-2 {
+  background-color: var(--color--opal-2);
+}
+
+.border-light-green {
+  border-color: var(--border--light-green);
+}
+
+.hover\:text-emerald:hover {
+  color: var(--color--emerald);
+}
+
+.hover\:bg-kale:hover {
+  background-color: var(--color--kale);
+}
+
+.hover\:border-light-green:hover {
+  border-color: var(--border--light-green);
+}
+
 /* Premium UI Elements */
 .premium-gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  background: linear-gradient(135deg, var(--color--blue) 0%, var(--color--kale) 100%);
 }
 
 .premium-card {

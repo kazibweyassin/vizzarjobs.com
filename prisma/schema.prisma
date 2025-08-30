@@ -35,12 +35,14 @@ model Job {
   companyId       String
   location        String?
   country         String?
-  type            String?
-  salary          String?
+  jobType         JobType?
+  experienceLevel ExperienceLevel?
+  salaryMin       Int?
+  salaryMax       Int?
+  applicationUrl  String?
   requirements    String[]       @default([])
   skills          String[]       @default([])
   techStack       String[]       @default([])
-  experienceLevel String?
   remote          Boolean        @default(false)
   visaSponsorship Boolean        @default(true)
   featured        Boolean        @default(false)

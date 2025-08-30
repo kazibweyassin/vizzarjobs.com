@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { 
   Briefcase, 
@@ -39,13 +40,15 @@ export function Navigation() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 premium-gradient rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
-                <div className="absolute inset-0 opacity-20 bg-[url('/grid-pattern.svg')] bg-center"></div>
-                <Briefcase className="w-5 h-5 text-white relative z-10" />
-              </div>
+            
               <span className="text-xl font-extrabold text-gray-900 tracking-tight">
-                Vizzar<span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">Jobs</span>
-                <sup className="ml-0.5 text-[10px] tracking-wide text-amber-500 font-bold">ELITE</sup>
+                <Image
+                  src="/logo.png"
+                  alt="VizzarJobs"
+                  width={100}
+                  height={100}
+                  className="mr-2"  
+                />
               </span>
             </Link>
           </div>
@@ -58,7 +61,7 @@ export function Navigation() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors font-medium px-3 py-2 rounded-lg hover:bg-blue-50/70"
+                  className="flex items-center gap-2 text-gray-600 hover:text-kale transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-opal-1"
                 >
                   <Icon className="w-4 h-4" />
                   {item.name}
@@ -85,13 +88,13 @@ export function Navigation() {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-blue-50 transition-colors border border-transparent hover:border-blue-100"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-opal-1 transition-colors border border-transparent hover:border-light-green"
                 >
                   {session.user.image ? (
                     <img
                       src={session.user.image}
                       alt={session.user.name || "User"}
-                      className="w-9 h-9 rounded-full border-2 border-blue-100"
+                      className="w-9 h-9 rounded-full border-2 border-light-green"
                     />
                   ) : (
                     <div className="w-9 h-9 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-sm">
