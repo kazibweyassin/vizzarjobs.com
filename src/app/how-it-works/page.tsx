@@ -365,6 +365,24 @@ export default function HowItWorksPage() {
         >
           <div className="absolute top-0 left-0 w-full h-full bg-[url('/grid-pattern.svg')] bg-center" />
         </motion.div>
+        
+        {/* Hero images */}
+        <div className="absolute inset-0 overflow-hidden opacity-30">
+          <div className="absolute -right-20 bottom-0 w-1/3 h-2/3">
+            <img 
+              src="/images/how-it-works/job-search.jpg" 
+              alt="Professional searching for jobs"
+              className="w-full h-full object-cover rounded-tl-3xl"
+            />
+          </div>
+          <div className="absolute -left-20 top-10 w-1/4 h-1/2">
+            <img 
+              src="/images/how-it-works/candidate.jpg" 
+              alt="Job candidate"
+              className="w-full h-full object-cover rounded-br-3xl"
+            />
+          </div>
+        </div>
 
         <motion.div 
           className="max-w-6xl mx-auto px-4 text-center relative z-10"

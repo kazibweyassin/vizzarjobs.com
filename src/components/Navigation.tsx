@@ -26,6 +26,7 @@ export function Navigation() {
   const navigation = [
     { name: "Jobs", href: "/jobs", icon: Search },
     { name: "Companies", href: "/companies", icon: Building2 },
+    { name: "About Us", href: "/about", icon: User },
     { name: "Why Us", href: "/why-us", icon: FileText },
   ];
 
@@ -184,7 +185,7 @@ export function Navigation() {
                 </button>
                 <button
                   onClick={() => signIn()}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2.5 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+                  className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors"
                 >
                   Join Now
                 </button>
@@ -309,7 +310,7 @@ export function Navigation() {
                       setIsMenuOpen(false);
                       signIn();
                     }}
-                    className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg font-medium text-center shadow-md"
+                    className="block w-full px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors text-center"
                   >
                     Join Now
                   </button>

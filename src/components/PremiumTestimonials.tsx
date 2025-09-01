@@ -105,7 +105,7 @@ export function PremiumTestimonials() {
       role: "Senior Software Engineer",
       company: "Microsoft",
       location: "Seattle, USA",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      image: "/images/profiles/profile1.jpg",
       rating: 5,
       bgColor: "from-blue-500 to-purple-600",
       accentColor: "blue"
@@ -116,7 +116,7 @@ export function PremiumTestimonials() {
       role: "Product Manager",
       company: "Shopify",
       location: "Toronto, Canada",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      image: "/images/profiles/profile2.jpg",
       rating: 5,
       bgColor: "from-emerald-500 to-teal-600",
       accentColor: "emerald"
@@ -127,7 +127,7 @@ export function PremiumTestimonials() {
       role: "DevOps Engineer",
       company: "Atlassian",
       location: "Sydney, Australia",
-      image: "https://randomuser.me/api/portraits/men/86.jpg",
+      image: "/images/about/cto.jpg",
       rating: 5,
       bgColor: "from-purple-500 to-pink-600",
       accentColor: "purple"

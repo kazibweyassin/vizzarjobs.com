@@ -103,7 +103,7 @@ export function PremiumHowItWorks() {
           <div className="mt-10 flex justify-center xl:justify-start">
             <Link 
               href="/profile" 
-              className="inline-flex items-center gap-2 px-8 py-3 text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg font-medium hover:shadow-lg transition duration-300"
+              className="inline-flex items-center gap-2 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors"
             >
               Get Started Today
               <ArrowRight className="w-4 h-4 ml-1" />

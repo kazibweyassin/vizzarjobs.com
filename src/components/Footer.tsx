@@ -103,6 +103,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/about" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
+                  <ChevronRight className="w-4 h-4" />
+                  About Us
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
                   <ChevronRight className="w-4 h-4" />
                   Contact Us
@@ -182,7 +188,7 @@ export function Footer() {
                 />
                 <button 
                   type="submit" 
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 whitespace-nowrap"
+                  className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors whitespace-nowrap"
                 >
                   Subscribe
                 </button>
@@ -208,6 +214,9 @@ export function Footer() {
               </Link>
               <Link href="/faq" className="text-gray-400 hover:text-white text-sm">
                 FAQ
+              </Link>
+              <Link href="/about" className="text-gray-400 hover:text-white text-sm">
+                About Us
               </Link>
             </div>
           </div>

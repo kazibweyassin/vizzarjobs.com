@@ -446,7 +446,7 @@ export function PostJobForm() {
                   <button
                     type="button"
                     onClick={addRequirement}
-                    className="px-4 py-2 premium-gradient text-white rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-1"
+                    className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-1 font-medium"
                   >
                     <Plus className="w-4 h-4" />
                     Add
@@ -485,7 +485,7 @@ export function PostJobForm() {
                   <button
                     type="button"
                     onClick={addTech}
-                    className="px-4 py-2 premium-gradient text-white rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-1"
+                    className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-1 font-medium"
                   >
                     <Plus className="w-4 h-4" />
                     Add
@@ -551,7 +551,7 @@ export function PostJobForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 premium-gradient text-white rounded-lg hover:shadow-lg disabled:bg-gray-300 transition-all duration-300 flex items-center gap-2"
+              className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-2 font-medium disabled:bg-gray-300"
             >
               {isSubmitting ? (
                 <>

@@ -179,7 +179,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
               <button
                 onClick={handleSave}
                 disabled={isUpdating}
-                className="flex items-center gap-2 px-4 py-2 premium-gradient text-white rounded-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                className="flex items-center gap-2 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isUpdating ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

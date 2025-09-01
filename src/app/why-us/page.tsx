@@ -386,7 +386,7 @@ export default function WhyUsPage() {
                 <div className="mt-8 md:mt-0">
                   <Link 
                     href="/profile" 
-                    className="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 shadow-lg hover:shadow-xl transition duration-300"
+                    className="inline-flex items-center px-6 py-2 rounded-md bg-white text-blue-600 hover:bg-blue-50 font-medium transition-colors"
                   >
                     Create Your Profile
                     <ArrowRight className="ml-2 h-5 w-5" />
