@@ -286,7 +286,7 @@ export function JobList({
                                   </span>
                                 )}
                                 {job.jobType === 'REMOTE' && (
-                                  <span className="bg-purple-50 text-purple-700 text-xs font-medium px-2 py-0.5 rounded-full border border-purple-100">
+                                  <span className="bg-blue-50 text-blue-700 text-xs font-medium px-2 py-0.5 rounded-full border border-blue-100">
                                     Remote
                                   </span>
                                 )}

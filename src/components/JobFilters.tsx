@@ -257,8 +257,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 })}
                 className={`px-4 py-2 text-sm rounded-lg transition-all ${
                   filters.experienceLevel === level.value
-                    ? "bg-purple-600 text-white font-medium shadow-sm"
-                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-purple-300 hover:bg-gray-100"
+                    ? "bg-blue-600 text-white font-medium shadow-sm"
+                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
                 }`}
               >
                 {filters.experienceLevel === level.value && <Check className="w-3.5 h-3.5 inline mr-1" />}

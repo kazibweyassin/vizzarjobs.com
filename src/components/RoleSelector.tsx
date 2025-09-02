@@ -147,7 +147,7 @@ export function RoleSelector() {
                     I want to post jobs and hire talent
                   </p>
                   <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200 text-xs">
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs">
                       Post Jobs
                     </Badge>
                     <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 text-xs">

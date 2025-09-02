@@ -143,7 +143,7 @@ export default function HowItWorksPage() {
           title: "Discover Opportunities", 
           description: "Browse our curated selection of visa-sponsored tech positions from verified global employers actively seeking African talent.",
           icon: Search,
-          color: "bg-gradient-to-br from-purple-500 to-purple-600"
+          color: "bg-gradient-to-br from-blue-600 to-blue-700"
         },
         {
           title: "Apply with Confidence",
@@ -175,7 +175,7 @@ export default function HowItWorksPage() {
           title: "Career Growth",
           description: "Access global opportunities that accelerate your professional development and earning potential.",
           icon: Target,
-          color: "text-purple-500"
+          color: "text-blue-600"
         }
       ],
       cta: {
@@ -197,7 +197,7 @@ export default function HowItWorksPage() {
           title: "Post Visa-Sponsored Roles",
           description: "Create detailed job listings with comprehensive information about the position, requirements, benefits, and visa sponsorship details.",
           icon: Briefcase,
-          color: "bg-gradient-to-br from-purple-500 to-purple-600"
+          color: "bg-gradient-to-br from-blue-600 to-blue-700"
         },
         {
           title: "Review Qualified Candidates",
@@ -229,7 +229,7 @@ export default function HowItWorksPage() {
           title: "Diversity Benefits",
           description: "Enrich your team with diverse perspectives, experiences, and innovative problem-solving approaches.",
           icon: Star,
-          color: "text-purple-500"
+          color: "text-blue-600"
         }
       ],
       cta: {
@@ -338,7 +338,7 @@ export default function HowItWorksPage() {
           <div className="absolute top-20 left-10 w-4 h-4 bg-blue-400 rounded-full opacity-30" />
         </FloatingElement>
         <FloatingElement delay={1}>
-          <div className="absolute top-40 right-20 w-6 h-6 bg-purple-400 rounded-full opacity-20" />
+          <div className="absolute top-40 right-20 w-6 h-6 bg-blue-400 rounded-full opacity-20" />
         </FloatingElement>
         <FloatingElement delay={2}>
           <div className="absolute bottom-40 left-20 w-5 h-5 bg-green-400 rounded-full opacity-25" />
@@ -347,7 +347,7 @@ export default function HowItWorksPage() {
 
       {/* Hero Section with Parallax */}
       <motion.section 
-        className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white relative overflow-hidden"
+        className="py-20 bg-gradient-to-r from-blue-600 to-blue-700 text-white relative overflow-hidden"
         style={{ y: heroY, opacity: heroOpacity }}
       >
         {/* Animated background pattern */}
@@ -436,7 +436,7 @@ export default function HowItWorksPage() {
               <AnimatePresence>
                 {activeTab === "jobseekers" && (
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg"
+                    className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
@@ -460,7 +460,7 @@ export default function HowItWorksPage() {
               <AnimatePresence>
                 {activeTab === "employers" && (
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg"
+                    className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
@@ -517,7 +517,7 @@ export default function HowItWorksPage() {
           <div className="relative">
             {/* Animated Connection Line */}
             <motion.div 
-              className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform -translate-y-1/2 z-0"
+              className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-700 transform -translate-y-1/2 z-0"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ delay: 1, duration: 2, ease: "easeOut" }}
@@ -723,7 +723,7 @@ export default function HowItWorksPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <div className="text-purple-600">
+              <div className="text-blue-600">
                 <AnimatedCounter end={350} suffix="+" />
               </div>
               <motion.p 
@@ -784,7 +784,7 @@ export default function HowItWorksPage() {
       
       {/* Call to Action with Dynamic Effects */}
       <motion.section 
-        className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white relative overflow-hidden"
+        className="py-20 bg-gradient-to-r from-blue-600 to-blue-700 text-white relative overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -872,7 +872,7 @@ export default function HowItWorksPage() {
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <button className="bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold hover:bg-purple-800 transition-colors shadow-lg relative overflow-hidden group">
+              <button className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg relative overflow-hidden group">
                 <motion.span
                   className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"
                 />
@@ -894,7 +894,7 @@ export default function HowItWorksPage() {
             viewport={{ once: true }}
           >
             <motion.div
-              className="mb-4 px-3 py-1 bg-purple-100 text-purple-800 border-purple-200 rounded-full inline-block"
+              className="mb-4 px-3 py-1 bg-blue-100 text-blue-800 border-blue-200 rounded-full inline-block"
               initial={{ scale: 0, rotate: -180 }}
               whileInView={{ scale: 1, rotate: 0 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
@@ -966,7 +966,7 @@ export default function HowItWorksPage() {
                 viewport={{ once: true }}
               >
                 <motion.div 
-                  className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold"
+                  className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold"
                   whileHover={{ scale: 1.1, rotate: 360 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -995,14 +995,14 @@ export default function HowItWorksPage() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <motion.div 
-                className="absolute -top-5 -left-5 w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center"
+                className="absolute -top-5 -left-5 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"
                 initial={{ scale: 0, rotate: -180 }}
                 whileInView={{ scale: 1, rotate: 0 }}
                 transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
                 viewport={{ once: true }}
                 whileHover={{ rotate: 360 }}
               >
-                <span className="text-purple-600 text-2xl">"</span>
+                <span className="text-blue-600 text-2xl">"</span>
               </motion.div>
               
               <motion.div 
