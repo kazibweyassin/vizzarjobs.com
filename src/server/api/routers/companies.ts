@@ -2,6 +2,66 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
 
 export const companiesRouter = createTRPCRouter({
+  getVerifiedCompanies: publicProcedure
+    .input(z.object({
+      search: z.string().optional()
+    }).optional())
+    .query(async ({ ctx, input }) => {
+      const search = input?.search;
+      
+      const companies = await ctx.db.company.findMany({
+        where: {
+          verified: true,
+          ...(search ? {
+            OR: [
+              { name: { contains: search, mode: "insensitive" } },
+              { description: { contains: search, mode: "insensitive" } },
+              { industry: { contains: search, mode: "insensitive" } }
+            ]
+          } : {})
+        },
+        select: {
+          id: true,
+          name: true
+        },
+        orderBy: {
+          name: "asc"
+        }
+      });
+      
+      return { companies };
+    }),
+  
+  // Create company for testing
+  create: protectedProcedure
+    .input(z.object({
+      name: z.string(),
+      description: z.string().optional(),
+      website: z.string().optional(),
+      logo: z.string().optional(),
+      size: z.string().optional(),
+      industry: z.string().optional(),
+      location: z.string().optional(),
+      verified: z.boolean().optional().default(false),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Only allow admins to set verified status directly
+      const verified = ctx.session.user.role === "ADMIN" ? input.verified : false;
+      
+      return ctx.db.company.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          website: input.website,
+          logo: input.logo,
+          size: input.size,
+          industry: input.industry,
+          location: input.location,
+          verified: verified,
+          verificationStatus: verified ? "APPROVED" : "PENDING"
+        }
+      });
+    }),
   // Verification-related endpoints
   getPendingVerifications: protectedProcedure
     .input(z.object({ 

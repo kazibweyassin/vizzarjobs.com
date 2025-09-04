@@ -1,0 +1,19 @@
+model JobSeekerProfile {
+  id                      String        @id @default(cuid())
+  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String        @unique
+  title                   String
+  skills                  String
+  preferredJobTypes       String[]
+  desiredSalary           String
+  location                String
+  willingToRelocate       Boolean       @default(false)
+  visaSponsorshipRequired Boolean       @default(false)
+  linkedInProfile         String?
+  portfolioUrl            String?
+  resumeUrl               String?
+  lastUpdated             DateTime      @default(now())
+  createdAt               DateTime      @default(now())
+
+  @@index([userId])
+}

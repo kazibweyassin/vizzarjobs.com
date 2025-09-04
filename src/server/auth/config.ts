@@ -7,7 +7,7 @@ import GitHubProvider from "next-auth/providers/github";
 import { db } from "~/server/db";
 import { env } from "~/env";
 
-type UserRole = "JOB_SEEKER" | "EMPLOYER" | "ADMIN";
+type UserRole = "USER" | "JOB_SEEKER" | "EMPLOYER" | "EMPLOYEE" | "ADMIN";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

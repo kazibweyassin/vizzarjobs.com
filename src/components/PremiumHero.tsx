@@ -3,9 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Sparkles, ArrowRight, Briefcase, Globe, Award, Shield } from "lucide-react";
+import { Sparkles, ArrowRight, Briefcase, Globe, Award, Shield, User } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "framer-motion";
 import { jobEvents } from "~/lib/analytics";
+import { useSession } from "next-auth/react";
 
 export function PremiumHero() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,6 +14,7 @@ export function PremiumHero() {
   const router = useRouter();
   const containerRef = useRef(null);
   const heroRef = useRef(null);
+  const { data: session } = useSession();
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
   const isInView = useInView(heroRef, { once: true, margin: "-100px" });
@@ -23,10 +25,9 @@ export function PremiumHero() {
   const opacity = useSpring(useTransform(scrollYProgress, [0, 0.8], [1, 0]), springConfig);
   const scale = useSpring(useTransform(scrollYProgress, [0, 0.5], [1, 0.98]), springConfig);
 
-  // delayed background video
+  // No longer needed since we're not using the video
   useEffect(() => {
-    const timer = setTimeout(() => setVideoLoaded(true), 1500);
-    return () => clearTimeout(timer);
+    setVideoLoaded(true);
   }, []);
 
   const handleSearch = (e) => {
@@ -47,36 +48,32 @@ export function PremiumHero() {
   };
   const fadeUp = {
     hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.8, 
+        ease: "easeOut" 
+      } 
+    }
   };
 
   return (
     <motion.div
       ref={containerRef}
-      style={{ y, opacity, scale }}
+      style={{ y, opacity, scale, position: 'relative' }}
       className="relative bg-black min-h-screen w-full overflow-hidden"
     >
       {/* background video */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence>
-          {videoLoaded && (
-            <motion.video
-              key="hero-video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover opacity-30"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.2 }}
-            >
-              <source src="/hero-video.mp4" type="video/mp4" />
-              <source src="/hero-video.webm" type="video/webm" />
-            </motion.video>
-          )}
-        </AnimatePresence>
+        {/* Using a background gradient instead of the missing video */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 opacity-80"></div>
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: 'url("/world-map-dots.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.15
+        }}></div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black" />
       </div>
 
@@ -130,6 +127,17 @@ export function PremiumHero() {
 
             {/* secondary CTAs */}
             <div className="flex flex-wrap gap-4">
+              {session?.user && !session.user.profileComplete && (
+                <Link href="/onboarding">
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }} 
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-medium shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600"
+                  >
+                    <User className="w-4 h-4" /> Create Your Profile <ArrowRight className="w-4 h-4" />
+                  </motion.div>
+                </Link>
+              )}
+              
               <Link href="/jobs">
                 <motion.div whileHover={{ scale: 1.05 }} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-medium shadow-lg bg-gradient-to-r from-teal-400 to-blue-600">
                   Browse Jobs <ArrowRight className="w-4 h-4" />

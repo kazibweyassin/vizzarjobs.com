@@ -5,27 +5,36 @@ import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'fra
 import { ChevronLeft, ChevronRight, Star, Quote, Shield, Sparkles, Award, Globe } from 'lucide-react';
 
 // Floating particles component
-const FloatingParticle = ({ delay = 0, duration = 4 }) => (
-  <motion.div
-    className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-20"
-    animate={{
-      y: [-20, -100, -20],
-      x: [-10, 10, -10],
-      scale: [0.5, 1, 0.5],
-      opacity: [0.2, 0.5, 0.2]
-    }}
-    transition={{
-      duration: duration,
-      repeat: Infinity,
-      ease: "easeInOut",
-      delay: delay
-    }}
-    style={{
-      top: Math.random() * 100 + '%',
-      left: Math.random() * 100 + '%'
-    }}
-  />
-);
+const FloatingParticle = ({ delay = 0, duration = 4 }) => {
+  const [position, setPosition] = useState({ top: '50%', left: '50%' });
+  
+  // Use client-side only position calculation to avoid hydration mismatch
+  useEffect(() => {
+    setPosition({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`
+    });
+  }, []);
+
+  return (
+    <motion.div
+      className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-20"
+      animate={{
+        y: [-20, -100, -20],
+        x: [-10, 10, -10],
+        scale: [0.5, 1, 0.5],
+        opacity: [0.2, 0.5, 0.2]
+      }}
+      transition={{
+        duration: duration,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: delay
+      }}
+      style={position}
+    />
+  );
+};
 
 // Animated rating stars
 const AnimatedStars = ({ rating = 5, delay = 0 }) => {

@@ -72,7 +72,7 @@ export function PostJobForm() {
     },
   });
 
-  const { data: companiesData } = api.companies.getAll.useQuery({});
+  const { data: companiesData } = api.companies.getVerifiedCompanies.useQuery({});
   const companies = companiesData?.companies || [];
 
   const validateForm = (): boolean => {

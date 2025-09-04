@@ -25,6 +25,7 @@ model Company {
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   jobs              Job[]
+  employees         Employee[]
 }
 
 model Job {
@@ -123,6 +124,8 @@ model User {
   sessions           Session[]
   applications       Application[]
   matchingPreferences MatchingPreferences?
+  employee           Employee?
+  jobSeekerProfile   JobSeekerProfile?
   
   @@index([email])
 }
@@ -174,6 +177,7 @@ enum UserRole {
   USER
   JOB_SEEKER
   EMPLOYER
+  EMPLOYEE
   ADMIN
 }
 
@@ -206,6 +210,47 @@ enum ContactRequestType {
   GENERAL_INQUIRY
 }
 
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum OnboardingStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+model Document {
+  id          String    @id @default(cuid())
+  name        String
+  type        String
+  url         String
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  uploadedAt  DateTime  @default(now())
+  
+  @@index([employeeId])
+}
+
+model OnboardingStep {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  completedAt DateTime?
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([employeeId])
+}
+
 model Lead {
   id        String   @id @default(cuid())
   name      String
@@ -235,5 +280,49 @@ model MatchingPreferences {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
   
+  @@index([userId])
+}
+
+model Employee {
+  id                String         @id @default(cuid())
+  userId            String         @unique
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId         String
+  company           Company        @relation(fields: [companyId], references: [id])
+  position          String
+  department        String?
+  startDate         DateTime
+  employmentType    EmploymentType @default(FULL_TIME)
+  salary            Int?
+  manager           String?
+  emergencyContact  String?
+  emergencyPhone    String?
+  documents         Document[]
+  onboardingStatus  OnboardingStatus @default(PENDING)
+  onboardingSteps   OnboardingStep[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  
+  @@index([userId])
+  @@index([companyId])
+}
+
+model JobSeekerProfile {
+  id                      String        @id @default(cuid())
+  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String        @unique
+  title                   String
+  skills                  String
+  preferredJobTypes       String[]
+  desiredSalary           String
+  location                String
+  willingToRelocate       Boolean       @default(false)
+  visaSponsorshipRequired Boolean       @default(false)
+  linkedInProfile         String?
+  portfolioUrl            String?
+  resumeUrl               String?
+  lastUpdated             DateTime      @default(now())
+  createdAt               DateTime      @default(now())
+
   @@index([userId])
 }

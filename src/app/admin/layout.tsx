@@ -1,4 +1,4 @@
-import { Building2, Contact, LayoutDashboard, Users } from "lucide-react";
+import { Building2, Contact, LayoutDashboard, Users, Database, Briefcase } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { auth } from "~/server/auth";
@@ -88,6 +88,14 @@ export default async function AdminLayout({
             >
               <Users className="w-5 h-5" />
               Users
+            </Link>
+            
+            <Link 
+              href="/admin/seed-jobs"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+            >
+              <Briefcase className="w-5 h-5" />
+              Seed Jobs
             </Link>
           </nav>
         </aside>

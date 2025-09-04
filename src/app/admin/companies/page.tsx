@@ -13,7 +13,7 @@ export default function AdminCompaniesPage() {
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   
   // Fetch companies
-  const { data: companiesData, isLoading, refetch } = api.companies.getAll.useQuery({
+  const { data: companiesData, isLoading, refetch } = api.companies.getVerifiedCompanies.useQuery({
     search: searchTerm || undefined,
   });
 

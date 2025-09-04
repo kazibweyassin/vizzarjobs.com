@@ -34,7 +34,7 @@ export function Footer() {
                   alt="VizzarJobs"
                   width={100}
                   height={100}
-                  className="mr-2"
+                  className="mr-2 h-auto"
                 />
               </span>
             </Link>

@@ -15,7 +15,8 @@ import {
   CheckCircle,
   Zap,
   Target,
-  Sparkles
+  Sparkles,
+  User
 } from "lucide-react";
 import {PremiumHero}  from "~/components/PremiumHero";
 import { PremiumStats } from "~/components/PremiumStats";
@@ -24,6 +25,7 @@ import { PremiumTestimonials } from "~/components/PremiumTestimonials";
 import { PremiumHowItWorks } from "~/components/PremiumHowItWorks";
 import { PremiumCard } from "~/components/ui/premium-card";
 import HomePageClient from "~/components/HomePageClient";
+import { ProfileCreationButton } from "~/components/ProfileCreationButton";
 
 // Define proper TypeScript interfaces
 interface Company {
@@ -202,6 +204,25 @@ export default async function HomePage() {
 
       {/* Premium Features Section */}
       <PremiumFeatures />
+      
+      {/* Profile Creation Call-to-Action */}
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Launch Your Global Career?</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            Complete your profile to get matched with visa-sponsored positions that fit your skills and ambitions.
+          </p>
+          <div className="flex justify-center">
+            <ProfileCreationButton />
+          </div>
+          {/* Fallback button for when the ProfileCreationButton might not render */}
+          <div className="mt-4">
+            <a href="/onboarding" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-semibold shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:shadow-xl hover:scale-105 transition-all duration-300">
+              <User className="w-4 h-4" /> Fallback Profile Button
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Featured Jobs Section (Premium Style) */}
       <section className="py-24 bg-gradient-to-b from-blue-50 to-white">

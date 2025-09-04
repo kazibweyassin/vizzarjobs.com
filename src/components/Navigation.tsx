@@ -16,7 +16,11 @@ import {
   Settings,
   FileText
 } from "lucide-react";
+import { NavigationProfileButton } from "~/components/NavigationProfileButton";
 import { Badge } from "~/components/ui/badge";
+
+// Update this type to match the UserRole enum in the Prisma schema
+type UserRole = "USER" | "JOB_SEEKER" | "EMPLOYER" | "EMPLOYEE" | "ADMIN";
 
 export function Navigation() {
   const { data: session, status } = useSession();
@@ -48,7 +52,8 @@ export function Navigation() {
                   alt="VizzarJobs"
                   width={100}
                   height={100}
-                  className="mr-2"  
+                  priority
+                  className="mr-2 h-auto"  
                 />
               </span>
             </Link>
@@ -73,6 +78,20 @@ export function Navigation() {
 
           {/* Right side - Auth & Actions */}
           <div className="hidden md:flex items-center gap-6">
+            {/* Original conditional button */}
+            {session?.user && !session.user.profileComplete && (
+              <Link
+                href="/onboarding"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
+              >
+                <User className="w-4 h-4" />
+                Create Your Profile
+              </Link>
+            )}
+            
+            {/* Always visible button for debugging */}
+            <NavigationProfileButton />
+            
             {session?.user.role === "EMPLOYER" && (
               <Link
                 href="/post-job"
@@ -148,6 +167,28 @@ export function Navigation() {
                       >
                         <FileText className="w-4 h-4" />
                         My Applications
+                      </Link>
+                    )}
+                    
+                    {!session.user.profileComplete && (
+                      <Link
+                        href="/onboarding"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-blue-700 font-medium hover:bg-blue-50 transition-colors"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      >
+                        <User className="w-4 h-4" />
+                        Create Your Profile
+                      </Link>
+                    )}
+                    
+                    {(session.user.role === "EMPLOYEE" || session.user.role === "EMPLOYER") && session.user.profileComplete && (
+                      <Link
+                        href="/onboarding"
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      >
+                        <Briefcase className="w-4 h-4" />
+                        Employee Onboarding
                       </Link>
                     )}
                     
