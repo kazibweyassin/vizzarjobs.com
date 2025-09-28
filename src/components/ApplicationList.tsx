@@ -147,7 +147,11 @@ export default function ApplicationList({ applications, emptyMessage }: Applicat
                   </CardTitle>
                   <CardDescription className="flex items-center">
                     <Building2 className="h-4 w-4 mr-1" />
-                    {application.job.company}
+                    {typeof application.job.company === 'object' && application.job.company?.name 
+                      ? application.job.company.name 
+                      : typeof application.job.company === 'string' 
+                        ? application.job.company 
+                        : "Company"}
                   </CardDescription>
                 </div>
                 <Badge className={statusColors[application.status]}>

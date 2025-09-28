@@ -128,7 +128,7 @@ export function PremiumHero() {
             {/* secondary CTAs */}
             <div className="flex flex-wrap gap-4">
               {session?.user && !session.user.profileComplete && (
-                <Link href="/onboarding">
+                <Link href={session?.user ? "/onboarding" : "/auth/signin?callbackUrl=/onboarding"}>
                   <motion.div 
                     whileHover={{ scale: 1.05 }} 
                     className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-medium shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600"
@@ -156,7 +156,7 @@ export function PremiumHero() {
                 </motion.div>
               </Link>
 
-              <Link href="/jobs">
+              <Link href="/post-job">
                 <motion.div whileHover={{ scale: 1.05 }} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-gray-900 font-medium shadow-lg bg-gradient-to-r from-teal-100 to-blue-300">
                   Want to Hire Talent? <ArrowRight className="w-4 h-4" />
                 </motion.div>

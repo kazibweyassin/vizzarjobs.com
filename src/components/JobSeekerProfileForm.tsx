@@ -67,6 +67,7 @@ export function JobSeekerProfileForm({ companies = [], user }: JobSeekerProfileF
     userId: user?.id || "",
   });
 
+
   const updateProfileMutation = api.users.updateJobSeekerProfile.useMutation({
     onSuccess: async (profile) => {
       await update({
@@ -95,6 +96,12 @@ export function JobSeekerProfileForm({ companies = [], user }: JobSeekerProfileF
         ...formData,
         [name]: checked
       });
+    } else if (name === 'preferredJobTypes') {
+      // Convert single select value to array for API compatibility
+      setFormData({
+        ...formData,
+        [name]: [value] as EmploymentType[]
+      });
     } else {
       setFormData({
         ...formData,
@@ -108,10 +115,29 @@ export function JobSeekerProfileForm({ companies = [], user }: JobSeekerProfileF
     setIsSubmitting(true);
     
     try {
-      updateProfileMutation.mutate({
+      // Ensure preferredJobTypes is always an array and contains valid values
+      let preferredJobTypes = formData.preferredJobTypes;
+      
+      if (!Array.isArray(preferredJobTypes)) {
+        preferredJobTypes = [preferredJobTypes] as EmploymentType[];
+      }
+      
+      // Validate that all values are valid enum values
+      const validJobTypes = ["FULL_TIME", "PART_TIME", "CONTRACT", "INTERNSHIP"];
+      preferredJobTypes = preferredJobTypes.filter(type => validJobTypes.includes(type));
+      
+      // Ensure we have at least one valid job type
+      if (preferredJobTypes.length === 0) {
+        preferredJobTypes = ["FULL_TIME"];
+      }
+      
+      const submitData = {
         ...formData,
+        preferredJobTypes,
         userId: user.id
-      });
+      };
+      
+      updateProfileMutation.mutate(submitData);
     } catch (error) {
       console.error("Error submitting form:", error);
       setIsSubmitting(false);
@@ -236,6 +262,7 @@ export function JobSeekerProfileForm({ companies = [], user }: JobSeekerProfileF
                   <select
                     id="preferredJobTypes"
                     name="preferredJobTypes"
+                    value={Array.isArray(formData.preferredJobTypes) ? formData.preferredJobTypes[0] || "FULL_TIME" : "FULL_TIME"}
                     onChange={handleChange}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                     required

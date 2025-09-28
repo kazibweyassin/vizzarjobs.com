@@ -7,10 +7,9 @@ export const applicationsRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       try {
         const userId = ctx.session.user.id;
-        const db = ctx.db as any;
 
         // Check if already applied
-        const existingApplication = await db.jobApplication.findUnique({
+        const existingApplication = await ctx.db.application.findUnique({
           where: {
             userId_jobId: {
               userId: userId,
@@ -24,7 +23,7 @@ export const applicationsRouter = createTRPCRouter({
         }
 
         // Check if job exists
-        const job = await db.job.findUnique({
+        const job = await ctx.db.job.findUnique({
           where: { id: input.jobId },
         });
 
@@ -32,7 +31,7 @@ export const applicationsRouter = createTRPCRouter({
           throw new Error("Job not found");
         }
 
-        return await db.jobApplication.create({
+        return await ctx.db.application.create({
           data: {
             userId: userId,
             jobId: input.jobId,
@@ -56,9 +55,8 @@ export const applicationsRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       try {
-        const db = ctx.db as any;
         
-        const applications = await db.jobApplication.findMany({
+        const applications = await ctx.db.application.findMany({
           take: input.limit + 1,
           cursor: input.cursor ? { id: input.cursor } : undefined,
           where: {
@@ -110,9 +108,8 @@ export const applicationsRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       try {
         const userId = ctx.session.user.id;
-        const db = ctx.db as any;
         
-        const applications = await db.jobApplication.findMany({
+        const applications = await ctx.db.application.findMany({
           take: input.limit + 1,
           cursor: input.cursor ? { id: input.cursor } : undefined,
           where: {
@@ -164,9 +161,8 @@ export const applicationsRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        const db = ctx.db as any;
         
-        return await db.jobApplication.update({
+        return await ctx.db.application.update({
           where: { id: input.applicationId },
           data: { status: input.status },
         });
@@ -180,9 +176,8 @@ export const applicationsRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .query(async ({ input, ctx }) => {
       try {
-        const db = ctx.db as any;
         
-        const application = await db.jobApplication.findUnique({
+        const application = await ctx.db.application.findUnique({
           where: { id: input.id },
           include: {
             job: {
@@ -212,19 +207,18 @@ export const applicationsRouter = createTRPCRouter({
     .query(async ({ ctx }) => {
       try {
         const userId = ctx.session.user.id;
-        const db = ctx.db as any;
 
         const [total, pending, reviewed, rejected] = await Promise.all([
-          db.jobApplication.count({
+          ctx.db.application.count({
             where: { userId }
           }),
-          db.jobApplication.count({
+          ctx.db.application.count({
             where: { userId, status: "PENDING" }
           }),
-          db.jobApplication.count({
+          ctx.db.application.count({
             where: { userId, status: "REVIEWED" }
           }),
-          db.jobApplication.count({
+          ctx.db.application.count({
             where: { userId, status: "REJECTED" }
           }),
         ]);
@@ -251,9 +245,8 @@ export const applicationsRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       try {
         const userId = ctx.session.user.id;
-        const db = ctx.db as any;
 
-        const application = await db.jobApplication.findUnique({
+        const application = await ctx.db.application.findUnique({
           where: { id: input.id },
         });
 
@@ -261,11 +254,126 @@ export const applicationsRouter = createTRPCRouter({
           throw new Error("Application not found or unauthorized");
         }
 
-        return await db.jobApplication.delete({
+        return await ctx.db.application.delete({
           where: { id: input.id },
         });
       } catch (error) {
         console.error("Error deleting application:", error);
+        throw error;
+      }
+    }),
+
+  getByJobId: protectedProcedure
+    .input(z.object({ jobId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        // First, get the job to check if the user owns it
+        const job = await ctx.db.job.findUnique({
+          where: { id: input.jobId },
+          include: { company: true }
+        });
+
+        if (!job) {
+          throw new Error("Job not found");
+        }
+
+        // Check if the user is the employer of this job
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: { employee: { include: { company: true } } }
+        });
+
+        if (!user?.employee?.company || user.employee.company.id !== job.companyId) {
+          throw new Error("Unauthorized: You can only view applications for your own company's jobs");
+        }
+
+        // Fetch applications for this job
+        const applications = await ctx.db.application.findMany({
+          where: { jobId: input.jobId },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+                phone: true,
+                location: true,
+                resume: true,
+                bio: true,
+                skills: true,
+                website: true,
+                githubUrl: true,
+                linkedinUrl: true,
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        });
+
+        return applications;
+      } catch (error) {
+        console.error("Error fetching applications by job ID:", error);
+        throw error;
+      }
+    }),
+
+  updateStatus: protectedProcedure
+    .input(z.object({ 
+      id: z.string(),
+      status: z.enum(["PENDING", "REVIEWED", "ACCEPTED", "REJECTED"])
+    }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        // First, get the application to check ownership
+        const application = await ctx.db.application.findUnique({
+          where: { id: input.id },
+          include: {
+            job: {
+              include: { company: true }
+            }
+          }
+        });
+
+        if (!application) {
+          throw new Error("Application not found");
+        }
+
+        // Check if the user is the employer of this job
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: { employee: { include: { company: true } } }
+        });
+
+        if (!user?.employee?.company || user.employee.company.id !== application.job.companyId) {
+          throw new Error("Unauthorized: You can only update applications for your own company's jobs");
+        }
+
+        // Update the application status
+        return await ctx.db.application.update({
+          where: { id: input.id },
+          data: { status: input.status },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+                phone: true,
+                location: true,
+                resume: true,
+                bio: true,
+                skills: true,
+                website: true,
+                githubUrl: true,
+                linkedinUrl: true,
+              },
+            },
+          },
+        });
+      } catch (error) {
+        console.error("Error updating application status:", error);
         throw error;
       }
     }),

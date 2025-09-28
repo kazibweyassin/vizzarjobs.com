@@ -7,6 +7,7 @@ export default function TestSetupPage() {
   const [companyName, setCompanyName] = useState("Sample Test Company");
   const [companyDescription, setCompanyDescription] = useState("This is a test company for employee onboarding");
   const [companyWebsite, setCompanyWebsite] = useState("https://example.com");
+  const [companyLogo, setCompanyLogo] = useState("https://via.placeholder.com/150x150/4F46E5/FFFFFF?text=TC");
   const [companyIndustry, setCompanyIndustry] = useState("Technology");
   const [companyLocation, setCompanyLocation] = useState("New York, NY");
   const [companySize, setCompanySize] = useState("50-100");
@@ -30,15 +31,16 @@ export default function TestSetupPage() {
     setStatus("Creating company...");
     
     try {
-      await createTestCompanyMutation.mutate({
-        name: companyName,
-        description: companyDescription,
-        website: companyWebsite,
-        industry: companyIndustry,
-        location: companyLocation,
-        size: companySize,
-        verified: true,
-      });
+    await createTestCompanyMutation.mutate({
+      name: companyName,
+      description: companyDescription || undefined,
+      website: companyWebsite || undefined,
+      logo: companyLogo || undefined,
+      industry: companyIndustry || undefined,
+      location: companyLocation || undefined,
+      size: companySize || undefined,
+      verified: true,
+    });
     } catch (err) {
       console.error(err);
     }
@@ -84,6 +86,20 @@ export default function TestSetupPage() {
             value={companyWebsite}
             onChange={(e) => setCompanyWebsite(e.target.value)}
             className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="companyLogo" className="block text-sm font-medium text-gray-700 mb-1">
+            Logo URL
+          </label>
+          <input
+            type="text"
+            id="companyLogo"
+            value={companyLogo}
+            onChange={(e) => setCompanyLogo(e.target.value)}
+            className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+            placeholder="https://example.com/logo.png"
           />
         </div>
         

@@ -9,13 +9,10 @@ export function ProfileCreationButton() {
   const { data: session, status } = useSession();
   const [isAnimating, setIsAnimating] = useState(false);
   
-  // Always show button for debugging
-  const isDebugging = true;
-  
   // Animation effect
   useEffect(() => {
-    // Skip animation logic if we're debugging or session isn't loaded
-    if (((!session?.user || session.user.profileComplete) && !isDebugging) || status === "loading") return;
+    // Skip animation logic if session isn't loaded
+    if ((!session?.user || session.user.profileComplete) || status === "loading") return;
     
     const animationInterval = setInterval(() => {
       setIsAnimating(true);
@@ -34,19 +31,16 @@ export function ProfileCreationButton() {
     };
   }, [session, status]);
   
-  // For debugging, always show the button
-  if (isDebugging) {
-    console.log("Session status:", status);
-    console.log("Session data:", session);
-  }
-  
-  // Return null if not debugging and user doesn't need profile completion
-  if (!isDebugging && (!session?.user || session.user.profileComplete)) {
+  // Return null if user doesn't need profile completion
+  if (!session?.user || session.user.profileComplete) {
     return null;
   }
   
+  // Determine the correct href based on authentication status
+  const href = session?.user ? "/onboarding" : "/auth/signin?callbackUrl=/onboarding";
+  
   return (
-    <Link href="/onboarding" className="profile-creation-button">
+    <Link href={href} className="profile-creation-button">
       <div 
         className={`
           inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-semibold shadow-lg 
@@ -57,7 +51,7 @@ export function ProfileCreationButton() {
         `}
       >
         <User className={`w-4 h-4 ${isAnimating ? 'animate-bounce' : ''}`} /> 
-        {isDebugging ? "Create Your Profile (Debug)" : "Create Your Profile"}
+        Create Your Profile
         <ArrowRight className={`w-4 h-4 ${isAnimating ? 'translate-x-1' : ''} transition-transform`} />
       </div>
     </Link>

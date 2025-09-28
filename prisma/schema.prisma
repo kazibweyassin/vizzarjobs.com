@@ -126,6 +126,7 @@ model User {
   matchingPreferences MatchingPreferences?
   employee           Employee?
   jobSeekerProfile   JobSeekerProfile?
+  subscriptions      Subscription[]
   
   @@index([email])
 }
@@ -325,4 +326,58 @@ model JobSeekerProfile {
   createdAt               DateTime      @default(now())
 
   @@index([userId])
+}
+
+model Subscription {
+  id                String            @id @default(cuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId            String
+  planName          String
+  price             Decimal           @db.Decimal(10, 2)
+  currency          String            @default("USD")
+  status            SubscriptionStatus @default(ACTIVE)
+  billingCycle      BillingCycle      @default(MONTHLY)
+  startDate         DateTime          @default(now())
+  endDate           DateTime?
+  nextBillingDate   DateTime?
+  paymentMethod     PaymentMethod     @default(CARD)
+  paymentProvider   PaymentProvider   @default(FLUTTERWAVE)
+  externalId        String?           // External payment provider ID
+  externalCustomerId String?          // External customer ID
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAUSED
+  PENDING
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+enum PaymentMethod {
+  CARD
+  MOBILE_MONEY
+  BANK_TRANSFER
+  PAYPAL
+  WALLET
+}
+
+enum PaymentProvider {
+  FLUTTERWAVE
+  PAYPAL
+  MTN_MOBILE_MONEY
+  AIRTEL_MONEY
+  PAYSTACK
+  MANUAL
 }

@@ -22,7 +22,6 @@ export function RoleSelector() {
 
   const updateUserMutation = api.users.updateRole.useMutation({
     onSuccess: async (updatedUser: any) => {
-      console.log("✅ Role update successful:", updatedUser);
       // Update the session
       try {
         await update({
@@ -33,15 +32,12 @@ export function RoleSelector() {
             profileComplete: updatedUser.profileComplete,
           },
         });
-        console.log("✅ Session updated successfully");
         setIsUpdating(false);
       } catch (sessionError) {
-        console.error("❌ Session update failed:", sessionError);
         setIsUpdating(false);
       }
     },
     onError: (error: any) => {
-      console.error("❌ Failed to update role:", error);
       alert(`Error updating profile: ${error.message}`);
       setIsUpdating(false);
     },
@@ -49,7 +45,6 @@ export function RoleSelector() {
 
   const handleRoleChange = async (newRole: UserRole) => {
     if (!session?.user?.id) {
-      console.error("❌ No user ID found in session");
       alert("Error: No user ID found. Please try signing in again.");
       return;
     }
@@ -68,7 +63,6 @@ export function RoleSelector() {
         profileComplete: true,
       });
     } catch (error) {
-      console.error("❌ Mutation call failed:", error);
       setIsUpdating(false);
     }
   };

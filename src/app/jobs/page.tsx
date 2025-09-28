@@ -13,26 +13,29 @@ type SearchParams = {
   techStack?: string | string[];
 };
 
-export default function JobsPage({
+export default async function JobsPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
+  // Await searchParams for Next.js 15 compatibility
+  const resolvedSearchParams = await searchParams;
+  
   // Process search params to create initial filters for JobList
   const initialFilters: Partial<JobFiltersState> = {
-    search: searchParams.search || "",
-    location: searchParams.location || "",
-    visaSponsorship: searchParams.visaSponsorship === "true" 
+    search: resolvedSearchParams.search || "",
+    location: resolvedSearchParams.location || "",
+    visaSponsorship: resolvedSearchParams.visaSponsorship === "true" 
       ? true 
-      : searchParams.visaSponsorship === "false" 
+      : resolvedSearchParams.visaSponsorship === "false" 
         ? false 
         : undefined,
-    jobType: searchParams.jobType as any,
-    experienceLevel: searchParams.experienceLevel as any,
-    techStack: Array.isArray(searchParams.techStack) 
-      ? searchParams.techStack 
-      : searchParams.techStack 
-        ? [searchParams.techStack] 
+    jobType: resolvedSearchParams.jobType as any,
+    experienceLevel: resolvedSearchParams.experienceLevel as any,
+    techStack: Array.isArray(resolvedSearchParams.techStack) 
+      ? resolvedSearchParams.techStack 
+      : resolvedSearchParams.techStack 
+        ? [resolvedSearchParams.techStack] 
         : [],
   };
 

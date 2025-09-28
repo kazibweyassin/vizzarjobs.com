@@ -45,7 +45,7 @@ interface JobSeekerProfileFormProps {
   };
 }
 
-export function JobSeekerProfileForm({ companies = [], user }: JobSeekerProfileFormProps) {
+export function EmployeeJobSeekerProfileForm({ companies = [], user }: JobSeekerProfileFormProps) {
   const router = useRouter();
   const { update } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);

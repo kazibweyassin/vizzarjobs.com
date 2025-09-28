@@ -16,7 +16,8 @@ import {
   Check,
   ChevronDown,
   DollarSign,
-  Calendar
+  Calendar,
+  Crown
 } from "lucide-react";
 import { api } from "~/trpc/react";
 
@@ -30,6 +31,7 @@ export interface JobFiltersState {
   salaryMin?: number;
   salaryMax?: number;
   postedWithin?: 'day' | 'week' | 'month' | 'any';
+  premiumOnly?: boolean;
 }
 
 interface JobFiltersProps {
@@ -212,6 +214,38 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
             >
               {filters.visaSponsorship === false && <Check className="w-4 h-4 inline mr-1.5" />}
               Not Offered
+            </button>
+          </div>
+        </div>
+
+        {/* Premium Jobs Filter */}
+        <div className="space-y-2.5">
+          <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
+            <Crown className="w-4 h-4 text-yellow-600" />
+            Premium Jobs
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => updateFilters({ premiumOnly: undefined })}
+              className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
+                filters.premiumOnly === undefined
+                  ? "bg-blue-600 text-white font-medium shadow-sm"
+                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+              }`}
+            >
+              All Jobs
+            </button>
+            <button
+              onClick={() => updateFilters({ premiumOnly: true })}
+              className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
+                filters.premiumOnly === true
+                  ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium shadow-sm"
+                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-yellow-300 hover:bg-gray-100"
+              }`}
+            >
+              {filters.premiumOnly === true && <Check className="w-4 h-4 inline mr-1.5" />}
+              <Crown className="w-4 h-4 inline mr-1.5" />
+              Premium Only
             </button>
           </div>
         </div>

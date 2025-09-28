@@ -16,7 +16,6 @@ import {
   Settings,
   FileText
 } from "lucide-react";
-import { NavigationProfileButton } from "~/components/NavigationProfileButton";
 import { Badge } from "~/components/ui/badge";
 
 // Update this type to match the UserRole enum in the Prisma schema
@@ -41,91 +40,101 @@ export function Navigation() {
   return (
     <nav className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-20 min-w-0">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-3">
-            
-              <span className="text-xl font-extrabold text-gray-900 tracking-tight">
-                <Image
-                  src="/logo.png"
-                  alt="VizzarJobs"
-                  width={100}
-                  height={100}
-                  priority
-                  className="mr-2 h-auto"  
-                />
-              </span>
+          <div className="flex items-center flex-shrink-0">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="VizzarJobs"
+                width={40}
+                height={40}
+                priority
+                className="h-8 w-auto"  
+              />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8">
             {navigation.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center gap-2 text-gray-600 hover:text-kale transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-opal-1"
+                  className="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 transition-all duration-300 font-medium px-2 py-2 rounded-lg hover:bg-blue-50 text-sm lg:text-base"
                 >
                   <Icon className="w-4 h-4" />
-                  {item.name}
+                  <span className="hidden lg:inline">{item.name}</span>
                 </Link>
               );
             })}
           </div>
 
           {/* Right side - Auth & Actions */}
-          <div className="hidden md:flex items-center gap-6">
-            {/* Original conditional button */}
-            {session?.user && !session.user.profileComplete && (
-              <Link
-                href="/onboarding"
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
-              >
-                <User className="w-4 h-4" />
-                Create Your Profile
-              </Link>
+          <div className="hidden md:flex items-center gap-3 xl:gap-4">
+            {/* Useful navigation buttons based on user role */}
+            {session?.user && (
+              <>
+                {session.user.role === "JOB_SEEKER" && (
+                  <Link
+                    href="/jobs"
+                    className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 hover:shadow-lg transition-all duration-300 text-sm xl:text-base xl:px-5 xl:py-2.5 xl:rounded-xl"
+                  >
+                    <Briefcase className="w-4 h-4" />
+                    <span className="hidden lg:inline">Browse Jobs</span>
+                    <span className="lg:hidden">Jobs</span>
+                  </Link>
+                )}
+                
+                {session.user.role === "EMPLOYER" && (
+                  <Link
+                    href="/dashboard/employer"
+                    className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 hover:shadow-lg transition-all duration-300 text-sm xl:text-base xl:px-5 xl:py-2.5 xl:rounded-xl"
+                  >
+                    <Building2 className="w-4 h-4" />
+                    <span className="hidden lg:inline">Dashboard</span>
+                    <span className="lg:hidden">Dashboard</span>
+                  </Link>
+                )}
+              </>
             )}
             
-            {/* Always visible button for debugging */}
-            <NavigationProfileButton />
-            
-            {session?.user.role === "EMPLOYER" && (
-              <Link
-                href="/post-job"
-                className="inline-flex items-center gap-2 premium-gradient text-white px-5 py-2.5 rounded-xl font-medium hover:shadow-xl transition-all duration-300 ring-1 ring-indigo-500/10"
-              >
-                <Plus className="w-4 h-4" />
-                Post Position
-              </Link>
-            )}
-
+            {/* Profile Button */}
             {status === "loading" ? (
               <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
-            ) : session ? (
+            ) : !session ? (
+              <Link
+                href="/auth/signin"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 hover:shadow-lg transition-all duration-300 text-sm xl:text-base xl:px-5 xl:py-2.5 xl:rounded-xl"
+              >
+                <User className="w-4 h-4" />
+                <span className="hidden lg:inline">Get Started</span>
+                <span className="lg:hidden">Sign In</span>
+              </Link>
+            ) : (
               <div className="relative">
                 <button
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-opal-1 transition-colors border border-transparent hover:border-light-green"
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200"
                 >
                   {session.user.image ? (
                     <img
                       src={session.user.image}
                       alt={session.user.name || "User"}
-                      className="w-9 h-9 rounded-full border-2 border-light-green"
+                      className="w-8 h-8 rounded-full border-2 border-gray-200"
                     />
                   ) : (
-                    <div className="w-9 h-9 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-sm">
                       <User className="w-4 h-4 text-white" />
                     </div>
                   )}
-                  <div className="text-left hidden lg:block">
-                    <div className="text-sm font-semibold text-gray-900">
+                  <div className="text-left hidden xl:block min-w-0">
+                    <div className="text-sm font-semibold text-gray-900 truncate max-w-32">
                       {session.user.name}
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
                       <Badge 
                         variant="outline" 
                         className={`text-xs ${
@@ -144,10 +153,10 @@ export function Navigation() {
                 {isProfileDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 overflow-hidden">
                     <div className="px-4 py-4 border-b border-gray-100 bg-gray-50">
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
                         {session.user.name}
                       </p>
-                      <p className="text-sm text-gray-500">{session.user.email}</p>
+                      <p className="text-sm text-gray-500 truncate">{session.user.email}</p>
                     </div>
                     
                     <Link
@@ -215,21 +224,6 @@ export function Navigation() {
                     </div>
                   </div>
                 )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-5">
-                <button
-                  onClick={() => signIn()}
-                  className="text-gray-600 hover:text-blue-700 font-medium transition-colors px-2 py-1 hover:bg-blue-50 rounded-md"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => signIn()}
-                  className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors"
-                >
-                  Join Now
-                </button>
               </div>
             )}
           </div>

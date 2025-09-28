@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { api } from "~/trpc/server";
+import { RoleUpdateHandler } from "~/components/RoleUpdateHandler";
 import {
   Search,
   MapPin,
@@ -36,12 +37,17 @@ interface Company {
 interface Job {
   id: string;
   title: string;
-  company?: string;
+  company?: string | {
+    id: string;
+    name: string;
+    location: string | null;
+    [key: string]: any;
+  };
   companyRelation?: Company;
   createdAt: Date;
   visaSponsorship: boolean;
-  jobType: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
-  experienceLevel: 'ENTRY_LEVEL' | 'MID_LEVEL' | 'SENIOR' | 'LEAD';
+  jobType: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP' | null;
+  experienceLevel: 'ENTRY_LEVEL' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD' | null;
   salary?: {
     min: number;
     max: number;
@@ -81,14 +87,13 @@ export default async function HomePage() {
   
   try {
     const apiJobs = await api.jobs.getFeatured({ limit: 6 });
-    console.log('Featured Jobs:', apiJobs);
    
     if (Array.isArray(apiJobs) && apiJobs.length > 0) {
       featuredJobs = apiJobs;
     }
    
   } catch (error) {
-    console.error('Error fetching jobs:', error);
+    // Silently handle error and use fallback data
     // Enhanced fallback data with more realistic information
     
   // Store the content in a variable so we can wrap it with the client component
@@ -122,7 +127,7 @@ export default async function HomePage() {
         createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         visaSponsorship: true,
         jobType: 'FULL_TIME',
-        experienceLevel: 'MID_LEVEL',
+        experienceLevel: 'MID',
         salary: {
           min: 75000,
           max: 105000,
@@ -153,7 +158,7 @@ export default async function HomePage() {
         createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
         visaSponsorship: true,
         jobType: 'FULL_TIME',
-        experienceLevel: 'MID_LEVEL',
+        experienceLevel: 'MID',
         salary: {
           min: 60000,
           max: 85000,
@@ -184,7 +189,7 @@ export default async function HomePage() {
         createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), // 6 days ago
         visaSponsorship: true,
         jobType: 'FULL_TIME',
-        experienceLevel: 'MID_LEVEL',
+        experienceLevel: 'MID',
         salary: {
           min: 110000,
           max: 150000,
@@ -196,6 +201,7 @@ export default async function HomePage() {
 
   return (
     <div className="bg-white">
+      <RoleUpdateHandler />
       {/* Premium Hero Section */}
       <PremiumHero />
 
@@ -214,12 +220,6 @@ export default async function HomePage() {
           </p>
           <div className="flex justify-center">
             <ProfileCreationButton />
-          </div>
-          {/* Fallback button for when the ProfileCreationButton might not render */}
-          <div className="mt-4">
-            <a href="/onboarding" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-semibold shadow-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:shadow-xl hover:scale-105 transition-all duration-300">
-              <User className="w-4 h-4" /> Fallback Profile Button
-            </a>
           </div>
         </div>
       </section>
@@ -261,7 +261,13 @@ export default async function HomePage() {
                     <div className="flex items-center text-gray-600">
                       <Building2 className="h-4 w-4 mr-2" />
                       <span>
-                        {job.companyRelation?.name || job.company || "Company"}
+                        {typeof job.company === 'object' && job.company?.name 
+                          ? job.company.name 
+                          : typeof job.companyRelation === 'object' && job.companyRelation?.name 
+                            ? job.companyRelation.name 
+                            : typeof job.company === 'string' 
+                              ? job.company 
+                              : "Company"}
                       </span>
                     </div>
                   </div>
@@ -270,12 +276,18 @@ export default async function HomePage() {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center text-gray-600">
                     <MapPin className="h-4 w-4 mr-2" />
-                    <span className="text-sm">{job.companyRelation?.location || "Remote"}</span>
+                    <span className="text-sm">
+                      {typeof job.company === 'object' && job.company?.location 
+                        ? job.company.location 
+                        : typeof job.companyRelation === 'object' && job.companyRelation?.location 
+                          ? job.companyRelation.location 
+                          : "Remote"}
+                    </span>
                   </div>
                   <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <span>{formatJobType(job.jobType)}</span>
+                    <span>{formatJobType(job.jobType || 'FULL_TIME')}</span>
                     <span>•</span>
-                    <span>{formatExperienceLevel(job.experienceLevel)}</span>
+                    <span>{formatExperienceLevel(job.experienceLevel || 'MID')}</span>
                   </div>
                   {job.salary && (
                     <div className="text-gray-900 font-medium">

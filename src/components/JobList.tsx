@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { JobFilters, type JobFiltersState } from "~/components/JobFilters";
+import { PremiumJobCard } from "~/components/PremiumJobCard";
 import { api } from "~/trpc/react";
 import { Loader2, Search, Filter, MapPin, Clock, Globe, Building2, ArrowRight } from "lucide-react";
 
@@ -27,6 +28,7 @@ export function JobList({
     salaryMin: undefined,
     salaryMax: undefined,
     postedWithin: 'any',
+    premiumOnly: undefined,
     ...initialFilters,
   });
   
@@ -48,6 +50,24 @@ export function JobList({
     limit,
   }), [filters, limit]);
 
+  // Use different API based on premium filter
+  const regularJobsQuery = api.jobs.getAll.useInfiniteQuery(
+    queryInput,
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      enabled: !filters.premiumOnly,
+    }
+  );
+
+  const premiumJobsQuery = api.jobs.getPremiumJobs.useInfiniteQuery(
+    queryInput,
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      enabled: !!filters.premiumOnly,
+    }
+  );
+
+  // Use the appropriate query based on filter
   const {
     data,
     isLoading,
@@ -55,12 +75,7 @@ export function JobList({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = api.jobs.getAll.useInfiniteQuery(
-    queryInput,
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
-  );
+  } = filters.premiumOnly ? premiumJobsQuery : regularJobsQuery;
 
   const jobs = useMemo(
     () => data?.pages.flatMap((page) => page.jobs) ?? [],
@@ -254,107 +269,11 @@ export function JobList({
               <>
                 <div className="space-y-4">
                   {jobs.map((job, index) => (
-                    <div key={job.id} className="group">
-                      <Link 
-                        href={`/jobs/${job.id}`}
-                        className="block bg-white rounded-xl p-0 shadow-sm hover:shadow border border-gray-200 hover:border-gray-300 transition-all duration-300"
-                      >
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between p-6">
-                          {/* Left side with company logo and job details */}
-                          <div className="flex gap-4 items-start mb-4 md:mb-0">
-                            <div className="hidden md:block flex-shrink-0">
-                              {job.companyRelation?.logo ? (
-                                <img 
-                                  src={job.companyRelation.logo} 
-                                  alt={job.companyRelation.name || "Company logo"}
-                                  className="w-14 h-14 object-contain rounded-md border border-gray-100"
-                                />
-                              ) : (
-                                <div className="w-14 h-14 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center text-gray-400">
-                                  <Building2 className="w-6 h-6" />
-                                </div>
-                              )}
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2 mb-1">
-                                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
-                                  {job.title}
-                                </h3>
-                                {job.visaSponsorship && (
-                                  <span className="bg-emerald-50 text-emerald-700 text-xs font-medium px-2 py-0.5 rounded-full border border-emerald-100 whitespace-nowrap">
-                                    Visa Sponsored
-                                  </span>
-                                )}
-                                {job.jobType === 'REMOTE' && (
-                                  <span className="bg-blue-50 text-blue-700 text-xs font-medium px-2 py-0.5 rounded-full border border-blue-100">
-                                    Remote
-                                  </span>
-                                )}
-                              </div>
-                              <div className="text-gray-600 font-medium">
-                                {job.companyRelation ? job.companyRelation.name : "Company"}
-                              </div>
-                              <div className="flex items-center gap-3 text-sm text-gray-500 mt-1">
-                                <div className="flex items-center">
-                                  <MapPin className="h-3.5 w-3.5 mr-1 text-gray-400" />
-                                  <span>{job.location || (job.companyRelation ? job.companyRelation.location : "Remote")}</span>
-                                </div>
-                                <div className="flex items-center">
-                                  <Clock className="h-3.5 w-3.5 mr-1 text-gray-400" />
-                                  <span>{new Date(job.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Right side with salary and apply button */}
-                          <div className="flex flex-col items-end">
-                            {job.salaryMin && job.salaryMax && (
-                              <div className="text-gray-900 font-medium mb-2">
-                                ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}
-                              </div>
-                            )}
-                            <span className="text-sm text-blue-700 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                              View Details
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Tech Stack and Job Details Footer */}
-                        <div className="px-6 py-4 bg-gray-50 rounded-b-xl border-t border-gray-100 flex flex-wrap gap-y-3 justify-between">
-                          <div className="flex flex-wrap items-center gap-2">
-                            {job.techStack && job.techStack.length > 0 ? job.techStack.slice(0, 5).map((tech, i) => (
-                              <span key={i} className="bg-white text-gray-700 text-xs px-2.5 py-1 rounded-full border border-gray-200 whitespace-nowrap">
-                                {tech}
-                              </span>
-                            )) : (
-                              <span className="text-xs text-gray-500">No tech stack specified</span>
-                            )}
-                            {job.techStack && job.techStack.length > 5 && (
-                              <span className="bg-gray-200 text-gray-700 text-xs px-2.5 py-1 rounded-full whitespace-nowrap">
-                                +{job.techStack.length - 5} more
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="flex gap-3">
-                            {job.experienceLevel && (
-                              <span className="flex items-center text-xs text-gray-600 whitespace-nowrap">
-                                <span className="w-2 h-2 bg-blue-500 rounded-full mr-1.5"></span>
-                                {job.experienceLevel.replace('_', ' ')}
-                              </span>
-                            )}
-                            {job.jobType && (
-                              <span className="flex items-center text-xs text-gray-600 whitespace-nowrap">
-                                <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
-                                {job.jobType.replace('_', ' ')}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
+                    <PremiumJobCard 
+                      key={job.id}
+                      job={job}
+                      index={index}
+                    />
                   ))}
                 </div>
 

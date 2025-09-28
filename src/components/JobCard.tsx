@@ -65,10 +65,16 @@ export function JobCard({ job }: JobCardProps) {
   };
   
   const shareViaEmail = () => {
-    const subject = encodeURIComponent(`Job Opportunity: ${job.title} at ${job.company}`);
+    const companyName = typeof job.company === 'object' && job.company?.name 
+      ? job.company.name 
+      : typeof job.company === 'string' 
+        ? job.company 
+        : "Company";
+    
+    const subject = encodeURIComponent(`Job Opportunity: ${job.title} at ${companyName}`);
     const body = encodeURIComponent(
       `Check out this job on VizzarJobs:\n\n` +
-      `${job.title} at ${job.company}\n\n` +
+      `${job.title} at ${companyName}\n\n` +
       `${window.location.origin}/jobs/${job.id}`
     );
     window.open(`mailto:?subject=${subject}&body=${body}`);
@@ -146,7 +152,13 @@ export function JobCard({ job }: JobCardProps) {
               </Link>
             </CardTitle>
             <div className="flex items-center gap-2 mt-1">
-              <p className="text-sm font-medium text-gray-600">{job.company}</p>
+              <p className="text-sm font-medium text-gray-600">
+                {typeof job.company === 'object' && job.company?.name 
+                  ? job.company.name 
+                  : typeof job.company === 'string' 
+                    ? job.company 
+                    : "Company"}
+              </p>
               {applicationStatus && (
                 <Badge variant="outline" className={`border-none text-xs ${getStatusColor(applicationStatus as any)}`}>
                   <CheckCircle className="w-3 h-3 mr-1" />

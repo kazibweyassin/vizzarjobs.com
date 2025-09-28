@@ -51,12 +51,12 @@ export const companiesRouter = createTRPCRouter({
       return ctx.db.company.create({
         data: {
           name: input.name,
-          description: input.description,
-          website: input.website,
-          logo: input.logo,
-          size: input.size,
-          industry: input.industry,
-          location: input.location,
+          description: input.description || null,
+          website: input.website && input.website.trim() !== "" ? input.website : null,
+          logo: input.logo && input.logo.trim() !== "" ? input.logo : null,
+          size: input.size || null,
+          industry: input.industry || null,
+          location: input.location || null,
           verified: verified,
           verificationStatus: verified ? "APPROVED" : "PENDING"
         }
@@ -239,23 +239,6 @@ export const companiesRouter = createTRPCRouter({
       return company;
     }),
 
-  create: protectedProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        description: z.string().optional(),
-        website: z.string().url().optional(),
-        logo: z.string().url().optional(),
-        size: z.string().optional(),
-        industry: z.string().optional(),
-        location: z.string().optional(),
-      })
-    )
-    .mutation(async ({ input, ctx }) => {
-      return await ctx.db.company.create({
-        data: input,
-      });
-    }),
 
   update: protectedProcedure
     .input(
@@ -297,7 +280,7 @@ export const companiesRouter = createTRPCRouter({
           companyId: companyId
         },
         include: {
-          companyRelation: true,
+          company: true,
           _count: {
             select: {
               applications: true
@@ -363,61 +346,7 @@ export const companiesRouter = createTRPCRouter({
       });
     }),
     
-  getById: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input, ctx }) => {
-      try {
-        const company = await ctx.db.company.findUnique({
-          where: { id: input.id },
-          include: {
-            _count: {
-              select: {
-                jobs: true
-              }
-            }
-          }
-        });
-        
-        return company;
-      } catch (error) {
-        console.error("Error fetching company:", error);
-        return null;
-      }
-    }),
   
-  // Verification-related endpoints
-  getPendingVerifications: protectedProcedure
-    .input(z.object({ 
-      status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]).default("PENDING") 
-    }))
-    .query(async ({ ctx, input }) => {
-      // Check if user is admin
-      if (ctx.session.user.role !== "ADMIN") {
-        throw new Error("Only administrators can view verification queue");
-      }
-      
-      return ctx.db.company.findMany({
-        where: {
-          verificationStatus: input.status,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    }),
-    
-  getVerifiedCompanies: publicProcedure
-    .query(async ({ ctx }) => {
-      return ctx.db.company.findMany({
-        where: {
-          verified: true,
-        },
-        orderBy: {
-          name: "asc",
-        },
-      });
-    }),
-    
   getVerificationStats: protectedProcedure
     .query(async ({ ctx }) => {
       // Check if user is admin

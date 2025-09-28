@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { JobType, ExperienceLevel } from "@prisma/client";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { api } from "~/trpc/react";
 import { 
@@ -17,7 +18,9 @@ import {
   Award,
   Plus,
   X,
-  Loader2
+  Loader2,
+  Save,
+  CheckCircle
 } from "lucide-react";
 
 interface FormData {
@@ -39,28 +42,48 @@ interface FormData {
 
 export function PostJobForm() {
   const router = useRouter();
+  const { data: sessionData } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentRequirement, setCurrentRequirement] = useState("");
   const [currentTech, setCurrentTech] = useState("");
   
+  // Fetch user's company data
+  const { data: userData, isLoading: userLoading, error: userError } = api.users.getProfile.useQuery(undefined, {
+    enabled: !!sessionData?.user,
+    retry: false,
+  });
+
+  // User data is loaded and available for form population
+  
   const [formData, setFormData] = useState<FormData>({
     title: "",
-    company: "",
+    company: userData?.employee?.company?.name || "",
     description: "",
     requirements: [],
     location: "",
     country: "",
-    visaSponsorship: false,
+    visaSponsorship: true,
     salaryMin: "",
     salaryMax: "",
-    jobType: "",
-    experienceLevel: "",
+    jobType: "FULL_TIME" as JobType,
+    experienceLevel: "MID" as ExperienceLevel,
     techStack: [],
     applicationUrl: "",
     companyId: "",
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
+  // Update form data when userData changes
+  useEffect(() => {
+    if (userData?.employee?.company) {
+      setFormData(prev => ({
+        ...prev,
+        company: userData.employee.company.name,
+        companyId: userData.employee.company.id,
+      }));
+    }
+  }, [userData]);
 
   const createJobMutation = api.jobs.create.useMutation({
     onSuccess: (job) => {
@@ -86,7 +109,8 @@ export function PostJobForm() {
     if (!formData.jobType) newErrors.jobType = "Job type is required";
     if (!formData.experienceLevel) newErrors.experienceLevel = "Experience level is required";
     if (!formData.applicationUrl.trim()) newErrors.applicationUrl = "Application URL is required";
-    if (!formData.companyId.trim()) newErrors.companyId = "Please select a company";
+    // Company ID is automatically set from user's employee relationship
+    // if (!formData.companyId.trim()) newErrors.companyId = "Please select a company";
     
     // Validate URL format
     if (formData.applicationUrl) {
@@ -114,26 +138,43 @@ export function PostJobForm() {
     e.preventDefault();
     
     if (!validateForm()) return;
+    
+    // Check if company exists and is verified
+    if (!userData?.employee?.company) {
+      setErrors({
+        ...errors,
+        company: "You need to be associated with a company to post jobs. Please contact support."
+      });
+      return;
+    }
+    
+    if (!userData.employee.company.verified) {
+      setErrors({
+        ...errors,
+        company: "Your company needs to be verified by an admin before posting jobs"
+      });
+      return;
+    }
 
     setIsSubmitting(true);
 
     try {
-      await createJobMutation.mutateAsync({
-        title: formData.title,
-        company: formData.company,
-        description: formData.description,
-        requirements: formData.requirements,
-        location: formData.location,
-        country: formData.country,
-        visaSponsorship: formData.visaSponsorship,
-        salaryMin: formData.salaryMin ? parseInt(formData.salaryMin) : undefined,
-        salaryMax: formData.salaryMax ? parseInt(formData.salaryMax) : undefined,
-        jobType: formData.jobType as JobType,
-        experienceLevel: formData.experienceLevel as ExperienceLevel,
-        techStack: formData.techStack,
-        applicationUrl: formData.applicationUrl,
-        companyId: formData.companyId,
-      });
+        await createJobMutation.mutateAsync({
+          title: formData.title,
+          company: userData.employee.company.name,
+          description: formData.description,
+          requirements: formData.requirements,
+          location: formData.location,
+          country: formData.country,
+          visaSponsorship: formData.visaSponsorship,
+          salaryMin: formData.salaryMin ? parseInt(formData.salaryMin) : undefined,
+          salaryMax: formData.salaryMax ? parseInt(formData.salaryMax) : undefined,
+          jobType: formData.jobType as JobType,
+          experienceLevel: formData.experienceLevel as ExperienceLevel,
+          techStack: formData.techStack,
+          applicationUrl: formData.applicationUrl,
+          companyId: userData.employee.company.id,
+        });
     } catch (error) {
       // Error handling is done in the mutation onError callback
     }
@@ -238,23 +279,36 @@ export function PostJobForm() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Company *
                 </label>
-                <select
-                  value={formData.companyId}
-                  onChange={(e) => handleInputChange("companyId", e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all appearance-none bg-white ${
-                    errors.companyId ? "border-red-500" : "border-gray-300"
-                  }`}
-                >
-                  <option value="">Select a company</option>
-                  {companies.map((company) => (
-                    <option key={company.id} value={company.id}>
-                      {company.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.companyId && <p className="text-red-500 text-sm mt-1">{errors.companyId}</p>}
+                <div className="flex items-center">
+                  {userLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
+                      <span className="text-gray-500">Loading company data...</span>
+                    </div>
+                   ) : userData?.employee?.company ? (
+                     <div className="flex items-center space-x-2 border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 w-full">
+                       <Building2 className="h-5 w-5 text-blue-500" />
+                       <span>{userData.employee.company.name}</span>
+                       {userData.employee.company.verified ? (
+                         <Badge variant="success" className="ml-2">Verified</Badge>
+                       ) : (
+                         <Badge variant="destructive" className="ml-2">Pending Verification</Badge>
+                       )}
+                     </div>
+                  ) : (
+                    <div className="w-full">
+                      <div className="border border-yellow-200 bg-yellow-50 rounded-lg p-3 text-sm text-yellow-800">
+                        You need to create a company profile before posting jobs.
+                        <Link href="/employer-onboarding" className="ml-2 text-blue-600 underline">
+                          Create company profile
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {errors.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
                 <p className="text-sm text-gray-500 mt-1">
-                  Don't see your company? <Link href="/contact" className="text-blue-600 hover:text-blue-800 underline">Contact us to add it</Link>.
+                  Your company is automatically selected based on your employee profile. If you need to change companies, please contact support.
                 </p>
               </div>
 

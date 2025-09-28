@@ -80,7 +80,7 @@ export default function AboutUsPage() {
       name: "Yassin Kazibwe",
       role: "Founder & CEO",
       bio: "Former software engineer with experience at global tech companies. Passionate about connecting African talent with world-class opportunities.",
-      image: "/images/about/ceo.jpg",
+      // image: "/images/about/ceo.jpg",
       location: "Cape Town, South Africa",
       social: {
         linkedin: "#",
@@ -92,7 +92,7 @@ export default function AboutUsPage() {
       name: "Amara Nwosu",
       role: "Chief Operating Officer",
       bio: "15+ years experience in tech recruitment and operations. Specializes in cross-border hiring and talent mobility.",
-      image: "/images/about/coo.jpg",
+      // image: "/images/about/coo.jpg",
       location: "Lagos, Nigeria",
       social: {
         linkedin: "#",
@@ -104,7 +104,7 @@ export default function AboutUsPage() {
       name: "Daniel Ochieng",
       role: "Chief Technology Officer",
       bio: "Experienced tech leader with background in building scalable platforms. Previously led engineering teams at multinational companies.",
-      image: "/images/about/cto.jpg",
+      // image: "/images/about/cto.jpg",
       location: "Nairobi, Kenya",
       social: {
         linkedin: "#",
@@ -116,7 +116,7 @@ export default function AboutUsPage() {
       name: "Fatima Mohammed",
       role: "Head of Talent Relations",
       bio: "Expert in career development and international recruitment. Passionate about helping professionals navigate global career transitions.",
-      image: "/images/about/hr.jpg",
+      // image: "/images/about/hr.jpg",
       location: "Accra, Ghana",
       social: {
         linkedin: "#",

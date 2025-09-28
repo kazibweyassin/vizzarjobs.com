@@ -13,7 +13,6 @@ export const usersRouter = createTRPCRouter({
   updateRole: protectedProcedure
     .input(
       z.object({
-        userId: z.string(),
         role: z.enum(["JOB_SEEKER", "EMPLOYER"]),
         profileComplete: z.boolean().optional(),
       }),
@@ -21,7 +20,7 @@ export const usersRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const updatedUser = await ctx.db.user.update({
-          where: { id: input.userId },
+          where: { id: ctx.session.user.id },
           data: {
             role: input.role,
             profileComplete: input.profileComplete,
@@ -30,7 +29,6 @@ export const usersRouter = createTRPCRouter({
 
         return updatedUser;
       } catch (error) {
-        console.error("❌ Database update failed:", error);
         throw error;
       }
     }),
@@ -40,12 +38,16 @@ export const usersRouter = createTRPCRouter({
       const user = await ctx.db.user.findUnique({
         where: { id: ctx.session.user.id },
         include: {
-          jobSeekerProfile: true
+          jobSeekerProfile: true,
+          employee: {
+            include: {
+              company: true
+            }
+          }
         }
       });
       return user;
     } catch (error) {
-      console.error("Error fetching user profile:", error);
       return null;
     }
   }),

@@ -20,6 +20,7 @@ export const jobsRouter = createTRPCRouter({
       })
     )
     .query(async ({ input, ctx }) => {
+      try {
       const { 
         location, 
         visaSponsorship, 
@@ -166,6 +167,12 @@ export const jobsRouter = createTRPCRouter({
         jobs,
         nextCursor,
       };
+      } catch (error) {
+        return {
+          jobs: [],
+          nextCursor: undefined,
+        };
+      }
     }),
 
   getById: publicProcedure
@@ -283,18 +290,24 @@ export const jobsRouter = createTRPCRouter({
   getFeatured: publicProcedure
     .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
     .query(async ({ input, ctx }) => {
-      return await ctx.db.job.findMany({
-        take: input.limit,
-        where: {
-          visaSponsorship: true // Featured jobs are visa-sponsored jobs
-        },
-        include: {
-          company: true
-        },
-        orderBy: {
-          createdAt: "desc"
-        }
-      });
+      try {
+        return await ctx.db.job.findMany({
+          take: input.limit,
+          where: {
+            visaSponsorship: true // Featured jobs are visa-sponsored jobs
+          },
+          include: {
+            company: true
+          },
+          orderBy: {
+            createdAt: "desc"
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching featured jobs:', error);
+        // Return empty array if database is unavailable
+        return [];
+      }
     }),
 
   getTechStacks: publicProcedure
@@ -358,33 +371,6 @@ export const jobsRouter = createTRPCRouter({
       });
     }),
     
-  getByCompany: publicProcedure
-    .input(z.object({ companyId: z.string() }))
-    .query(async ({ input, ctx }) => {
-      try {
-        const jobs = await ctx.db.job.findMany({
-          where: {
-            companyId: input.companyId,
-          },
-          include: {
-            _count: {
-              select: {
-                applications: true
-              }
-            },
-            company: true
-          },
-          orderBy: {
-            createdAt: "desc"
-          },
-        });
-
-        return jobs;
-      } catch (error) {
-        console.error("Error fetching company jobs:", error);
-        return [];
-      }
-    }),
 
   getRecommended: protectedProcedure
     .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
@@ -440,6 +426,172 @@ export const jobsRouter = createTRPCRouter({
       } catch (error) {
         console.error("Error getting popular jobs:", error);
         return [];
+      }
+    }),
+    
+  getByCompany: protectedProcedure
+    .input(z.object({ companyId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        // Only allow employers to see their own company's jobs
+        if (ctx.session.user.role !== "EMPLOYER" && ctx.session.user.role !== "ADMIN") {
+          throw new Error("Unauthorized: Only employers can view their jobs");
+        }
+        
+        const jobs = await ctx.db.job.findMany({
+          where: {
+            companyId: input.companyId
+          },
+          include: {
+            company: true,
+            _count: {
+              select: {
+                applications: true
+              }
+            }
+          },
+          orderBy: {
+            createdAt: "desc"
+          }
+        });
+        
+        return jobs;
+      } catch (error) {
+        console.error("Error getting company jobs:", error);
+        throw error;
+      }
+    }),
+
+  // Get premium jobs (requires premium subscription)
+  getPremiumJobs: protectedProcedure
+    .input(
+      z.object({
+        location: z.string().optional(),
+        visaSponsorship: z.boolean().optional(),
+        techStack: z.array(z.string()).optional(),
+        jobType: z.nativeEnum(JobType).optional(),
+        experienceLevel: z.nativeEnum(ExperienceLevel).optional(),
+        search: z.string().optional(),
+        salaryMin: z.number().optional(),
+        salaryMax: z.number().optional(),
+        limit: z.number().min(1).max(100).default(50),
+        cursor: z.string().optional(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      try {
+        // Check if user has premium access
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id }
+        });
+
+        // Get active subscription separately
+        const activeSubscription = await ctx.db.subscription.findFirst({
+          where: {
+            userId: ctx.session.user.id,
+            status: "ACTIVE"
+          },
+          orderBy: { createdAt: "desc" }
+        });
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        // Check premium access
+        const hasPremiumAccess = user.premium || 
+          (activeSubscription && activeSubscription.planId !== "basic");
+
+        if (!hasPremiumAccess) {
+          throw new Error("Premium subscription required to access premium jobs");
+        }
+
+        const { 
+          location, 
+          visaSponsorship, 
+          techStack, 
+          jobType, 
+          experienceLevel, 
+          search,
+          salaryMin,
+          salaryMax,
+          limit,
+          cursor
+        } = input;
+
+        const where: any = {
+          premium: true, // Only premium jobs
+        };
+
+        if (location) {
+          where.location = {
+            contains: location,
+            mode: 'insensitive'
+          };
+        }
+
+        if (visaSponsorship !== undefined) {
+          where.visaSponsorship = visaSponsorship;
+        }
+
+        if (techStack && techStack.length > 0) {
+          where.techStack = {
+            hasSome: techStack
+          };
+        }
+
+        if (jobType) {
+          where.jobType = jobType;
+        }
+
+        if (experienceLevel) {
+          where.experienceLevel = experienceLevel;
+        }
+
+        if (search) {
+          where.OR = [
+            { title: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } },
+            { company: { name: { contains: search, mode: 'insensitive' } } }
+          ];
+        }
+
+        if (salaryMin || salaryMax) {
+          where.AND = [];
+          if (salaryMin) {
+            where.AND.push({ salaryMin: { gte: salaryMin } });
+          }
+          if (salaryMax) {
+            where.AND.push({ salaryMax: { lte: salaryMax } });
+          }
+        }
+
+        const jobs = await ctx.db.job.findMany({
+          take: limit + 1,
+          cursor: cursor ? { id: cursor } : undefined,
+          where,
+          include: {
+            company: true,
+            _count: {
+              select: { applications: true }
+            }
+          },
+          orderBy: { createdAt: 'desc' }
+        });
+
+        let nextCursor: typeof cursor | undefined = undefined;
+        if (jobs.length > limit) {
+          const nextItem = jobs.pop();
+          nextCursor = nextItem?.id;
+        }
+
+        return {
+          jobs,
+          nextCursor
+        };
+      } catch (error) {
+        console.error("Error fetching premium jobs:", error);
+        throw error;
       }
     }),
 });
