@@ -58,7 +58,6 @@ export function RoleSelector() {
     
     try {
       updateUserMutation.mutate({
-        userId: session.user.id,
         role: newRole,
         profileComplete: true,
       });

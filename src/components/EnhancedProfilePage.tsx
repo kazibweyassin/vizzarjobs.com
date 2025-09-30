@@ -91,7 +91,6 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
 
     setIsUpdating(true);
     updateUserMutation.mutate({
-      userId: user.id,
       role: selectedRole,
       profileComplete: true,
     });

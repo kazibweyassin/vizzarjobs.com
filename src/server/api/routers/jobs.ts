@@ -3,6 +3,17 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/
 import { JobType, ExperienceLevel } from "@prisma/client";
 
 export const jobsRouter = createTRPCRouter({
+  getCount: publicProcedure.query(async ({ ctx }) => {
+    const total = await ctx.db.job.count();
+    const featured = await ctx.db.job.count({
+      where: { featured: true }
+    });
+    const premium = await ctx.db.job.count({
+      where: { premium: true }
+    });
+    return { count: total, featured, premium };
+  }),
+
   getAll: publicProcedure
     .input(
       z.object({

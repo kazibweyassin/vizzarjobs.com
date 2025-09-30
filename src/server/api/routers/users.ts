@@ -13,7 +13,7 @@ export const usersRouter = createTRPCRouter({
   updateRole: protectedProcedure
     .input(
       z.object({
-        role: z.enum(["JOB_SEEKER", "EMPLOYER"]),
+        role: z.enum(["JOB_SEEKER", "EMPLOYER", "ADMIN"]),
         profileComplete: z.boolean().optional(),
       }),
     )
@@ -50,6 +50,99 @@ export const usersRouter = createTRPCRouter({
     } catch (error) {
       return null;
     }
+  }),
+
+  getCount: publicProcedure.query(async ({ ctx }) => {
+    const total = await ctx.db.user.count();
+    const verified = await ctx.db.user.count({
+      where: { profileComplete: true }
+    });
+    return { count: total, verified };
+  }),
+
+  getPendingVerifications: protectedProcedure
+    .input(z.object({ status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]) }))
+    .query(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view pending verifications");
+      }
+      
+      return await ctx.db.user.findMany({
+        where: { 
+          verificationStatus: input.status 
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+          verificationStatus: true,
+          verificationDate: true,
+          verificationNotes: true,
+          createdAt: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+
+  verifyUser: protectedProcedure
+    .input(z.object({ 
+      userId: z.string(),
+      notes: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can verify users");
+      }
+      
+      return ctx.db.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          verificationStatus: "APPROVED",
+          verificationDate: new Date(),
+          verificationNotes: input.notes,
+        },
+      });
+    }),
+
+  rejectUser: protectedProcedure
+    .input(z.object({ 
+      userId: z.string(),
+      notes: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can reject users");
+      }
+      
+      return ctx.db.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          verificationStatus: "REJECTED",
+          verificationDate: new Date(),
+          verificationNotes: input.notes,
+        },
+      });
+    }),
+
+  getVerifiedUsers: protectedProcedure.query(async ({ ctx }) => {
+    // Check if user is admin
+    if (ctx.session.user.role !== "ADMIN") {
+      throw new Error("Only administrators can view verified users");
+    }
+    
+    return await ctx.db.user.count({
+      where: { verificationStatus: "APPROVED" }
+    });
   }),
   
   startEmployeeOnboarding: protectedProcedure

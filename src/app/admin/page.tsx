@@ -153,6 +153,19 @@ export default function AdminDashboard() {
               
               <Card className="hover:shadow-md transition-all">
                 <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+                    <Building2 className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Create Company & Job</h3>
+                  <p className="text-gray-500 text-sm mb-4">Streamlined form to create both company and job in one go</p>
+                  <Button asChild className="w-full">
+                    <Link href="/admin/create-job-with-company">Create Both</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-all">
+                <CardContent className="p-6 flex flex-col items-center justify-center text-center">
                   <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mb-3">
                     <Building2 className="h-6 w-6 text-purple-600" />
                   </div>
@@ -160,6 +173,23 @@ export default function AdminDashboard() {
                   <p className="text-gray-500 text-sm mb-4">View and update all registered companies</p>
                   <Button asChild className="w-full">
                     <Link href="/admin/companies">View Companies</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-all">
+                <CardContent className="p-6 flex flex-col items-center justify-center text-center">
+                  <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7,10 12,15 17,10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold mb-2">Import Jobs</h3>
+                  <p className="text-gray-500 text-sm mb-4">Copy and paste jobs from other job boards</p>
+                  <Button asChild className="w-full">
+                    <Link href="/admin/import-jobs">Import Jobs</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -214,21 +244,45 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <Button className="w-full justify-start" variant="outline">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Add New Job
+                  <Button asChild className="w-full justify-start" variant="outline">
+                    <Link href="/admin/create-job">
+                      <FileText className="mr-2 h-4 w-4" />
+                      Add New Job
+                    </Link>
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Building2 className="mr-2 h-4 w-4" />
-                    Add New Company
+                  <Button asChild className="w-full justify-start" variant="outline">
+                    <Link href="/admin/create-job-with-company">
+                      <Building2 className="mr-2 h-4 w-4" />
+                      Create Company & Job
+                    </Link>
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Contact className="mr-2 h-4 w-4" />
-                    Review Contact Requests
+                  <Button asChild className="w-full justify-start" variant="outline">
+                    <Link href="/admin/import-jobs">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-4 w-4">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                      Import Jobs
+                    </Link>
                   </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Users className="mr-2 h-4 w-4" />
-                    Manage Users
+                  <Button asChild className="w-full justify-start" variant="outline">
+                    <Link href="/admin/create-company">
+                      <Building2 className="mr-2 h-4 w-4" />
+                      Add New Company
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full justify-start" variant="outline">
+                    <Link href="/admin/contact-requests">
+                      <Contact className="mr-2 h-4 w-4" />
+                      Review Contact Requests
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full justify-start" variant="outline">
+                    <Link href="/admin/verification">
+                      <Users className="mr-2 h-4 w-4" />
+                      Manage Users
+                    </Link>
                   </Button>
                 </div>
               </CardContent>

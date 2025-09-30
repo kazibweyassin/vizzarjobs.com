@@ -318,3 +318,4 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
   );
 }
 
+

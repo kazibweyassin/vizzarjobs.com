@@ -54,7 +54,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
     setIsUpdating(true);
     updateUserMutation.mutate({
-      userId: user.id,
       role: selectedRole,
       profileComplete: true,
     });
