@@ -150,7 +150,6 @@ export default async function DashboardPage() {
           </div>
         </div>
       </div>
-      </div>
     );
   } catch (error) {
     console.error("Error loading dashboard:", error);

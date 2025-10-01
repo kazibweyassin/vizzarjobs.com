@@ -1,5 +1,15 @@
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
+// Basic skeleton component
+export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={`animate-pulse rounded-md bg-slate-200 ${className || ""}`}
+      {...props}
+    />
+  );
+}
+
 export function CompanyCardSkeleton() {
   return (
     <Card className="border border-white/20 bg-white/80 backdrop-blur-sm">
