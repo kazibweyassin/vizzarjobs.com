@@ -124,14 +124,21 @@ export const authConfig = {
   ],
   adapter: PrismaAdapter(db),
   callbacks: {
-    session: ({ session, user }) => {
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.role = user.role;
+        token.profileComplete = user.profileComplete;
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
       return {
         ...session,
         user: {
           ...session.user,
-          id: user.id,
-          role: user.role || "JOB_SEEKER",
-          profileComplete: user.profileComplete || false,
+          id: token.sub,
+          role: token.role || "JOB_SEEKER",
+          profileComplete: token.profileComplete || false,
         },
       };
     },
@@ -166,7 +173,7 @@ export const authConfig = {
     },
   },
   session: {
-    strategy: "database",
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   jwt: {

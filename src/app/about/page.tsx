@@ -97,7 +97,7 @@ export default function AboutUsPage() {
 
   const floatingAnimation = {
     y: [0, -20, 0],
-    transition: {
+      transition: { 
       duration: 3,
       repeat: Infinity,
       ease: "easeInOut"
@@ -367,13 +367,13 @@ export default function AboutUsPage() {
                 <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                 Watch Our Story
               </button>
-            </motion.div>
+          </motion.div>
 
             {/* Animated Stats Preview */}
-            <motion.div 
+          <motion.div
               className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               {[
@@ -408,39 +408,39 @@ export default function AboutUsPage() {
               { title: "Our Mission", icon: Target, image: "/images/about/mission.jpg", desc: "To bridge the opportunity gap by connecting talented African professionals with global employers offering visa sponsorship, enabling career growth and knowledge exchange across borders.", gradient: "from-blue-600 to-cyan-600" },
               { title: "Our Vision", icon: Globe, image: "/images/about/vision.jpg", desc: "To create a world where geography is no longer a barrier to opportunity, enabling the free flow of talent and ideas across borders while empowering professionals to build global careers.", gradient: "from-purple-600 to-pink-600" }
             ].map((item, index) => (
-              <motion.div
+            <motion.div
                 key={index}
                 initial={{ opacity: 0, x: index === 0 ? -60 : 60 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+              viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
                 className="group"
               >
                 <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 hover:shadow-3xl transition-all duration-500 hover:-translate-y-2">
                   <div className="relative h-64 overflow-hidden">
-                    <Image 
+                      <Image 
                       src={item.image} 
                       alt={item.title} 
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      fill
-                    />
+                        fill
+                      />
                     <div className={`absolute inset-0 bg-gradient-to-t ${item.gradient} opacity-60 group-hover:opacity-70 transition-opacity`}></div>
-                    <motion.div 
+            <motion.div
                       className="absolute top-6 left-6 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30"
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.6 }}
                     >
                       <item.icon className="w-8 h-8 text-white" />
                     </motion.div>
-                  </div>
+                    </div>
                   <div className="p-8">
                     <h2 className={`text-3xl font-bold bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent mb-4`}>
                       {item.title}
-                    </h2>
+                  </h2>
                     <p className="text-gray-600 text-lg leading-relaxed">{item.desc}</p>
-                  </div>
                 </div>
-              </motion.div>
+              </div>
+            </motion.div>
             ))}
           </div>
         </div>
@@ -479,11 +479,11 @@ export default function AboutUsPage() {
                 { title: "The Challenge", content: "We observed an abundance of talented professionals across Africa seeking global opportunities, and growing companies worldwide looking to diversify through international hiring.", gradient: "from-blue-600/20 to-cyan-600/20", border: "border-blue-400/30" },
                 { title: "The Solution", content: "Founded in 2023 in Cape Town, we built a platform specifically addressing visa sponsorship challenges, creating a trusted bridge between African talent and global employers.", gradient: "from-purple-600/20 to-pink-600/20", border: "border-purple-400/30" }
               ].map((item, index) => (
-                <motion.div
+            <motion.div 
                   key={index}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+              viewport={{ once: true }}
                   transition={{ delay: index * 0.2 }}
                   whileHover={{ y: -8, scale: 1.02 }}
                   className={`bg-gradient-to-br ${item.gradient} backdrop-blur-xl rounded-2xl p-8 border ${item.border}`}
@@ -492,7 +492,7 @@ export default function AboutUsPage() {
                   <p className="text-blue-100 leading-relaxed">{item.content}</p>
                 </motion.div>
               ))}
-            </div>
+                </div>
 
             <motion.div 
               className="bg-white/10 backdrop-blur-xl rounded-3xl p-12 border border-white/20"
@@ -502,11 +502,11 @@ export default function AboutUsPage() {
             >
               <h3 className="text-3xl font-bold text-white mb-6">Today & Beyond</h3>
               <p className="text-blue-100 text-lg leading-relaxed mb-6">
-                VizzarJobs has evolved into a comprehensive platform that connects talent with opportunities and provides resources, guidance, and community support throughout the international job search journey.
-              </p>
+                      VizzarJobs has evolved into a comprehensive platform that connects talent with opportunities and provides resources, guidance, and community support throughout the international job search journey.
+                    </p>
               <p className="text-blue-100 text-lg leading-relaxed">
-                Our commitment remains unwavering: empowering professionals to build global careers while helping companies access diverse talent pools, creating mutual value and lasting success.
-              </p>
+                      Our commitment remains unwavering: empowering professionals to build global careers while helping companies access diverse talent pools, creating mutual value and lasting success.
+                    </p>
             </motion.div>
           </div>
         </div>
@@ -619,12 +619,12 @@ export default function AboutUsPage() {
               >
                 <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500">
                   <div className="relative aspect-square overflow-hidden">
-                    <Image 
-                      src={member.image} 
-                      alt={member.name} 
+                  <Image 
+                    src={member.image} 
+                    alt={member.name} 
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      fill
-                    />
+                    fill
+                  />
                     <div className={`absolute inset-0 bg-gradient-to-t ${member.gradient} opacity-0 group-hover:opacity-70 transition-opacity duration-500`}></div>
                     
                     {/* Social icons overlay */}
@@ -651,18 +651,18 @@ export default function AboutUsPage() {
                         >
                           <Mail className="w-5 h-5" />
                         </motion.a>
-                      </div>
                     </div>
                   </div>
+                </div>
                   
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
                     <p className={`bg-gradient-to-r ${member.gradient} bg-clip-text text-transparent font-semibold mb-3`}>{member.role}</p>
                     <div className="flex items-center text-gray-500 text-sm mb-4">
                       <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
-                      {member.location}
-                    </div>
-                    <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                    {member.location}
+                  </div>
+                  <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
                   </div>
                 </div>
               </motion.div>
@@ -742,25 +742,25 @@ export default function AboutUsPage() {
                     {/* Animated background */}
                     <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-${milestone.color}-500/10 to-transparent rounded-full transform translate-x-32 -translate-y-32 group-hover:scale-150 transition-transform duration-700`}></div>
                     
-                    <div className="relative z-10">
+                  <div className="relative z-10">
                       <div className="flex items-center justify-between mb-4">
                         <motion.div 
                           className={`px-6 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-${milestone.color}-500 to-${milestone.color}-600 text-white shadow-lg`}
                           whileHover={{ scale: 1.05 }}
                         >
-                          {milestone.year}
+                      {milestone.year}
                         </motion.div>
                         <div className={`px-4 py-2 rounded-full text-xs font-semibold bg-${milestone.color}-100 text-${milestone.color}-700`}>
                           {milestone.achievement}
-                        </div>
+                    </div>
                       </div>
                       
                       <h3 className="text-3xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                        {milestone.title}
-                      </h3>
+                      {milestone.title}
+                    </h3>
                       <p className="text-gray-600 leading-relaxed text-lg">{milestone.description}</p>
-                    </div>
                   </div>
+                </div>
                 </motion.div>
               </motion.div>
             ))}
@@ -982,25 +982,25 @@ export default function AboutUsPage() {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link 
-                  href="/jobs" 
+              <Link 
+                href="/jobs" 
                   className="group inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-lg font-bold shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300"
-                >
+              >
                   <Briefcase className="w-6 h-6 mr-3" />
-                  Find Opportunities
+                Find Opportunities
                   <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform duration-300" />
-                </Link>
+              </Link>
               </motion.div>
               
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link 
-                  href="/post-job" 
+              <Link 
+                href="/post-job" 
                   className="group inline-flex items-center justify-center px-10 py-5 rounded-2xl border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white text-lg font-bold hover:bg-white/20 transition-all duration-300"
-                >
+              >
                   <Building2 className="w-6 h-6 mr-3" />
-                  Post Jobs
+                Post Jobs
                   <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform duration-300" />
-                </Link>
+              </Link>
               </motion.div>
             </motion.div>
 

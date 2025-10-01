@@ -5,8 +5,13 @@ import { getToken } from 'next-auth/jwt';
 export async function middleware(request: NextRequest) {
   const token = await getToken({ 
     req: request, 
-    secret: process.env.NEXTAUTH_SECRET 
+    secret: process.env.AUTH_SECRET 
   });
+
+  // Debug logging
+  console.log('Middleware - Path:', request.nextUrl.pathname);
+  console.log('Middleware - Token:', token ? 'Present' : 'Missing');
+  console.log('Middleware - Role:', token?.role);
 
   // Security headers for all responses
   const response = NextResponse.next();
