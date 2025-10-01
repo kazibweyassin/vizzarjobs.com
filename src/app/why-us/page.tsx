@@ -87,17 +87,24 @@ export default function WhyUsPage() {
   ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
       
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white pt-20 pb-16">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 -mt-16 -mr-16 hidden lg:block">
-          <div className="w-64 h-64 rounded-full opacity-10 bg-blue-600 blur-[100px]" />
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-teal-900 to-emerald-900 pt-24 pb-20">
+        {/* Enhanced decorative elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-teal-500 rounded-full blur-3xl opacity-20 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500 rounded-full blur-3xl opacity-20 animate-pulse delay-500"></div>
         </div>
-        <div className="absolute bottom-0 left-0 -mb-16 -ml-16 hidden lg:block">
-          <div className="w-64 h-64 rounded-full opacity-10 bg-purple-600 blur-[100px]" />
-        </div>
+        
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: 'url("/grid-pattern.svg")',
+          backgroundSize: '60px 60px',
+          backgroundPosition: 'center',
+          opacity: 0.1
+        }}></div>
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-[0.015] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,19 +114,19 @@ export default function WhyUsPage() {
             animate="visible"
             variants={containerVariants}
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-blue-100 shadow-sm mb-6">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-indigo-600">
-                <Compass className="h-3.5 w-3.5 text-white" />
-              </span>
-              <span className="text-sm font-medium text-gray-800">Your Career Journey • Our Mission</span>
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white text-sm font-semibold mb-8 shadow-lg">
+              <div className="w-8 h-8 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-lg flex items-center justify-center">
+                <Compass className="w-4 h-4 text-white" />
+              </div>
+              <span>Your Career Journey • Our Mission</span>
             </motion.div>
             
-            <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 mb-6">
-              Why Choose <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">VizzarJobs</span>
+            <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-8">
+              Why Choose <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-500">VizzarJobs</span>
             </motion.h1>
             
-            <motion.p variants={itemVariants} className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We're more than a job board—we're your partner in building a successful global career with the right opportunities and support every step of the way.
+            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
+              We're more than a job board—we're your <span className="text-white font-semibold">partner in building a successful global career</span> with the right opportunities and support every step of the way.
             </motion.p>
           </motion.div>
         </div>
@@ -179,7 +186,7 @@ export default function WhyUsPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              <div className="text-5xl font-extrabold text-white mb-2">500+</div>
+              <div className="text-3xl font-extrabold text-white mb-2">500+</div>
               <div className="text-blue-200">Global Placements</div>
             </motion.div>
             
@@ -190,7 +197,7 @@ export default function WhyUsPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <div className="text-5xl font-extrabold text-white mb-2">94%</div>
+              <div className="text-3xl font-extrabold text-white mb-2">94%</div>
               <div className="text-blue-200">Visa Success Rate</div>
             </motion.div>
             
@@ -201,7 +208,7 @@ export default function WhyUsPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              <div className="text-5xl font-extrabold text-white mb-2">25+</div>
+              <div className="text-3xl font-extrabold text-white mb-2">25+</div>
               <div className="text-blue-200">Countries</div>
             </motion.div>
             
@@ -212,7 +219,7 @@ export default function WhyUsPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
             >
-              <div className="text-5xl font-extrabold text-white mb-2">45%</div>
+              <div className="text-3xl font-extrabold text-white mb-2">45%</div>
               <div className="text-blue-200">Average Salary Increase</div>
             </motion.div>
           </div>
@@ -242,7 +249,7 @@ export default function WhyUsPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="absolute -top-3 left-8 text-6xl text-blue-100">"</div>
+                <div className="absolute -top-3 left-8 text-4xl text-blue-100">"</div>
                 <p className="text-gray-700 mb-6 relative z-10">{testimonial.quote}</p>
                 <div className="border-t border-gray-100 pt-6 mt-6">
                   <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>

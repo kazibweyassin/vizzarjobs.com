@@ -62,19 +62,30 @@ export function PremiumHero() {
     <motion.div
       ref={containerRef}
       style={{ y, opacity, scale, position: 'relative' }}
-      className="relative bg-black min-h-screen w-full overflow-hidden"
+      className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-teal-900 min-h-screen w-full overflow-hidden"
     >
-      {/* background video */}
+      {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 z-0">
-        {/* Using a background gradient instead of the missing video */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 opacity-80"></div>
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-teal-900/90 to-emerald-900/90"></div>
+        
+        {/* Geometric patterns */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-teal-500 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+        
+        {/* Grid pattern */}
         <div className="absolute inset-0" style={{ 
-          backgroundImage: 'url("/world-map-dots.svg")',
-          backgroundSize: 'cover',
+          backgroundImage: 'url("/grid-pattern.svg")',
+          backgroundSize: '60px 60px',
           backgroundPosition: 'center',
-          opacity: 0.15
+          opacity: 0.1
         }}></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black" />
+        
+        {/* Subtle overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
       </div>
 
       {/* content */}
@@ -86,14 +97,16 @@ export function PremiumHero() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm text-gray-200 backdrop-blur">
-            <Sparkles className="w-4 h-4 text-teal-300" />
-            <span className="font-medium">Visa-Sponsored Careers for African Talent</span>
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-sm text-white shadow-lg">
+            <div className="w-8 h-8 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-semibold">Visa-Sponsored Careers for African Talent</span>
           </motion.div>
 
           <motion.h1
             variants={fadeUp}
-            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight"
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight"
           >
             <span className="block">Elevate your career.</span>
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-500 animate-gradient-x">
@@ -101,28 +114,32 @@ export function PremiumHero() {
             </span>
           </motion.h1>
 
-          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-gray-300 max-w-2xl">
-            Connect with vetted roles at top global companies — built for ambitious African professionals ready to work anywhere.
+          <motion.p variants={fadeUp} className="text-xl sm:text-2xl text-gray-300 leading-relaxed max-w-3xl">
+            Connect with <span className="text-white font-semibold">Fortune 500 companies</span> and 
+            <span className="text-white font-semibold"> fast-growing startups</span> offering 
+            <span className="text-teal-400 font-semibold"> visa sponsorship</span> for African professionals.
           </motion.p>
 
           {/* search + CTAs */}
           <motion.div variants={fadeUp} className="mt-10 flex flex-col gap-6">
             <form onSubmit={handleSearch} className="flex w-full sm:w-auto">
-              <input
-                aria-label="Search jobs"
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search jobs, skills, or location"
-                className="w-full sm:w-96 px-5 py-3 rounded-l-xl text-gray-900 bg-white/95 border-0 focus:outline-none text-base"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 rounded-r-xl font-semibold text-white text-base shadow-lg hover:opacity-90 transition"
-                style={{ background: "linear-gradient(135deg,#00e6d3,#0077ff)" }}
-              >
-                Search
-              </button>
+              <div className="relative w-full sm:w-96">
+                <input
+                  aria-label="Search jobs"
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search jobs, skills, or location"
+                  className="w-full px-6 py-4 rounded-2xl text-gray-900 bg-white/95 backdrop-blur-sm border border-white/20 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent text-lg shadow-xl"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-2 px-6 py-2 rounded-xl font-semibold text-white text-base shadow-lg hover:opacity-90 transition-all duration-200 hover:scale-105"
+                  style={{ background: "linear-gradient(135deg,#00e6d3,#0077ff)" }}
+                >
+                  Search
+                </button>
+              </div>
             </form>
 
             {/* secondary CTAs */}

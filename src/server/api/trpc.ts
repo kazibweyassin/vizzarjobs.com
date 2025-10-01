@@ -128,3 +128,75 @@ export const protectedProcedure = t.procedure
       },
     });
   });
+
+/**
+ * Admin-only procedure
+ *
+ * Only accessible to users with ADMIN role
+ */
+export const adminProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session?.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    if (ctx.session.user.role !== "ADMIN") {
+      throw new TRPCError({ 
+        code: "FORBIDDEN",
+        message: "Admin access required"
+      });
+    }
+    return next({
+      ctx: {
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
+/**
+ * Employer-only procedure
+ *
+ * Only accessible to users with EMPLOYER or ADMIN role
+ */
+export const employerProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session?.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    if (!["EMPLOYER", "ADMIN"].includes(ctx.session.user.role)) {
+      throw new TRPCError({ 
+        code: "FORBIDDEN",
+        message: "Employer access required"
+      });
+    }
+    return next({
+      ctx: {
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
+/**
+ * Job seeker-only procedure
+ *
+ * Only accessible to users with JOB_SEEKER or ADMIN role
+ */
+export const jobSeekerProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session?.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    if (!["JOB_SEEKER", "ADMIN"].includes(ctx.session.user.role)) {
+      throw new TRPCError({ 
+        code: "FORBIDDEN",
+        message: "Job seeker access required"
+      });
+    }
+    return next({
+      ctx: {
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });

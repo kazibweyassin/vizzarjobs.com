@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import bcrypt from "bcryptjs";
 
 const onboardingSteps = [
   { title: "Complete personal information", description: "Fill in your basic personal details" },
@@ -10,6 +11,52 @@ const onboardingSteps = [
 ];
 
 export const usersRouter = createTRPCRouter({
+  createWithPassword: publicProcedure
+    .input(
+      z.object({
+        name: z.string().min(1, "Name is required"),
+        email: z.string().email("Invalid email address"),
+        password: z.string().min(8, "Password must be at least 8 characters"),
+        role: z.enum(["JOB_SEEKER", "EMPLOYER"]),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // Check if user already exists
+        const existingUser = await ctx.db.user.findUnique({
+          where: { email: input.email }
+        });
+
+        if (existingUser) {
+          throw new Error("User with this email already exists");
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(input.password, 12);
+
+        // Create the user
+        const user = await ctx.db.user.create({
+          data: {
+            name: input.name,
+            email: input.email,
+            password: hashedPassword,
+            role: input.role,
+            profileComplete: false,
+          },
+        });
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
+      } catch (error) {
+        console.error("User creation error:", error);
+        throw error;
+      }
+    }),
+
   updateRole: protectedProcedure
     .input(
       z.object({

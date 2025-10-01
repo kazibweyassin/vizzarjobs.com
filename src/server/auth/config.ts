@@ -3,6 +3,8 @@ import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 import { db } from "~/server/db";
 import { env } from "~/env";
@@ -52,6 +54,73 @@ export const authConfig = {
         })]
       : []
     ),
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        try {
+          const user = await db.user.findUnique({
+            where: { email: credentials.email as string }
+          });
+
+          if (!user || !user.password) {
+            return null;
+          }
+
+          // Check if account is locked
+          if (user.lockedUntil && user.lockedUntil > new Date()) {
+            throw new Error("Account is temporarily locked due to too many failed login attempts");
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
+
+          if (!isPasswordValid) {
+            // Increment failed login attempts
+            await db.user.update({
+              where: { id: user.id },
+              data: {
+                failedLoginAttempts: user.failedLoginAttempts + 1,
+                lockedUntil: user.failedLoginAttempts >= 4 
+                  ? new Date(Date.now() + 15 * 60 * 1000) // Lock for 15 minutes
+                  : null
+              }
+            });
+            return null;
+          }
+
+          // Reset failed login attempts on successful login
+          await db.user.update({
+            where: { id: user.id },
+            data: {
+              failedLoginAttempts: 0,
+              lockedUntil: null
+            }
+          });
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            role: user.role,
+            profileComplete: user.profileComplete,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
+        }
+      }
+    })
   ],
   adapter: PrismaAdapter(db),
   callbacks: {
@@ -67,7 +136,13 @@ export const authConfig = {
       };
     },
     async signIn({ user, account, profile }) {
-      return true;
+      // Allow OAuth sign-ins
+      if (account?.provider !== "credentials") {
+        return true;
+      }
+      
+      // For credentials provider, user is already validated in authorize function
+      return !!user;
     },
   },
   pages: {
@@ -89,5 +164,12 @@ export const authConfig = {
         console.error("Error setting default user role:", error);
       }
     },
+  },
+  session: {
+    strategy: "database",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 } satisfies NextAuthConfig;

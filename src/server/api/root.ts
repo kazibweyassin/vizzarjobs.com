@@ -3,6 +3,7 @@ import { jobsRouter } from "~/server/api/routers/jobs";
 import { companiesRouter } from "~/server/api/routers/companies";
 import { applicationsRouter } from "~/server/api/routers/applications";
 import { usersRouter } from "~/server/api/routers/users";
+import { authRouter } from "~/server/api/routers/auth";
 import { contactRouter } from "~/server/api/routers/contact";
 import { contactRequestsRouter } from "~/server/api/routers/contactRequests";
 import { matchingRouter } from "~/server/api/routers/matching";
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   companies: companiesRouter,
   applications: applicationsRouter,
   users: usersRouter,
+  auth: authRouter,
   contact: contactRouter,
   contactRequests: contactRequestsRouter,
   matching: matchingRouter,

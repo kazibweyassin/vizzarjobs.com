@@ -5,7 +5,8 @@ import Link from "next/link";
 import { JobFilters, type JobFiltersState } from "~/components/JobFilters";
 import { PremiumJobCard } from "~/components/PremiumJobCard";
 import { api } from "~/trpc/react";
-import { Loader2, Search, Filter, MapPin, Clock, Globe, Building2, ArrowRight } from "lucide-react";
+import { Loader2, Search, Filter, MapPin, Clock, Globe, Building2, ArrowRight, Briefcase } from "lucide-react";
+import { JobCardSkeleton } from "~/components/ui/skeleton";
 
 interface JobListProps {
   showFilters?: boolean;
@@ -102,7 +103,7 @@ export function JobList({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar - Desktop */}
@@ -121,12 +122,14 @@ export function JobList({
           <div className="flex-1">
             {/* Search feedback banner */}
             {isFromSearch && (
-              <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-4">
-                <div className="flex items-center gap-3">
-                  <Search className="w-5 h-5 text-blue-500" />
+              <div className="mb-8 bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-lg">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <Search className="w-6 h-6 text-blue-600" />
+                  </div>
                   <div>
-                    <h3 className="font-medium text-gray-800">Search results</h3>
-                    <p className="text-sm text-gray-600">
+                    <h3 className="font-bold text-lg text-slate-900">Search Results</h3>
+                    <p className="text-slate-600">
                       {filters.search && `Showing jobs matching "${filters.search}"`}
                       {filters.search && filters.location && " in "}
                       {filters.location && `${filters.location}`}
@@ -138,16 +141,18 @@ export function JobList({
             
             {/* Mobile Filter Toggle */}
             {showFilters && (
-              <div className="lg:hidden mb-6">
+              <div className="lg:hidden mb-8">
                 <button
                   onClick={() => setShowMobileFilters(!showMobileFilters)}
-                  className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center justify-center gap-3 bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl px-6 py-4 text-slate-700 hover:bg-white/90 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  <Filter className="w-4 h-4" />
-                  Filters
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Filter className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <span className="font-semibold">Filters</span>
                   {(filters.search || filters.location || filters.visaSponsorship !== undefined || 
                     filters.jobType || filters.experienceLevel || filters.techStack.length > 0) && (
-                    <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1 ml-2">
+                    <span className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs rounded-full px-3 py-1 font-semibold">
                       Active
                     </span>
                   )}
@@ -167,29 +172,31 @@ export function JobList({
             {/* Results Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
                   {filters.visaSponsorship === true ? "Visa Sponsored Jobs" : "Browse Jobs"}
                 </h1>
                 {!isLoading && (
-                  <div className="flex items-center mt-2">
-                    <span className="inline-block px-2.5 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full mr-2">
+                  <div className="flex items-center mt-3 gap-2">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">
+                      <Briefcase className="w-4 h-4" />
                       {jobs.length} jobs
                     </span>
                     {filters.search && (
-                      <span className="inline-block px-2.5 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full mr-2 flex items-center">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
                         Search: "{filters.search}"
-                        <button onClick={() => setFilters({...filters, search: ""})} className="ml-1.5 text-gray-500 hover:text-gray-800">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button onClick={() => setFilters({...filters, search: ""})} className="text-slate-500 hover:text-slate-800 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                           </svg>
                         </button>
                       </span>
                     )}
                     {filters.location && (
-                      <span className="inline-block px-2.5 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full mr-2 flex items-center">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                        <MapPin className="w-4 h-4" />
                         {filters.location}
-                        <button onClick={() => setFilters({...filters, location: ""})} className="ml-1.5 text-gray-500 hover:text-gray-800">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button onClick={() => setFilters({...filters, location: ""})} className="text-slate-500 hover:text-slate-800 transition-colors">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                           </svg>
                         </button>
@@ -202,27 +209,27 @@ export function JobList({
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <select 
-                    className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="appearance-none bg-white/80 backdrop-blur-sm border border-white/20 text-slate-700 py-3 px-4 pr-8 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                     defaultValue="newest"
                   >
                     <option value="newest">Newest First</option>
                     <option value="relevant">Most Relevant</option>
                     <option value="salary">Highest Salary</option>
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700">
                     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                       <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                     </svg>
                   </div>
                 </div>
                 
-                <button className="inline-flex items-center justify-center p-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                <button className="inline-flex items-center justify-center p-3 rounded-xl border border-white/20 bg-white/80 backdrop-blur-sm text-slate-700 hover:bg-white/90 transition-all duration-200 shadow-sm hover:shadow-md">
                   <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                   </svg>
                 </button>
                 
-                <button className="inline-flex items-center justify-center p-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                <button className="inline-flex items-center justify-center p-3 rounded-xl border border-white/20 bg-white/80 backdrop-blur-sm text-slate-700 hover:bg-white/90 transition-all duration-200 shadow-sm hover:shadow-md">
                   <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                   </svg>
@@ -232,21 +239,24 @@ export function JobList({
 
             {/* Loading State */}
             {isLoading && (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-                <span className="ml-2 text-gray-600">Loading jobs...</span>
+              <div className="space-y-6">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <JobCardSkeleton key={i} />
+                ))}
               </div>
             )}
 
             {/* No Results */}
             {!isLoading && jobs.length === 0 && (
-              <div className="text-center py-12">
-                <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="text-center py-16">
+                <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-10 h-10 text-slate-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
                   No jobs found
                 </h3>
-                <p className="text-gray-600 mb-6">
-                  Try adjusting your filters or search terms to find more jobs.
+                <p className="text-slate-600 mb-8 max-w-md mx-auto">
+                  Try adjusting your filters or search terms to find more jobs that match your criteria.
                 </p>
                 <button
                   onClick={() => setFilters({
@@ -257,9 +267,10 @@ export function JobList({
                     experienceLevel: undefined,
                     techStack: [],
                   })}
-                  className="inline-flex items-center gap-2 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
                 >
-                  Clear all filters
+                  <span>Clear all filters</span>
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
             )}
@@ -279,21 +290,22 @@ export function JobList({
 
                 {/* Load More Button */}
                 {hasNextPage && (
-                  <div 
-                    className="flex justify-center mt-8"
-                  >
+                  <div className="flex justify-center mt-12">
                     <button
                       onClick={handleLoadMore}
                       disabled={isFetchingNextPage}
-                      className="inline-flex items-center gap-2 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors disabled:bg-gray-300"
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-lg hover:shadow-xl hover:scale-105"
                     >
                       {isFetchingNextPage ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="w-5 h-5 animate-spin" />
                           Loading more...
                         </>
                       ) : (
-                        "Load more jobs"
+                        <>
+                          <span>Load more jobs</span>
+                          <ArrowRight className="w-5 h-5" />
+                        </>
                       )}
                     </button>
                   </div>

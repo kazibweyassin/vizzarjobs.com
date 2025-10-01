@@ -127,40 +127,44 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
   return (
     <>
       <Card 
-        className={`overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer ${
-          job.premium ? 'border-gradient-to-r from-yellow-400 to-orange-500 border-2' : ''
+        className={`group overflow-hidden transition-all duration-500 hover:shadow-2xl cursor-pointer border border-white/20 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:scale-[1.02] hover:-translate-y-1 ${
+          job.premium ? 'ring-2 ring-gradient-to-r from-yellow-400 to-orange-500' : ''
         }`}
         onClick={handleCardClick}
         style={{
           animationDelay: `${index * 100}ms`,
         }}
       >
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-4">
           <div className="flex items-start justify-between">
-            <div className="flex items-center space-x-3 flex-1">
+            <div className="flex items-center space-x-4 flex-1">
               {getCompanyLogo() ? (
                 <img 
                   src={getCompanyLogo()!} 
                   alt={getCompanyName()} 
-                  className="w-12 h-12 rounded-lg object-cover border border-gray-200"
+                  className="w-14 h-14 rounded-xl object-cover border border-white/20 shadow-sm"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200">
-                  <Building2 className="w-6 h-6 text-gray-400" />
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center border border-white/20 shadow-lg">
+                  <Building2 className="w-7 h-7 text-white" />
                 </div>
               )}
               
               <div className="flex-1 min-w-0">
-                <CardTitle className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1">
+                <CardTitle className="text-xl font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors">
                   {job.title}
                 </CardTitle>
-                <div className="flex items-center text-sm text-gray-600 mb-1">
-                  <Building2 className="w-4 h-4 mr-1 flex-shrink-0" />
-                  <span className="truncate">{getCompanyName()}</span>
+                <div className="flex items-center text-sm text-slate-600 mb-2">
+                  <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center mr-2">
+                    <Building2 className="w-3 h-3 text-blue-600" />
+                  </div>
+                  <span className="truncate font-medium">{getCompanyName()}</span>
                 </div>
                 {job.location && (
-                  <div className="flex items-center text-sm text-gray-500">
-                    <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                  <div className="flex items-center text-sm text-slate-500">
+                    <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-2">
+                      <MapPin className="w-3 h-3 text-green-600" />
+                    </div>
                     <span className="truncate">{job.location}</span>
                   </div>
                 )}
@@ -169,14 +173,14 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
             
             <div className="flex flex-col items-end space-y-2">
               {job.premium && (
-                <Badge variant="outline" className="flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-300 text-yellow-800">
-                  <Crown className="w-3 h-3" />
+                <Badge className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-lg">
+                  <Crown className="w-4 h-4" />
                   Premium
                 </Badge>
               )}
               {job.featured && (
-                <Badge variant="outline" className="flex items-center gap-1 bg-blue-100 border-blue-300 text-blue-800">
-                  <Star className="w-3 h-3" />
+                <Badge className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0 shadow-lg">
+                  <Star className="w-4 h-4" />
                   Featured
                 </Badge>
               )}
@@ -185,89 +189,94 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
         </CardHeader>
 
         <CardContent className="pt-0">
-          <div className="space-y-3">
+          <div className="space-y-4">
             {/* Job Details */}
-            <div className="flex flex-wrap gap-2 text-sm">
-              <Badge variant="outline" className="flex items-center gap-1">
-                <Briefcase className="w-3 h-3" />
+            <div className="flex flex-wrap gap-3 text-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
+                <Briefcase className="w-4 h-4" />
                 {formatJobType(job.jobType)}
-              </Badge>
-              <Badge variant="outline" className="flex items-center gap-1">
-                <Users className="w-3 h-3" />
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg font-medium">
+                <Users className="w-4 h-4" />
                 {formatExperienceLevel(job.experienceLevel)}
-              </Badge>
+              </div>
               {job.visaSponsorship && (
-                <Badge variant="outline" className="flex items-center gap-1 bg-green-100 border-green-300 text-green-800">
-                  <Users className="w-3 h-3" />
+                <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg font-medium">
+                  <Users className="w-4 h-4" />
                   Visa Sponsorship
-                </Badge>
+                </div>
               )}
             </div>
 
             {/* Salary */}
-            <div className="flex items-center text-sm text-gray-600">
-              <DollarSign className="w-4 h-4 mr-1" />
-              <span>{formatSalary(job.salaryMin, job.salaryMax)}</span>
+            <div className="flex items-center text-sm text-slate-600">
+              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                <DollarSign className="w-4 h-4 text-purple-600" />
+              </div>
+              <span className="font-semibold">{formatSalary(job.salaryMin, job.salaryMax)}</span>
             </div>
 
             {/* Description Preview */}
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-slate-600">
               {job.description ? (
-                <p className="line-clamp-2">{job.description}</p>
+                <p className="line-clamp-2 leading-relaxed">{job.description}</p>
               ) : (
-                <p className="text-gray-400 italic">No description available</p>
+                <p className="text-slate-400 italic">No description available</p>
               )}
             </div>
 
             {/* Premium Content Preview */}
             {job.premium && !hasPremiumAccess && (
-              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-sm text-yellow-800">
-                  <Lock className="w-4 h-4" />
-                  <span className="font-medium">Premium Job - Subscribe to view full details</span>
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
+                <div className="flex items-center gap-3 text-sm text-yellow-800 mb-2">
+                  <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                    <Lock className="w-4 h-4" />
+                  </div>
+                  <span className="font-semibold">Premium Job - Subscribe to view full details</span>
                 </div>
-                <p className="text-xs text-yellow-700 mt-1">
+                <p className="text-xs text-yellow-700 leading-relaxed">
                   This job includes additional benefits, detailed requirements, and direct employer contact.
                 </p>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-              <div className="flex items-center text-xs text-gray-500">
-                <Clock className="w-3 h-3 mr-1" />
-                <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+              <div className="flex items-center text-xs text-slate-500">
+                <div className="w-6 h-6 bg-slate-100 rounded-lg flex items-center justify-center mr-2">
+                  <Clock className="w-3 h-3" />
+                </div>
+                <span className="font-medium">Posted {new Date(job.createdAt).toLocaleDateString()}</span>
               </div>
               
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     window.location.href = `/jobs/${job.id}`;
                   }}
-                  className="inline-flex items-center gap-1 px-3 py-1 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
                 >
-                  <Eye className="w-3 h-3" />
+                  <Eye className="w-4 h-4" />
                   View Details
                 </button>
                 
                 <button
                   onClick={handleApplyClick}
-                  className={`inline-flex items-center gap-1 px-3 py-1 text-sm rounded-md transition-colors ${
+                  className={`inline-flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition-all duration-200 shadow-sm hover:shadow-md ${
                     job.premium && !hasPremiumAccess
-                      ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
-                      : 'text-white bg-blue-600 hover:bg-blue-700'
+                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700'
                   }`}
-                  disabled={job.premium && !hasPremiumAccess}
                 >
                   {job.premium && !hasPremiumAccess ? (
                     <>
-                      <Lock className="w-3 h-3" />
-                      Subscribe to Apply
+                      <Crown className="w-4 h-4" />
+                      Unlock Job
                     </>
                   ) : (
                     <>
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="w-4 h-4" />
                       Apply Now
                     </>
                   )}

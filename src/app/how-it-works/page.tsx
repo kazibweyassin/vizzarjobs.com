@@ -370,14 +370,14 @@ export default function HowItWorksPage() {
         <div className="absolute inset-0 overflow-hidden opacity-30">
           <div className="absolute -right-20 bottom-0 w-1/3 h-2/3">
             <img 
-              src="/images/how-it-works/job-search.jpg" 
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
               alt="Professional searching for jobs"
               className="w-full h-full object-cover rounded-tl-3xl"
             />
           </div>
           <div className="absolute -left-20 top-10 w-1/4 h-1/2">
             <img 
-              src="/images/how-it-works/candidate.jpg" 
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
               alt="Job candidate"
               className="w-full h-full object-cover rounded-br-3xl"
             />
