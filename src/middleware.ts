@@ -8,11 +8,6 @@ export async function middleware(request: NextRequest) {
     secret: process.env.AUTH_SECRET 
   });
 
-  // Debug logging
-  console.log('Middleware - Path:', request.nextUrl.pathname);
-  console.log('Middleware - Token:', token ? 'Present' : 'Missing');
-  console.log('Middleware - Role:', token?.role);
-
   // Security headers for all responses
   const response = NextResponse.next();
   
