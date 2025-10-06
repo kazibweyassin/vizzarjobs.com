@@ -95,10 +95,10 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
             
-            <Card className="border-l-4 border-l-purple-500">
+            <Card className="border-l-4 border-l-blue-500">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Companies</CardTitle>
-                <Building2 className="h-4 w-4 text-purple-500" />
+                <Building2 className="h-4 w-4 text-blue-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{companiesData?.count || '0'}</div>
@@ -166,8 +166,8 @@ export default function AdminDashboard() {
               
               <Card className="hover:shadow-md transition-all">
                 <CardContent className="p-6 flex flex-col items-center justify-center text-center">
-                  <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mb-3">
-                    <Building2 className="h-6 w-6 text-purple-600" />
+                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+                    <Building2 className="h-6 w-6 text-blue-600" />
                   </div>
                   <h3 className="font-semibold mb-2">Manage Companies</h3>
                   <p className="text-gray-500 text-sm mb-4">View and update all registered companies</p>
@@ -328,7 +328,7 @@ export default function AdminDashboard() {
                       <span className="text-sm font-medium">30%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-purple-600 h-2 rounded-full" style={{ width: '30%' }}></div>
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '30%' }}></div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Target: 50 partners by end of year</p>
                   </div>
@@ -377,8 +377,8 @@ export default function AdminDashboard() {
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="bg-purple-100 p-2 rounded-md mr-3">
-                        <Users className="h-4 w-4 text-purple-600" />
+                      <div className="bg-blue-100 p-2 rounded-md mr-3">
+                        <Users className="h-4 w-4 text-blue-600" />
                       </div>
                       <div>
                         <h3 className="font-medium">Referrals</h3>

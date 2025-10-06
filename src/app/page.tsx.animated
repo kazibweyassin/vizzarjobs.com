@@ -312,7 +312,7 @@ export default async function HomePage() {
               whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
             >
               <motion.div 
-                className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6"
                 whileHover={{ 
                   scale: 1.1,
                   y: [0, -5, 5, -5, 0],

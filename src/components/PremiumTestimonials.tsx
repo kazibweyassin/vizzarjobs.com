@@ -116,7 +116,7 @@ export function PremiumTestimonials() {
       location: "Seattle, USA",
       image: "/images/profiles/profile1.jpg",
       rating: 5,
-      bgColor: "from-blue-500 to-purple-600",
+      bgColor: "from-blue-500 to-blue-600",
       accentColor: "blue"
     },
     {
@@ -138,7 +138,7 @@ export function PremiumTestimonials() {
       location: "Sydney, Australia",
       image: "/images/about/cto.jpg",
       rating: 5,
-      bgColor: "from-purple-500 to-pink-600",
+      bgColor: "from-blue-500 to-blue-600",
       accentColor: "purple"
     },
   ];
@@ -289,7 +289,7 @@ export function PremiumTestimonials() {
           
           <motion.h2 
             variants={itemVariants}
-            className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl bg-gradient-to-r from-gray-900 via-blue-700 to-purple-700 bg-clip-text text-transparent"
+            className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl bg-gradient-to-r from-gray-900 via-blue-700 to-blue-700 bg-clip-text text-transparent"
           >
             Transforming Careers Globally
           </motion.h2>

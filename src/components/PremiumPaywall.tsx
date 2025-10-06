@@ -91,14 +91,14 @@ export function PremiumPaywall({ jobTitle, companyName, onClose }: PremiumPaywal
             </div>
 
             {/* Stats */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-8">
+            <div className="bg-gradient-to-r from-blue-50 to-blue-50 rounded-lg p-6 mb-8">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-2xl font-bold text-blue-600">85%</div>
                   <div className="text-sm text-gray-600">Higher Response Rate</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-600">3x</div>
+                  <div className="text-2xl font-bold text-blue-600">3x</div>
                   <div className="text-sm text-gray-600">More Interviews</div>
                 </div>
                 <div>
@@ -112,7 +112,7 @@ export function PremiumPaywall({ jobTitle, companyName, onClose }: PremiumPaywal
             <div className="space-y-3">
               <button
                 onClick={() => setShowPlans(true)}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 <Crown className="w-5 h-5" />
                 View Premium Plans
@@ -196,7 +196,7 @@ export function PremiumPaywall({ jobTitle, companyName, onClose }: PremiumPaywal
                       href="/pricing"
                       className={`block w-full text-center py-2 px-4 rounded-lg font-medium transition-colors ${
                         plan.popular
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+                          ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
                           : "bg-blue-600 text-white hover:bg-blue-700"
                       }`}
                     >

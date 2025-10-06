@@ -141,13 +141,13 @@ export function ProfileForm({ user }: ProfileFormProps) {
               onClick={() => setSelectedRole("EMPLOYER")}
               className={`w-full p-4 border-2 rounded-lg transition-all text-left ${
                 selectedRole === "EMPLOYER"
-                  ? "border-purple-300 bg-purple-50"
-                  : "border-gray-200 hover:border-purple-300 hover:bg-purple-50"
+                  ? "border-blue-300 bg-blue-50"
+                  : "border-gray-200 hover:border-blue-300 hover:bg-blue-50"
               }`}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Building2 className="w-6 h-6 text-purple-600" />
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Building2 className="w-6 h-6 text-blue-600" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900">Employer</h3>
@@ -164,7 +164,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                   </div>
                 </div>
                 {selectedRole === "EMPLOYER" && (
-                  <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-white rounded-full" />
                   </div>
                 )}

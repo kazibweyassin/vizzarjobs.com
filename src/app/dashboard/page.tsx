@@ -113,8 +113,8 @@ export default async function DashboardPage() {
               {/* Upcoming Events Card */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg p-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-                    <span className="text-purple-600 text-lg">📅</span>
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <span className="text-blue-600 text-lg">📅</span>
                   </div>
                   <h3 className="font-bold text-lg text-slate-900">Upcoming Events</h3>
                 </div>

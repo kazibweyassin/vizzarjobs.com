@@ -185,7 +185,7 @@ export default function PricingPage() {
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-2 text-sm font-medium">
+                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-center py-2 text-sm font-medium">
                     <Star className="w-4 h-4 inline mr-1" />
                     Most Popular
                   </div>
@@ -246,7 +246,7 @@ export default function PricingPage() {
                         plan.id === "basic"
                           ? "bg-gray-100 text-gray-600 cursor-not-allowed"
                           : plan.popular
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+                          ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
                           : "bg-blue-600 text-white hover:bg-blue-700"
                       }`}
                     >
@@ -293,8 +293,8 @@ export default function PricingPage() {
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-purple-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Direct Contact</h3>
               <p className="text-gray-600">
@@ -342,7 +342,7 @@ export default function PricingPage() {
 
         {/* CTA Section */}
         <div className="mt-20 text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-12 text-white">
             <h2 className="text-3xl font-bold mb-4">
               Ready to Accelerate Your Career?
             </h2>

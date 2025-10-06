@@ -124,7 +124,7 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
       case "JOB_SEEKER":
         return "bg-blue-100 text-blue-700 border-blue-200";
       case "EMPLOYER":
-        return "bg-purple-100 text-purple-700 border-purple-200";
+        return "bg-blue-100 text-blue-700 border-blue-200";
       case "EMPLOYEE":
         return "bg-green-100 text-green-700 border-green-200";
       case "ADMIN":
@@ -160,7 +160,7 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
                   className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-white shadow-lg">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center border-4 border-white shadow-lg">
                   <User className="w-10 h-10 text-white" />
                 </div>
               )}
@@ -306,8 +306,8 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
                       <p className="text-sm font-medium text-gray-600">Profile Views</p>
                       <p className="text-2xl font-bold text-gray-900">0</p>
                     </div>
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Eye className="w-6 h-6 text-purple-600" />
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Eye className="w-6 h-6 text-blue-600" />
                     </div>
                   </div>
                 </CardContent>
@@ -585,13 +585,13 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
                     onClick={() => setSelectedRole("EMPLOYER")}
                     className={`w-full p-4 border-2 rounded-lg transition-all text-left ${
                       selectedRole === "EMPLOYER"
-                        ? "border-purple-300 bg-purple-50"
-                        : "border-gray-200 hover:border-purple-300 hover:bg-purple-50"
+                        ? "border-blue-300 bg-blue-50"
+                        : "border-gray-200 hover:border-blue-300 hover:bg-blue-50"
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <Building2 className="w-6 h-6 text-purple-600" />
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Building2 className="w-6 h-6 text-blue-600" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900">Employer</h3>
@@ -608,7 +608,7 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
                         </div>
                       </div>
                       {selectedRole === "EMPLOYER" && (
-                        <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
                           <div className="w-2 h-2 bg-white rounded-full" />
                         </div>
                       )}

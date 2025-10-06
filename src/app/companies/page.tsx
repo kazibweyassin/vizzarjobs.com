@@ -168,7 +168,7 @@ export default function CompaniesPage() {
                           className="w-14 h-14 rounded-xl object-contain flex-shrink-0 shadow-sm"
                         />
                       ) : (
-                        <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                        <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-blue-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
                           <Building2 className="w-7 h-7 text-white" />
                         </div>
                       )}
@@ -211,8 +211,8 @@ export default function CompaniesPage() {
                       
                       {company._count && (
                         <div className="flex items-center gap-3 text-sm text-slate-600">
-                          <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <Briefcase className="w-4 h-4 text-purple-600" />
+                          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <Briefcase className="w-4 h-4 text-blue-600" />
                           </div>
                           <span className="font-medium">{company._count.jobs} open positions</span>
                         </div>

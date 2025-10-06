@@ -686,7 +686,7 @@ export default function HowItWorksPage() {
       </section>
       
       {/* Statistics Section with Animated Counters */}
-      <section className="py-16 bg-gradient-to-r from-blue-50 to-purple-50">
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div 
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
@@ -851,7 +851,7 @@ export default function HowItWorksPage() {
             >
               <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg flex items-center gap-2 relative overflow-hidden group">
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
                 />
                 <span className="relative z-10">{activeContent.cta.text}</span>
                 <motion.div
@@ -1027,7 +1027,7 @@ export default function HowItWorksPage() {
                 viewport={{ once: true }}
               >
                 <motion.div 
-                  className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold"
+                  className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold"
                   whileHover={{ scale: 1.1, rotate: 360 }}
                   transition={{ duration: 0.3 }}
                 >

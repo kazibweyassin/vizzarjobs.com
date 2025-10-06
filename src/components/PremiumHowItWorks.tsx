@@ -24,7 +24,7 @@ export function PremiumHowItWorks() {
       name: 'Apply to Premium Positions',
       description: 'Browse our exclusive visa-sponsored opportunities and apply with one click.',
       icon: FileCheck,
-      color: 'bg-purple-600',
+      color: 'bg-blue-600',
     },
     {
       id: 3,

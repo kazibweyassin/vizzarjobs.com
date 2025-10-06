@@ -77,7 +77,7 @@ export function MatchedJobs() {
           <Card key={job.id} className="overflow-hidden">
             <div className="relative">
               {job.featured && (
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-500" />
               )}
               
               <div className="absolute top-4 right-4">

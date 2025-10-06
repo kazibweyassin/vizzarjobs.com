@@ -156,7 +156,7 @@ export default function SignUpPage() {
 
         <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center pb-8 pt-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 via-blue-600 to-blue-700 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
               <Briefcase className="w-10 h-10 text-white" />
             </div>
             <CardTitle className="text-3xl font-bold text-slate-900 mb-2">

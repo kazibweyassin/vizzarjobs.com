@@ -139,7 +139,7 @@ export default function SignInPage() {
 
         <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
           <CardHeader className="text-center pb-6 pt-6">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 via-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
               <Briefcase className="w-8 h-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-slate-900 mb-1">

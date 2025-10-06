@@ -145,7 +145,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                   className="w-14 h-14 rounded-xl object-cover border border-white/20 shadow-sm"
                 />
               ) : (
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center border border-white/20 shadow-lg">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 via-blue-500 to-blue-600 flex items-center justify-center border border-white/20 shadow-lg">
                   <Building2 className="w-7 h-7 text-white" />
                 </div>
               )}
@@ -210,8 +210,8 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
 
             {/* Salary */}
             <div className="flex items-center text-sm text-slate-600">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                <DollarSign className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <DollarSign className="w-4 h-4 text-blue-600" />
               </div>
               <span className="font-semibold">{formatSalary(job.salaryMin, job.salaryMax)}</span>
             </div>
@@ -307,7 +307,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
               <div className="space-y-3">
                 <Link
                   href="/pricing"
-                  className="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+                  className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200"
                 >
                   View Premium Plans
                 </Link>

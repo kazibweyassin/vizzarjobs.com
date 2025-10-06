@@ -67,8 +67,8 @@ export default function ContactPage() {
                 </div>
                 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-4 h-4 text-purple-600" />
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Streamlined Process</h3>

@@ -213,8 +213,8 @@ export function Navigation() {
                         className="flex items-center gap-3 px-6 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 font-medium"
                         onClick={() => setIsProfileDropdownOpen(false)}
                       >
-                        <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                          <Briefcase className="w-4 h-4 text-purple-600" />
+                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <Briefcase className="w-4 h-4 text-blue-600" />
                         </div>
                         Employee Onboarding
                       </Link>

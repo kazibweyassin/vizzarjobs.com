@@ -122,7 +122,7 @@ export default function AboutUsPage() {
       image: "/images/about/coo.jpg",
       location: "Lagos, Nigeria",
       social: { linkedin: "#", twitter: "#", email: "amara@vizzarjobs.com" },
-      gradient: "from-purple-600 to-pink-600"
+      gradient: "from-blue-600 to-blue-700"
     },
     {
       name: "Daniel Ochieng",
@@ -158,9 +158,9 @@ export default function AboutUsPage() {
       icon: ShieldCheck,
       title: "Trust & Transparency",
       description: "We rigorously verify all employers and job listings to ensure they provide legitimate visa sponsorship and fair compensation.",
-      gradient: "from-purple-600 to-pink-600",
-      bgGradient: "from-purple-50 via-pink-50 to-purple-100",
-      iconBg: "bg-purple-500/10"
+      gradient: "from-blue-600 to-blue-700",
+      bgGradient: "from-blue-50 via-blue-50 to-blue-100",
+      iconBg: "bg-blue-500/10"
     },
     {
       icon: Heart,
@@ -195,7 +195,7 @@ export default function AboutUsPage() {
       title: "Platform Launch",
       description: "Official launch of the VizzarJobs platform, connecting candidates with employers across three continents.",
       icon: Rocket,
-      color: "purple",
+      color: "blue",
       achievement: "1,000+ Jobs Listed"
     },
     {
@@ -406,7 +406,7 @@ export default function AboutUsPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {[
               { title: "Our Mission", icon: Target, image: "/images/about/mission.jpg", desc: "To bridge the opportunity gap by connecting talented African professionals with global employers offering visa sponsorship, enabling career growth and knowledge exchange across borders.", gradient: "from-blue-600 to-cyan-600" },
-              { title: "Our Vision", icon: Globe, image: "/images/about/vision.jpg", desc: "To create a world where geography is no longer a barrier to opportunity, enabling the free flow of talent and ideas across borders while empowering professionals to build global careers.", gradient: "from-purple-600 to-pink-600" }
+              { title: "Our Vision", icon: Globe, image: "/images/about/vision.jpg", desc: "To create a world where geography is no longer a barrier to opportunity, enabling the free flow of talent and ideas across borders while empowering professionals to build global careers.", gradient: "from-blue-600 to-blue-700" }
             ].map((item, index) => (
             <motion.div
                 key={index}
@@ -477,7 +477,7 @@ export default function AboutUsPage() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {[
                 { title: "The Challenge", content: "We observed an abundance of talented professionals across Africa seeking global opportunities, and growing companies worldwide looking to diversify through international hiring.", gradient: "from-blue-600/20 to-cyan-600/20", border: "border-blue-400/30" },
-                { title: "The Solution", content: "Founded in 2023 in Cape Town, we built a platform specifically addressing visa sponsorship challenges, creating a trusted bridge between African talent and global employers.", gradient: "from-purple-600/20 to-pink-600/20", border: "border-purple-400/30" }
+                { title: "The Solution", content: "Founded in 2023 in Cape Town, we built a platform specifically addressing visa sponsorship challenges, creating a trusted bridge between African talent and global employers.", gradient: "from-blue-600/20 to-blue-700/20", border: "border-blue-400/30" }
               ].map((item, index) => (
             <motion.div 
                   key={index}
@@ -514,7 +514,7 @@ export default function AboutUsPage() {
 
       {/* Values - Ultra Enhanced */}
       <div className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center mb-20"
@@ -523,7 +523,7 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <Zap className="w-4 h-4 mr-2" />
@@ -532,7 +532,7 @@ export default function AboutUsPage() {
             <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
               Our Values
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mb-8"></div>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full mb-8"></div>
           </motion.div>
 
           <motion.div 
@@ -591,7 +591,7 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <Users className="w-4 h-4 mr-2" />
@@ -600,7 +600,7 @@ export default function AboutUsPage() {
             <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
               The People Behind VizzarJobs
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full"></div>
           </motion.div>
 
           <motion.div 
@@ -682,7 +682,7 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <TrendingUp className="w-4 h-4 mr-2" />
@@ -691,7 +691,7 @@ export default function AboutUsPage() {
             <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
               Our Journey
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full"></div>
           </motion.div>
 
           <div className="max-w-6xl mx-auto">
@@ -769,7 +769,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Testimonials Section - New Addition */}
-      <div className="py-32 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 relative overflow-hidden">
+      <div className="py-32 bg-gradient-to-br from-blue-900 via-blue-900 to-blue-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
           backgroundSize: '40px 40px'
@@ -840,7 +840,7 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <Award className="w-4 h-4 mr-2" />
@@ -849,13 +849,13 @@ export default function AboutUsPage() {
             <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
               Numbers That Matter
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full"></div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: Globe, number: `${counter.countries}+`, label: "Countries Reached", gradient: "from-blue-600 to-cyan-600", bg: "from-blue-50 to-cyan-50" },
-              { icon: Briefcase, number: `${counter.jobs}+`, label: "Job Opportunities", gradient: "from-purple-600 to-pink-600", bg: "from-purple-50 to-pink-50" },
+              { icon: Briefcase, number: `${counter.jobs}+`, label: "Job Opportunities", gradient: "from-blue-600 to-blue-700", bg: "from-blue-50 to-blue-50" },
               { icon: Users, number: `${counter.professionals}+`, label: "Registered Professionals", gradient: "from-green-600 to-teal-600", bg: "from-green-50 to-teal-50" },
               { icon: Building2, number: `${counter.companies}+`, label: "Hiring Companies", gradient: "from-orange-600 to-red-600", bg: "from-orange-50 to-red-50" }
             ].map((stat, index) => (
