@@ -170,14 +170,17 @@ model ContactRequest {
 
 enum JobType {
   FULL_TIME
+  PART_TIME
   CONTRACT
   INTERNSHIP
+  FREELANCE
 }
 
 enum ExperienceLevel {
   JUNIOR
   MID
   SENIOR
+  LEAD
 }
 
 enum UserRole {
