@@ -295,6 +295,46 @@ export const usersRouter = createTRPCRouter({
       });
     }),
 
+  getUserById: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view user details");
+      }
+
+      const user = await ctx.db.user.findUnique({
+        where: { id: input.userId },
+        include: {
+          employee: {
+            include: {
+              company: true
+            }
+          },
+          jobSeekerProfile: true,
+          applications: {
+            include: {
+              job: {
+                include: {
+                  company: true
+                }
+              }
+            },
+            orderBy: {
+              createdAt: "desc"
+            },
+            take: 10
+          }
+        }
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      return user;
+    }),
+
   getVerifiedUsers: protectedProcedure.query(async ({ ctx }) => {
     // Check if user is admin
     if (ctx.session.user.role !== "ADMIN") {

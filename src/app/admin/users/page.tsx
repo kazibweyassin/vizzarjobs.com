@@ -388,7 +388,14 @@ export default function AdminUsersPage() {
                   <Button className="w-full mb-2" size="sm">
                     Edit User
                   </Button>
-                  <Button variant="outline" className="w-full" size="sm">
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    size="sm"
+                    onClick={() => {
+                      window.open(`/admin/users/${selectedUserData.id}`, '_blank');
+                    }}
+                  >
                     View Profile
                   </Button>
                 </div>
