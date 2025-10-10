@@ -303,16 +303,47 @@ export const usersRouter = createTRPCRouter({
         throw new Error("Only administrators can view user details");
       }
 
-      const user = await ctx.db.user.findUnique({
-        where: { id: input.userId },
-        include: {
-          employee: {
+      try {
+        // First try to get basic user data
+        const basicUser = await ctx.db.user.findUnique({
+          where: { id: input.userId },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            verificationStatus: true,
+            profileComplete: true,
+            premium: true,
+            bio: true,
+            location: true,
+            website: true,
+            githubUrl: true,
+            linkedinUrl: true,
+            skills: true,
+            resume: true,
+            createdAt: true,
+            updatedAt: true,
+          }
+        });
+
+        if (!basicUser) {
+          throw new Error("User not found");
+        }
+
+        // Then try to get related data separately to avoid issues
+        const [employee, jobSeekerProfile, applications] = await Promise.all([
+          ctx.db.employee.findUnique({
+            where: { userId: input.userId },
             include: {
               company: true
             }
-          },
-          jobSeekerProfile: true,
-          applications: {
+          }).catch(() => null),
+          ctx.db.jobSeekerProfile.findUnique({
+            where: { userId: input.userId }
+          }).catch(() => null),
+          ctx.db.application.findMany({
+            where: { userId: input.userId },
             include: {
               job: {
                 include: {
@@ -324,15 +355,19 @@ export const usersRouter = createTRPCRouter({
               createdAt: "desc"
             },
             take: 10
-          }
-        }
-      });
+          }).catch(() => [])
+        ]);
 
-      if (!user) {
-        throw new Error("User not found");
+        return {
+          ...basicUser,
+          employee,
+          jobSeekerProfile,
+          applications
+        };
+      } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        throw new Error("Failed to fetch user details");
       }
-
-      return user;
     }),
 
   getVerifiedUsers: protectedProcedure.query(async ({ ctx }) => {

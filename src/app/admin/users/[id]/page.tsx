@@ -34,10 +34,18 @@ export default function AdminUserProfilePage() {
   const userId = params.id as string;
   const [activeTab, setActiveTab] = useState("overview");
 
+  // Debug logging
+  console.log("Admin user profile page - userId:", userId);
+
   // Fetch detailed user data
   const { data: userData, isLoading, error } = api.users.getUserById.useQuery(
     { userId },
-    { enabled: !!userId }
+    { 
+      enabled: !!userId,
+      onError: (error) => {
+        console.error("Error fetching user data:", error);
+      }
+    }
   );
 
   // Verification mutations
