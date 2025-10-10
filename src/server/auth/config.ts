@@ -187,8 +187,6 @@ export const authConfig = {
             profileComplete: false,
             // Auto-approve job seekers, require manual approval for employers
             verificationStatus: isJobSeeker ? "APPROVED" : "PENDING",
-            verificationDate: isJobSeeker ? new Date() : null,
-            verificationNotes: isJobSeeker ? "Auto-approved job seeker" : null,
           },
         });
       } catch (error) {

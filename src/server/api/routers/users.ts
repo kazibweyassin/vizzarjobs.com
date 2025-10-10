@@ -46,8 +46,6 @@ export const usersRouter = createTRPCRouter({
             profileComplete: false,
             // Auto-approve job seekers, require manual approval for employers
             verificationStatus: isJobSeeker ? "APPROVED" : "PENDING",
-            verificationDate: isJobSeeker ? new Date() : null,
-            verificationNotes: isJobSeeker ? "Auto-approved job seeker" : null,
           },
         });
 
@@ -251,8 +249,6 @@ export const usersRouter = createTRPCRouter({
         },
         data: {
           verificationStatus: "APPROVED",
-          verificationDate: new Date(),
-          verificationNotes: input.notes,
         },
       });
     }),
@@ -274,8 +270,6 @@ export const usersRouter = createTRPCRouter({
         },
         data: {
           verificationStatus: "REJECTED",
-          verificationDate: new Date(),
-          verificationNotes: input.notes,
         },
       });
     }),
@@ -297,7 +291,6 @@ export const usersRouter = createTRPCRouter({
         },
         data: {
           verificationStatus: "NEED_MORE_INFO",
-          verificationNotes: input.notes,
         },
       });
     }),
