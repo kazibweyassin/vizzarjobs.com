@@ -175,13 +175,20 @@ export const authConfig = {
   },
   events: {
     async createUser({ user }) {
-      // Set default role for new users
+      // Set default role and auto-approve job seekers
       try {
+        const userRole = user.role || "JOB_SEEKER";
+        const isJobSeeker = userRole === "JOB_SEEKER" || userRole === "USER";
+        
         await db.user.update({
           where: { id: user.id },
           data: {
-            role: "JOB_SEEKER",
+            role: userRole,
             profileComplete: false,
+            // Auto-approve job seekers, require manual approval for employers
+            verificationStatus: isJobSeeker ? "APPROVED" : "PENDING",
+            verificationDate: isJobSeeker ? new Date() : null,
+            verificationNotes: isJobSeeker ? "Auto-approved job seeker" : null,
           },
         });
       } catch (error) {

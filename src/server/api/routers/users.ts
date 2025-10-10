@@ -34,7 +34,9 @@ export const usersRouter = createTRPCRouter({
         // Hash the password
         const hashedPassword = await bcrypt.hash(input.password, 12);
 
-        // Create the user
+        // Create the user with appropriate verification status
+        const isJobSeeker = input.role === "JOB_SEEKER";
+        
         const user = await ctx.db.user.create({
           data: {
             name: input.name,
@@ -42,6 +44,10 @@ export const usersRouter = createTRPCRouter({
             password: hashedPassword,
             role: input.role,
             profileComplete: false,
+            // Auto-approve job seekers, require manual approval for employers
+            verificationStatus: isJobSeeker ? "APPROVED" : "PENDING",
+            verificationDate: isJobSeeker ? new Date() : null,
+            verificationNotes: isJobSeeker ? "Auto-approved job seeker" : null,
           },
         });
 

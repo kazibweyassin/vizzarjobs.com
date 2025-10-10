@@ -38,6 +38,28 @@ export default function AdminUsersPage() {
   const users = usersData?.users || [];
   const totalCount = usersData?.totalCount || 0;
 
+  // Verification mutations
+  const verifyUser = api.users.verifyUser.useMutation({
+    onSuccess: () => {
+      refetch();
+      setSelectedUser(null);
+    }
+  });
+
+  const rejectUser = api.users.rejectUser.useMutation({
+    onSuccess: () => {
+      refetch();
+      setSelectedUser(null);
+    }
+  });
+
+  const requestMoreInfo = api.users.requestMoreInfo.useMutation({
+    onSuccess: () => {
+      refetch();
+      setSelectedUser(null);
+    }
+  });
+
   const selectedUserData = selectedUser 
     ? users.find(user => user.id === selectedUser)
     : null;
@@ -329,6 +351,40 @@ export default function AdminUsersPage() {
                 </div>
                 
                 <div className="pt-4 border-t">
+                  {selectedUserData.verificationStatus === "PENDING" && (
+                    <div className="space-y-2 mb-4">
+                      <Button 
+                        className="w-full" 
+                        size="sm"
+                        onClick={() => {
+                          verifyUser.mutate({ 
+                            userId: selectedUserData.id,
+                            notes: "Approved by admin"
+                          });
+                        }}
+                        disabled={verifyUser.isPending}
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        {verifyUser.isPending ? "Approving..." : "Approve User"}
+                      </Button>
+                      <Button 
+                        variant="destructive" 
+                        className="w-full" 
+                        size="sm"
+                        onClick={() => {
+                          rejectUser.mutate({ 
+                            userId: selectedUserData.id,
+                            notes: "Rejected by admin"
+                          });
+                        }}
+                        disabled={rejectUser.isPending}
+                      >
+                        <XCircle className="w-4 h-4 mr-2" />
+                        {rejectUser.isPending ? "Rejecting..." : "Reject User"}
+                      </Button>
+                    </div>
+                  )}
+                  
                   <Button className="w-full mb-2" size="sm">
                     Edit User
                   </Button>
