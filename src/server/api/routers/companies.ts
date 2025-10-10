@@ -82,6 +82,72 @@ export const companiesRouter = createTRPCRouter({
         },
       });
     }),
+
+  getPendingVerifications: protectedProcedure
+    .input(z.object({ status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]) }))
+    .query(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view pending verifications");
+      }
+      
+      return await ctx.db.company.findMany({
+        where: { 
+          verificationStatus: input.status 
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          website: true,
+          industry: true,
+          location: true,
+          size: true,
+          verificationStatus: true,
+          verificationDate: true,
+          verificationNotes: true,
+          createdAt: true,
+          _count: {
+            select: {
+              jobs: true,
+              employees: true
+            }
+          }
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
+
+  getVerificationStats: protectedProcedure.query(async ({ ctx }) => {
+    // Check if user is admin
+    if (ctx.session.user.role !== "ADMIN") {
+      throw new Error("Only administrators can view verification statistics");
+    }
+
+    const total = await ctx.db.company.count();
+    const approved = await ctx.db.company.count({
+      where: { verificationStatus: "APPROVED" }
+    });
+    const pending = await ctx.db.company.count({
+      where: { verificationStatus: "PENDING" }
+    });
+    const rejected = await ctx.db.company.count({
+      where: { verificationStatus: "REJECTED" }
+    });
+    const needMoreInfo = await ctx.db.company.count({
+      where: { verificationStatus: "NEED_MORE_INFO" }
+    });
+
+    return { 
+      total, 
+      approved, 
+      pending, 
+      rejected, 
+      needMoreInfo 
+    };
+  }),
     
   verifyCompany: protectedProcedure
     .input(z.object({ 

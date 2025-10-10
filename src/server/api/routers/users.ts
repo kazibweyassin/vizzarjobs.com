@@ -107,6 +107,99 @@ export const usersRouter = createTRPCRouter({
     return { count: total, verified };
   }),
 
+  getAllUsers: protectedProcedure
+    .input(
+      z.object({
+        search: z.string().optional(),
+        role: z.enum(["USER", "JOB_SEEKER", "EMPLOYER", "EMPLOYEE", "ADMIN"]).optional(),
+        status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]).optional(),
+        limit: z.number().min(1).max(100).default(50),
+        cursor: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can view all users");
+      }
+
+      const { search, role, status, limit, cursor } = input;
+
+      const whereClause = {
+        AND: [
+          search ? {
+            OR: [
+              { name: { contains: search, mode: "insensitive" } },
+              { email: { contains: search, mode: "insensitive" } }
+            ]
+          } : {},
+          role ? { role } : {},
+          status ? { verificationStatus: status } : {},
+        ]
+      };
+
+      const users = await ctx.db.user.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        where: whereClause,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          verificationStatus: true,
+          profileComplete: true,
+          premium: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      const totalCount = await ctx.db.user.count({
+        where: whereClause,
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (users.length > limit) {
+        const nextItem = users.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      return {
+        users,
+        totalCount,
+        nextCursor,
+      };
+    }),
+
+  getVerifiedUsers: protectedProcedure.query(async ({ ctx }) => {
+    // Check if user is admin
+    if (ctx.session.user.role !== "ADMIN") {
+      throw new Error("Only administrators can view user statistics");
+    }
+
+    const total = await ctx.db.user.count();
+    const verified = await ctx.db.user.count({
+      where: { verificationStatus: "APPROVED" }
+    });
+    const pending = await ctx.db.user.count({
+      where: { verificationStatus: "PENDING" }
+    });
+    const rejected = await ctx.db.user.count({
+      where: { verificationStatus: "REJECTED" }
+    });
+
+    return { 
+      total, 
+      verified, 
+      pending, 
+      rejected 
+    };
+  }),
+
   getPendingVerifications: protectedProcedure
     .input(z.object({ status: z.enum(["PENDING", "APPROVED", "REJECTED", "NEED_MORE_INFO"]) }))
     .query(async ({ ctx, input }) => {
@@ -176,6 +269,28 @@ export const usersRouter = createTRPCRouter({
         data: {
           verificationStatus: "REJECTED",
           verificationDate: new Date(),
+          verificationNotes: input.notes,
+        },
+      });
+    }),
+
+  requestMoreInfo: protectedProcedure
+    .input(z.object({ 
+      userId: z.string(),
+      notes: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Check if user is admin
+      if (ctx.session.user.role !== "ADMIN") {
+        throw new Error("Only administrators can request more information");
+      }
+      
+      return ctx.db.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          verificationStatus: "NEED_MORE_INFO",
           verificationNotes: input.notes,
         },
       });
