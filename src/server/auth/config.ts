@@ -124,11 +124,28 @@ export const authConfig = {
   ],
   adapter: PrismaAdapter(db),
   callbacks: {
-    jwt: ({ token, user }) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         token.role = user.role;
         token.profileComplete = user.profileComplete;
       }
+      
+      // Always fetch the latest role from database for admin users
+      if (token.sub) {
+        try {
+          const dbUser = await db.user.findUnique({
+            where: { id: token.sub },
+            select: { role: true, profileComplete: true }
+          });
+          if (dbUser) {
+            token.role = dbUser.role;
+            token.profileComplete = dbUser.profileComplete;
+          }
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+        }
+      }
+      
       return token;
     },
     session: ({ session, token }) => {
