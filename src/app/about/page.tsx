@@ -242,14 +242,14 @@ export default function AboutUsPage() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen overflow-hidden">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-blue-100 min-h-screen overflow-hidden">
       {/* Ultra-Enhanced Hero Section */}
-      <div className="pt-24 pb-32 relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 overflow-hidden">
+      <div className="pt-24 pb-32 relative bg-gradient-to-br from-slate-900 via-blue-900 to-blue-900 overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-cyan-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
         </div>
         
         {/* Animated grid pattern */}
@@ -323,7 +323,7 @@ export default function AboutUsPage() {
             >
               About{" "}
               <motion.span 
-                className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 bg-clip-text text-transparent inline-block"
+                className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500 bg-clip-text text-transparent inline-block"
                 animate={{ 
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                 }}
@@ -447,7 +447,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Our Story - Enhanced */}
-      <div className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      <div className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
           backgroundSize: '40px 40px'
@@ -897,7 +897,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Ultra-Enhanced CTA Section */}
-      <div className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      <div className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-900 relative overflow-hidden">
         <div className="absolute inset-0">
           <Image 
             src="/images/about/cta-background.jpg" 
@@ -952,7 +952,7 @@ export default function AboutUsPage() {
             >
               Join Us in Shaping the 
               <motion.span 
-                className="block bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent"
+                className="block bg-gradient-to-r from-cyan-300 via-blue-300 to-blue-400 bg-clip-text text-transparent"
                 animate={{ 
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                 }}

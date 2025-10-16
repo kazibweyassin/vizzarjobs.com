@@ -138,7 +138,7 @@ export function Navigation() {
                       className="w-10 h-10 rounded-xl border-2 border-white shadow-sm group-hover:shadow-md transition-all duration-300"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
                       <User className="w-5 h-5 text-white" />
                     </div>
                   )}
@@ -151,7 +151,7 @@ export function Navigation() {
                         className={`text-xs font-semibold ${
                           session.user.role === "EMPLOYER" 
                             ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0" 
-                            : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0"
+                            : "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0"
                         }`}
                       >
                         {session.user.role === "EMPLOYER" ? "Employer" : "Job Seeker"}
@@ -291,7 +291,7 @@ export function Navigation() {
                         className="w-10 h-10 rounded-full border-2 border-blue-100"
                       />
                     ) : (
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                         <User className="w-5 h-5 text-white" />
                       </div>
                     )}
@@ -303,7 +303,7 @@ export function Navigation() {
                         variant="outline" 
                         className={`text-xs ${
                           session.user.role === "EMPLOYER" 
-                            ? "bg-indigo-50 text-indigo-700 border-indigo-200" 
+                            ? "bg-blue-50 text-blue-700 border-blue-200" 
                             : "bg-blue-50 text-blue-700 border-blue-200"
                         }`}
                       >

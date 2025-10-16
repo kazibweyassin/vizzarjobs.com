@@ -139,7 +139,7 @@ export function PremiumTestimonials() {
       image: "/images/about/cto.jpg",
       rating: 5,
       bgColor: "from-blue-500 to-blue-600",
-      accentColor: "purple"
+      accentColor: "blue"
     },
   ];
 

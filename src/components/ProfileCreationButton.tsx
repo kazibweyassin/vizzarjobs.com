@@ -44,7 +44,7 @@ export function ProfileCreationButton() {
       <div 
         className={`
           inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-semibold shadow-lg 
-          bg-gradient-to-r from-blue-500 to-indigo-600 
+          bg-gradient-to-r from-blue-500 to-blue-600 
           hover:shadow-xl hover:scale-105
           transition-all duration-300
           ${isAnimating ? 'animate-pulse scale-105' : ''}

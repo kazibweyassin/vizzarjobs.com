@@ -190,7 +190,7 @@ export function LeadCaptureModal({
                       className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-colors ${
                         isSubmitting
                           ? "bg-blue-400 cursor-not-allowed"
-                          : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                          : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
                       }`}
                     >
                       {isSubmitting ? "Submitting..." : "Get Personalized Opportunities"}

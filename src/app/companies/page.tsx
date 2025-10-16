@@ -236,7 +236,7 @@ export default function CompaniesPage() {
                       
                       <Link
                         href={`/companies/${company.id}`}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-sm hover:shadow-md"
                       >
                         View Jobs
                         <ExternalLink className="w-4 h-4" />
@@ -253,7 +253,7 @@ export default function CompaniesPage() {
                 <button
                   onClick={handleLoadMore}
                   disabled={isFetchingNextPage}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   {isFetchingNextPage ? (
                     <>

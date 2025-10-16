@@ -220,7 +220,7 @@ export default async function JobPage({ params, searchParams }: Props) {
                       </div>
                       
                       <div className="flex items-center gap-3">
-                        <Globe className="w-5 h-5 text-indigo-600" />
+                        <Globe className="w-5 h-5 text-blue-600" />
                         <div>
                           <h4 className="font-medium text-gray-900">Remote Work</h4>
                           <p className="text-gray-600">{job.remote ? "Remote friendly" : "On-site required"}</p>

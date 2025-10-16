@@ -31,7 +31,7 @@ export function PremiumHowItWorks() {
       name: 'Fast-Track Application Process',
       description: 'Get priority processing and direct connections with hiring managers.',
       icon: Briefcase,
-      color: 'bg-indigo-600',
+      color: 'bg-blue-600',
     },
     {
       id: 4,
@@ -45,7 +45,7 @@ export function PremiumHowItWorks() {
   return (
     <div className="relative py-16 sm:py-24 overflow-hidden">
       <div className="absolute inset-y-0 w-full h-80 xl:h-auto xl:w-1/2 xl:right-0">
-        <div className="h-full w-full bg-gradient-to-tr from-indigo-50 to-blue-50 xl:rounded-l-3xl relative">
+        <div className="h-full w-full bg-gradient-to-tr from-blue-50 to-blue-100 xl:rounded-l-3xl relative">
           {/* World map background image */}
           <div 
             className="absolute inset-0 bg-no-repeat bg-center bg-contain xl:bg-cover"

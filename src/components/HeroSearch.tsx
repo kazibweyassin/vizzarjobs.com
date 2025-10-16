@@ -285,7 +285,7 @@ export function HeroSearch() {
         
         <button 
           type="submit" 
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-md"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-md"
         >
           Search Jobs
         </button>

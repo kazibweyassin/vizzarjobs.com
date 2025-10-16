@@ -152,7 +152,7 @@ export function JobList({
                   <span className="font-semibold">Filters</span>
                   {(filters.search || filters.location || filters.visaSponsorship !== undefined || 
                     filters.jobType || filters.experienceLevel || filters.techStack.length > 0) && (
-                    <span className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs rounded-full px-3 py-1 font-semibold">
+                    <span className="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
                       Active
                     </span>
                   )}
@@ -267,7 +267,7 @@ export function JobList({
                     experienceLevel: undefined,
                     techStack: [],
                   })}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   <span>Clear all filters</span>
                   <ArrowRight className="w-5 h-5" />
@@ -294,7 +294,7 @@ export function JobList({
                     <button
                       onClick={handleLoadMore}
                       disabled={isFetchingNextPage}
-                      className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-lg hover:shadow-xl hover:scale-105"
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-lg hover:shadow-xl hover:scale-105"
                     >
                       {isFetchingNextPage ? (
                         <>

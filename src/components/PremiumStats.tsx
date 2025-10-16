@@ -41,7 +41,7 @@ export function PremiumStats() {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-700">
                 Premium Connections
               </span>
             </h2>

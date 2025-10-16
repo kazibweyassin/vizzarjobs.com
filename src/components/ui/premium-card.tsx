@@ -32,7 +32,7 @@ const PremiumCard: React.FC<CardProps> = ({
       {...props}
     >
       {premium && (
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
       )}
       {children}
     </motion.div>

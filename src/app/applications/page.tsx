@@ -107,7 +107,7 @@ export default function ApplicationsPage() {
             </p>
             <Link 
               href="/jobs/post"
-              className="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
             >
               <Building2 className="w-4 h-4" />
               Post a Job
@@ -247,7 +247,7 @@ export default function ApplicationsPage() {
                             href={application.job.applicationUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-purple-600 hover:text-purple-800 text-sm font-medium"
+                            className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium"
                           >
                             <ExternalLink className="w-4 h-4" />
                             External Link

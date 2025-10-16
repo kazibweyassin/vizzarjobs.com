@@ -38,7 +38,7 @@ const providerIcons = {
 const providerColors = {
   google: "bg-red-500 hover:bg-red-600",
   github: "bg-gray-900 hover:bg-gray-800",
-  discord: "bg-indigo-500 hover:bg-indigo-600",
+  discord: "bg-blue-500 hover:bg-blue-600",
 };
 
 export default function SignInPage() {

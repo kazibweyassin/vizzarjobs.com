@@ -180,7 +180,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                 </Badge>
               )}
               {job.featured && (
-                <Badge className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-0 shadow-lg">
+                <Badge className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 shadow-lg">
                   <Star className="w-4 h-4" />
                   Featured
                 </Badge>
@@ -267,7 +267,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                   className={`inline-flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition-all duration-200 shadow-sm hover:shadow-md ${
                     job.premium && !hasPremiumAccess
                       ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600'
-                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700'
+                      : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800'
                   }`}
                 >
                   {job.premium && !hasPremiumAccess ? (

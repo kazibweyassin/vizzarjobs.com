@@ -62,7 +62,7 @@ export default async function DashboardPage() {
             
             <div className="space-y-6">
               {/* Profile Completion Card */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 shadow-lg">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-100 shadow-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
                     <span className="text-blue-600 text-lg">✨</span>
@@ -79,7 +79,7 @@ export default async function DashboardPage() {
                   </div>
                   <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500 ease-out" 
+                      className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out" 
                       style={{ width: `${session.user.profileCompleteness || 60}%` }}
                     ></div>
                   </div>

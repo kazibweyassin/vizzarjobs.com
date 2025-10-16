@@ -137,7 +137,7 @@ export function getStatusColor(status: ApplicationStatus): string {
     case 'applied':
       return 'bg-blue-100 text-blue-800';
     case 'interviewing':
-      return 'bg-purple-100 text-purple-800';
+      return 'bg-blue-100 text-blue-800';
     case 'offer':
       return 'bg-green-100 text-green-800';
     case 'rejected':

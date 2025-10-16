@@ -108,7 +108,7 @@ export function PremiumFeatures() {
               <div className="h-full flex flex-col">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
                       <Shield className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">Premium Platform</h3>

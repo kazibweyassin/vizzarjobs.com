@@ -212,7 +212,7 @@ export default async function HomePage() {
       <PremiumFeatures />
       
       {/* Profile Creation Call-to-Action */}
-      <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Launch Your Global Career?</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">

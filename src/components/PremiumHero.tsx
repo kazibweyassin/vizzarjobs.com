@@ -148,7 +148,7 @@ export function PremiumHero() {
                 <Link href={session?.user ? "/onboarding" : "/auth/signin?callbackUrl=/onboarding"}>
                   <motion.div 
                     whileHover={{ scale: 1.05 }} 
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-medium shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-white font-medium shadow-lg bg-gradient-to-r from-blue-500 to-blue-600"
                   >
                     <User className="w-4 h-4" /> Create Your Profile <ArrowRight className="w-4 h-4" />
                   </motion.div>
@@ -186,7 +186,7 @@ export function PremiumHero() {
             <div className="flex items-center gap-2"><Briefcase className="w-5 h-5 text-teal-300" /><span>1000+ Jobs</span></div>
             <div className="flex items-center gap-2"><Globe className="w-5 h-5 text-cyan-300" /><span>Global Reach</span></div>
             <div className="flex items-center gap-2"><Award className="w-5 h-5 text-yellow-300" /><span>Elite Talent</span></div>
-            <div className="flex items-center gap-2"><Shield className="w-5 h-5 text-indigo-300" /><span>Trusted Platform</span></div>
+            <div className="flex items-center gap-2"><Shield className="w-5 h-5 text-blue-300" /><span>Trusted Platform</span></div>
           </motion.div>
         </motion.div>
       </div>

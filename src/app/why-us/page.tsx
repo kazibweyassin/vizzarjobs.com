@@ -87,7 +87,7 @@ export default function WhyUsPage() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-blue-100 min-h-screen">
       
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-teal-900 to-emerald-900 pt-24 pb-20">
@@ -167,7 +167,7 @@ export default function WhyUsPage() {
       </div>
       
       {/* Stats Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 py-16">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-extrabold text-white">
@@ -277,7 +277,7 @@ export default function WhyUsPage() {
           
           <div className="relative">
             {/* Connection line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-blue-500 to-indigo-600" />
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-blue-500 to-blue-600" />
             
             {/* Process steps */}
             <div className="relative z-10 space-y-12 md:space-y-16">
@@ -370,7 +370,7 @@ export default function WhyUsPage() {
         <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden">
             {/* Background with gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-700" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700" />
             
             {/* Decorative circles */}
             <div className="absolute top-0 right-0 -mt-16 -mr-16">
