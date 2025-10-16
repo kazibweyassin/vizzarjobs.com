@@ -230,15 +230,81 @@ export class RemoteOKImporter {
       .replace(/Share this job:.*?rok\.co short link\s*/gi, '')
       .replace(/Benefits\s*💰.*?Location\s*Remote\s*/gi, '');
     
-    // Convert line breaks to paragraphs
-    formatted = formatted
-      .replace(/\n\s*\n/g, '\n\n')
-      .split('\n\n')
-      .filter(para => para.trim().length > 0)
-      .map(para => `<p>${para.trim()}</p>`)
-      .join('\n');
+    // Clean up existing HTML structure
+    formatted = this.cleanHTMLStructure(formatted);
+    
+    // Convert to proper paragraphs
+    formatted = this.convertToParagraphs(formatted);
     
     return formatted;
+  }
+
+  private cleanHTMLStructure(text: string): string {
+    // Remove nested p tags and fix structure
+    let cleaned = text
+      // Remove empty paragraphs with only whitespace or &nbsp;
+      .replace(/<p[^>]*>\s*&nbsp;\s*<\/p>/gi, '')
+      .replace(/<p[^>]*>\s*<\/p>/gi, '')
+      // Remove div tags but keep content
+      .replace(/<div[^>]*>/gi, '')
+      .replace(/<\/div>/gi, '')
+      // Convert br tags to line breaks
+      .replace(/<br\s*\/?>/gi, '\n')
+      // Remove multiple consecutive line breaks
+      .replace(/\n\s*\n\s*\n+/g, '\n\n')
+      // Clean up nested p tags
+      .replace(/<p[^>]*>\s*<p[^>]*>/gi, '<p>')
+      .replace(/<\/p>\s*<\/p>/gi, '</p>')
+      // Remove empty h3 tags
+      .replace(/<h3[^>]*>\s*<\/h3>/gi, '')
+      // Fix specific formatting issues
+      .replace(/<p><h3>/gi, '<h3>')
+      .replace(/<\/h3><\/p>/gi, '</h3>')
+      .replace(/<p><strong>/gi, '<p><strong>')
+      .replace(/<\/strong><\/p>/gi, '</strong></p>')
+      // Clean up whitespace
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    return cleaned;
+  }
+
+  private convertToParagraphs(text: string): string {
+    // Split by double line breaks or HTML paragraph boundaries
+    const paragraphs = text
+      .split(/\n\s*\n|<\/p>\s*<p[^>]*>|<\/p>\s*<h3[^>]*>/gi)
+      .map(para => para.trim())
+      .filter(para => para.length > 0 && para !== '<p>' && para !== '</p>')
+      .map(para => {
+        // Remove existing p tags
+        para = para.replace(/<\/?p[^>]*>/gi, '');
+        
+        // Check if it's a heading (starts with h3 or contains strong text)
+        if (para.match(/^<h3[^>]*>/) || para.match(/^<strong[^>]*>/)) {
+          return para; // Keep headings as is
+        }
+        
+        // Check if it's a section header (short text, ends with colon, or contains strong)
+        if (para.length < 100 && (para.endsWith(':') || para.includes('<strong>'))) {
+          return `<h3>${para.replace(/<\/?strong[^>]*>/gi, '')}</h3>`;
+        }
+        
+        // Check for numbered lists (1., 2., etc.)
+        if (para.match(/^\d+\.\s/)) {
+          return `<p>${para}</p>`;
+        }
+        
+        // Check for bullet points (-, •, *)
+        if (para.match(/^[-•*]\s/)) {
+          return `<p>${para}</p>`;
+        }
+        
+        // Regular paragraph
+        return `<p>${para}</p>`;
+      })
+      .join('\n');
+    
+    return paragraphs;
   }
 
 
