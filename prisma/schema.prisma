@@ -8,50 +8,50 @@ datasource db {
 }
 
 model Company {
-  id                String              @id @default(cuid())
-  name              String
-  description       String?
-  website           String?
-  logo              String?
-  size              String?
-  industry          String?
-  location          String?
+  id                 String             @id @default(cuid())
+  name               String
+  description        String?
+  website            String?
+  logo               String?
+  size               String?
+  industry           String?
+  location           String?
   verificationStatus VerificationStatus @default(PENDING)
-  verificationDate  DateTime?
-  verificationNotes String?
-  verified          Boolean             @default(false)
-  reputation        Int                 @default(0)
-  premium           Boolean             @default(false)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  jobs              Job[]
-  employees         Employee[]
+  verificationDate   DateTime?
+  verificationNotes  String?
+  verified           Boolean            @default(false)
+  reputation         Int                @default(0)
+  premium            Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  employees          Employee[]
+  jobs               Job[]
 }
 
 model Job {
-  id              String         @id @default(cuid())
+  id              String           @id @default(cuid())
   title           String
   description     String?
-  company         Company        @relation(fields: [companyId], references: [id], map: "companyRelation")
   companyId       String
   location        String?
+  skills          String[]         @default([])
+  remote          Boolean          @default(false)
+  visaSponsorship Boolean          @default(true)
+  featured        Boolean          @default(false)
+  premium         Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   country         String?
-  jobType         JobType?
-  experienceLevel ExperienceLevel?
-  salaryMin       Int?
-  salaryMax       Int?
+  techStack       String[]         @default([])
+  requirements    String[]         @default([])
   applicationUrl  String?
-  requirements    String[]       @default([])
-  skills          String[]       @default([])
-  techStack       String[]       @default([])
-  remote          Boolean        @default(false)
-  visaSponsorship Boolean        @default(true)
-  featured        Boolean        @default(false)
-  premium         Boolean        @default(false)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  jobType         JobType?
+  salaryMax       Int?
+  salaryMin       Int?
+  experienceLevel ExperienceLevel?
   applications    Application[]
-  
+  company         Company          @relation(fields: [companyId], references: [id], map: "companyRelation")
+
   @@index([companyId])
 }
 
@@ -99,41 +99,40 @@ model Session {
 }
 
 model User {
-  id                 String              @id @default(cuid())
-  name               String?
-  email              String?             @unique
-  emailVerified      DateTime?
-  image              String?
-  password           String?             // For password-based authentication
-  role               UserRole            @default(USER)
-  bio                String?
-  location           String?
-  resume             String?
-  website            String?
-  githubUrl          String?
-  linkedinUrl        String?
-  skills             String[]
-  verificationStatus VerificationStatus  @default(PENDING)
-  verified           Boolean             @default(false)
-  premium            Boolean             @default(false)
-  premiumTier        String?
-  reputation         Int                 @default(0)
-  profileComplete     Boolean             @default(false)
-  // Security fields
-  failedLoginAttempts Int                @default(0)
-  lockedUntil         DateTime?
-  passwordResetToken  String?
+  id                   String               @id @default(cuid())
+  name                 String?
+  email                String?              @unique
+  emailVerified        DateTime?
+  image                String?
+  role                 UserRole             @default(USER)
+  bio                  String?
+  location             String?
+  resume               String?
+  website              String?
+  githubUrl            String?
+  linkedinUrl          String?
+  skills               String[]
+  verificationStatus   VerificationStatus   @default(PENDING)
+  verified             Boolean              @default(false)
+  premium              Boolean              @default(false)
+  premiumTier          String?
+  reputation           Int                  @default(0)
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  profileComplete      Boolean              @default(false)
+  failedLoginAttempts  Int                  @default(0)
+  lockedUntil          DateTime?
+  password             String?
   passwordResetExpires DateTime?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  accounts           Account[]
-  sessions           Session[]
-  applications       Application[]
-  matchingPreferences MatchingPreferences?
-  employee           Employee?
-  jobSeekerProfile   JobSeekerProfile?
-  subscriptions      Subscription[]
-  
+  passwordResetToken   String?
+  accounts             Account[]
+  applications         Application[]
+  employee             Employee?
+  jobSeekerProfile     JobSeekerProfile?
+  matchingPreferences  MatchingPreferences?
+  sessions             Session[]
+  subscriptions        Subscription[]
+
   @@index([email])
 }
 
@@ -168,11 +167,138 @@ model ContactRequest {
   @@index([contactEmail])
 }
 
+model Document {
+  id         String   @id @default(cuid())
+  name       String
+  type       String
+  url        String
+  employeeId String
+  uploadedAt DateTime @default(now())
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+}
+
+model OnboardingStep {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  employeeId  String
+  completedAt DateTime?
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  interests String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+model MatchingPreferences {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  jobRoles              String[]
+  skills                String[]
+  industries            String[]
+  locations             String[]
+  remotePreference      Boolean  @default(false)
+  salaryMin             Int?
+  salaryMax             Int?
+  experienceLevels      String[]
+  employmentTypes       String[]
+  visaSponsorshipNeeded Boolean  @default(true)
+  relocationWillingness Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Employee {
+  id               String           @id @default(cuid())
+  userId           String           @unique
+  companyId        String
+  position         String
+  department       String?
+  startDate        DateTime
+  employmentType   EmploymentType   @default(FULL_TIME)
+  salary           Int?
+  manager          String?
+  emergencyContact String?
+  emergencyPhone   String?
+  onboardingStatus OnboardingStatus @default(PENDING)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  documents        Document[]
+  company          Company          @relation(fields: [companyId], references: [id])
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  onboardingSteps  OnboardingStep[]
+
+  @@index([userId])
+  @@index([companyId])
+}
+
+model JobSeekerProfile {
+  id                      String   @id @default(cuid())
+  userId                  String   @unique
+  title                   String
+  skills                  String
+  preferredJobTypes       String[]
+  desiredSalary           String
+  location                String
+  willingToRelocate       Boolean  @default(false)
+  visaSponsorshipRequired Boolean  @default(false)
+  linkedInProfile         String?
+  portfolioUrl            String?
+  resumeUrl               String?
+  lastUpdated             DateTime @default(now())
+  createdAt               DateTime @default(now())
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  userId             String
+  planId             String
+  planName           String
+  price              Decimal            @db.Decimal(10, 2)
+  currency           String             @default("USD")
+  status             SubscriptionStatus @default(ACTIVE)
+  billingCycle       BillingCycle       @default(MONTHLY)
+  startDate          DateTime           @default(now())
+  endDate            DateTime?
+  nextBillingDate    DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  externalCustomerId String?
+  externalId         String?
+  paymentMethod      PaymentMethod      @default(CARD)
+  paymentProvider    PaymentProvider    @default(FLUTTERWAVE)
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
 enum JobType {
   FULL_TIME
-  PART_TIME
   CONTRACT
   INTERNSHIP
+  PART_TIME
   FREELANCE
 }
 
@@ -187,8 +313,8 @@ enum UserRole {
   USER
   JOB_SEEKER
   EMPLOYER
-  EMPLOYEE
   ADMIN
+  EMPLOYEE
 }
 
 enum ApplicationStatus {
@@ -232,133 +358,6 @@ enum OnboardingStatus {
   IN_PROGRESS
   COMPLETED
   CANCELED
-}
-
-model Document {
-  id          String    @id @default(cuid())
-  name        String
-  type        String
-  url         String
-  employeeId  String
-  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  uploadedAt  DateTime  @default(now())
-  
-  @@index([employeeId])
-}
-
-model OnboardingStep {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  completed   Boolean   @default(false)
-  employeeId  String
-  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  completedAt DateTime?
-  dueDate     DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  @@index([employeeId])
-}
-
-model Lead {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  interests String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([email])
-}
-
-model MatchingPreferences {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  jobRoles              String[]
-  skills                String[]
-  industries            String[]
-  locations             String[]
-  remotePreference      Boolean  @default(false)
-  salaryMin             Int?
-  salaryMax             Int?
-  experienceLevels      String[]
-  employmentTypes       String[]
-  visaSponsorshipNeeded Boolean  @default(true)
-  relocationWillingness Boolean  @default(true)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-  
-  @@index([userId])
-}
-
-model Employee {
-  id                String         @id @default(cuid())
-  userId            String         @unique
-  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  companyId         String
-  company           Company        @relation(fields: [companyId], references: [id])
-  position          String
-  department        String?
-  startDate         DateTime
-  employmentType    EmploymentType @default(FULL_TIME)
-  salary            Int?
-  manager           String?
-  emergencyContact  String?
-  emergencyPhone    String?
-  documents         Document[]
-  onboardingStatus  OnboardingStatus @default(PENDING)
-  onboardingSteps   OnboardingStep[]
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-  
-  @@index([userId])
-  @@index([companyId])
-}
-
-model JobSeekerProfile {
-  id                      String        @id @default(cuid())
-  user                    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                  String        @unique
-  title                   String
-  skills                  String
-  preferredJobTypes       String[]
-  desiredSalary           String
-  location                String
-  willingToRelocate       Boolean       @default(false)
-  visaSponsorshipRequired Boolean       @default(false)
-  linkedInProfile         String?
-  portfolioUrl            String?
-  resumeUrl               String?
-  lastUpdated             DateTime      @default(now())
-  createdAt               DateTime      @default(now())
-
-  @@index([userId])
-}
-
-model Subscription {
-  id                String            @id @default(cuid())
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  planId            String
-  planName          String
-  price             Decimal           @db.Decimal(10, 2)
-  currency          String            @default("USD")
-  status            SubscriptionStatus @default(ACTIVE)
-  billingCycle      BillingCycle      @default(MONTHLY)
-  startDate         DateTime          @default(now())
-  endDate           DateTime?
-  nextBillingDate   DateTime?
-  paymentMethod     PaymentMethod     @default(CARD)
-  paymentProvider   PaymentProvider   @default(FLUTTERWAVE)
-  externalId        String?           // External payment provider ID
-  externalCustomerId String?          // External customer ID
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-
-  @@index([userId])
-  @@index([status])
 }
 
 enum SubscriptionStatus {

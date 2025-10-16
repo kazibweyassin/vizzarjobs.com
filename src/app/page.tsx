@@ -1,5 +1,6 @@
+'use client';
+
 import Link from "next/link";
-import { api } from "~/trpc/server";
 import { RoleUpdateHandler } from "~/components/RoleUpdateHandler";
 import {
   Search,
@@ -27,6 +28,8 @@ import { PremiumHowItWorks } from "~/components/PremiumHowItWorks";
 import { PremiumCard } from "~/components/ui/premium-card";
 import HomePageClient from "~/components/HomePageClient";
 import { ProfileCreationButton } from "~/components/ProfileCreationButton";
+import { api } from "~/trpc/react";
+import { useEffect, useState } from "react";
 
 // Define proper TypeScript interfaces
 interface Company {
@@ -82,122 +85,122 @@ const getRelativeTime = (date: Date): string => {
   }
 };
 
-export default async function HomePage() {
-  let featuredJobs: Job[] = [];
-  
-  try {
-    const apiJobs = await api.jobs.getFeatured({ limit: 6 });
-   
-    if (Array.isArray(apiJobs) && apiJobs.length > 0) {
-      featuredJobs = apiJobs;
+// Helper function to get fallback jobs
+const getFallbackJobs = (): Job[] => [
+  {
+    id: '1',
+    title: 'Senior Frontend Developer',
+    company: 'TechFlow Solutions',
+    companyRelation: {
+      name: 'TechFlow Solutions',
+      location: 'New York, USA'
+    },
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+    visaSponsorship: true,
+    jobType: 'FULL_TIME',
+    experienceLevel: 'SENIOR',
+    salary: {
+      min: 90000,
+      max: 130000,
+      currency: 'USD'
     }
-   
-  } catch (error) {
-    // Silently handle error and use fallback data
-    // Enhanced fallback data with more realistic information
-    
-  // Store the content in a variable so we can wrap it with the client component
-    featuredJobs = [
-      {
-        id: '1',
-        title: 'Senior Frontend Developer',
-        company: 'TechFlow Solutions',
-        companyRelation: {
-          name: 'TechFlow Solutions',
-          location: 'New York, USA'
-        },
-        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        visaSponsorship: true,
-        jobType: 'FULL_TIME',
-        experienceLevel: 'SENIOR',
-        salary: {
-          min: 90000,
-          max: 130000,
-          currency: 'USD'
-        }
-      },
-      {
-        id: '2',
-        title: 'Backend Engineer',
-        company: 'CloudScale Inc',
-        companyRelation: {
-          name: 'CloudScale Inc',
-          location: 'Remote'
-        },
-        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-        visaSponsorship: true,
-        jobType: 'FULL_TIME',
-        experienceLevel: 'MID',
-        salary: {
-          min: 75000,
-          max: 105000,
-          currency: 'USD'
-        }
-      },
-      {
-        id: '3',
-        title: 'DevOps Engineer',
-        company: 'InfraMax',
-        companyRelation: {
-          name: 'InfraMax',
-          location: 'London, UK'
-        },
-        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        visaSponsorship: false,
-        jobType: 'FULL_TIME',
-        experienceLevel: 'SENIOR'
-      },
-      {
-        id: '4',
-        title: 'Full Stack Developer',
-        company: 'StartupHub',
-        companyRelation: {
-          name: 'StartupHub',
-          location: 'Berlin, Germany'
-        },
-        createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
-        visaSponsorship: true,
-        jobType: 'FULL_TIME',
-        experienceLevel: 'MID',
-        salary: {
-          min: 60000,
-          max: 85000,
-          currency: 'EUR'
-        }
-      },
-      {
-        id: '5',
-        title: 'Mobile App Developer',
-        company: 'AppCraft Studios',
-        companyRelation: {
-          name: 'AppCraft Studios',
-          location: 'Toronto, Canada'
-        },
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        visaSponsorship: true,
-        jobType: 'CONTRACT',
-        experienceLevel: 'SENIOR'
-      },
-      {
-        id: '6',
-        title: 'Data Scientist',
-        company: 'DataVision AI',
-        companyRelation: {
-          name: 'DataVision AI',
-          location: 'San Francisco, USA'
-        },
-        createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), // 6 days ago
-        visaSponsorship: true,
-        jobType: 'FULL_TIME',
-        experienceLevel: 'MID',
-        salary: {
-          min: 110000,
-          max: 150000,
-          currency: 'USD'
-        }
-      }
-    ];
+  },
+  {
+    id: '2',
+    title: 'Backend Engineer',
+    company: 'CloudScale Inc',
+    companyRelation: {
+      name: 'CloudScale Inc',
+      location: 'Remote'
+    },
+    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+    visaSponsorship: true,
+    jobType: 'FULL_TIME',
+    experienceLevel: 'MID',
+    salary: {
+      min: 75000,
+      max: 105000,
+      currency: 'USD'
+    }
+  },
+  {
+    id: '3',
+    title: 'DevOps Engineer',
+    company: 'InfraMax',
+    companyRelation: {
+      name: 'InfraMax',
+      location: 'London, UK'
+    },
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+    visaSponsorship: false,
+    jobType: 'FULL_TIME',
+    experienceLevel: 'SENIOR'
+  },
+  {
+    id: '4',
+    title: 'Full Stack Developer',
+    company: 'StartupHub',
+    companyRelation: {
+      name: 'StartupHub',
+      location: 'Berlin, Germany'
+    },
+    createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
+    visaSponsorship: true,
+    jobType: 'FULL_TIME',
+    experienceLevel: 'MID',
+    salary: {
+      min: 60000,
+      max: 85000,
+      currency: 'EUR'
+    }
+  },
+  {
+    id: '5',
+    title: 'Mobile App Developer',
+    company: 'AppCraft Studios',
+    companyRelation: {
+      name: 'AppCraft Studios',
+      location: 'Toronto, Canada'
+    },
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+    visaSponsorship: true,
+    jobType: 'CONTRACT',
+    experienceLevel: 'SENIOR'
+  },
+  {
+    id: '6',
+    title: 'Data Scientist',
+    company: 'DataVision AI',
+    companyRelation: {
+      name: 'DataVision AI',
+      location: 'San Francisco, USA'
+    },
+    createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), // 6 days ago
+    visaSponsorship: true,
+    jobType: 'FULL_TIME',
+    experienceLevel: 'MID',
+    salary: {
+      min: 110000,
+      max: 150000,
+      currency: 'USD'
+    }
   }
+];
+
+export default function HomePage() {
+  const [featuredJobs, setFeaturedJobs] = useState<Job[]>([]);
+  
+  // Use client-side tRPC query
+  const { data: apiJobs, isLoading, error } = api.jobs.getFeatured.useQuery({ limit: 6 });
+  
+  useEffect(() => {
+    if (apiJobs && Array.isArray(apiJobs) && apiJobs.length > 0) {
+      setFeaturedJobs(apiJobs);
+    } else if (error || (!isLoading && (!apiJobs || apiJobs.length === 0))) {
+      console.log('No featured jobs found in database, using fallback data');
+      setFeaturedJobs(getFallbackJobs());
+    }
+  }, [apiJobs, isLoading, error]);
 
   return (
     <div className="bg-white">
