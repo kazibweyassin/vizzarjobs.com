@@ -76,9 +76,11 @@ export async function POST(request: NextRequest) {
               remote: jobData.remote || false,
               applicationUrl: jobData.applicationUrl,
               companyId: company.id,
+              requirements: jobData.requirements || [],
+              skills: jobData.skills || [],
+              techStack: jobData.techStack || [],
               premium: false,
               featured: false,
-              active: true
             }
           });
 
@@ -156,9 +158,11 @@ export async function POST(request: NextRequest) {
               remote: jobData.remote || false,
               applicationUrl: jobData.applicationUrl,
               companyId: company.id,
+              requirements: jobData.requirements || [],
+              skills: jobData.skills || [],
+              techStack: jobData.techStack || [],
               premium: false,
               featured: false,
-              active: true
             }
           });
 

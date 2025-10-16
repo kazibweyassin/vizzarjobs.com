@@ -21,8 +21,8 @@ interface ParsedJob {
   location: string;
   country: string;
   applicationUrl: string;
-  jobType: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP' | 'FREELANCE';
-  experienceLevel: 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD';
+  jobType: JobType;
+  experienceLevel: ExperienceLevel;
   salaryMin?: number;
   salaryMax?: number;
   visaSponsorship: boolean;
@@ -124,7 +124,7 @@ export class RemoteOKImporter {
     };
   }
   
-  private determineJobType(tags: string[]): 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP' | 'FREELANCE' {
+  private determineJobType(tags: string[]): JobType {
     const tagString = tags.join(' ').toLowerCase();
     
     if (tagString.includes('part-time') || tagString.includes('part time')) {
@@ -143,7 +143,7 @@ export class RemoteOKImporter {
     return 'FULL_TIME'; // Default
   }
   
-  private determineExperienceLevel(title: string, description: string): 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD' {
+  private determineExperienceLevel(title: string, description: string): ExperienceLevel {
     const text = `${title} ${description}`.toLowerCase();
     
     if (text.includes('senior') || text.includes('lead') || text.includes('principal') || text.includes('architect')) {

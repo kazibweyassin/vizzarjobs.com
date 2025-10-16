@@ -28,6 +28,9 @@ interface ParsedJob {
   applicationUrl: string;
   country?: string;
   companyUrl?: string;
+  requirements: string[];
+  skills: string[];
+  techStack: string[];
 }
 
 export class RapidAPIImporter {
@@ -166,7 +169,10 @@ export class RapidAPIImporter {
       visaSponsorship: this.checkVisaSponsorship(rapidJob),
       applicationUrl: rapidJob.url || '#',
       country: this.extractCountry(rapidJob.location),
-      companyUrl: undefined
+      companyUrl: undefined,
+      requirements: this.extractRequirements(rapidJob),
+      skills: this.extractSkills(rapidJob),
+      techStack: this.extractTechStack(rapidJob)
     };
   }
 
@@ -303,6 +309,105 @@ export class RapidAPIImporter {
     };
     
     return levelMap[level.toLowerCase()] || 'MID';
+  }
+
+  /**
+   * Extract requirements from job description
+   */
+  private extractRequirements(job: RapidAPIJob): string[] {
+    if (!job.description) return [];
+    
+    const requirements: string[] = [];
+    const description = job.description.toLowerCase();
+    
+    // Common requirement patterns
+    const requirementPatterns = [
+      /(?:requirements?|qualifications?|must have|should have|experience with)[:.]?\s*([^.!?]+)/gi,
+      /(?:degree|education|bachelor|master|phd|university|college)[:.]?\s*([^.!?]+)/gi,
+      /(?:years? of experience|experience level)[:.]?\s*([^.!?]+)/gi
+    ];
+    
+    requirementPatterns.forEach(pattern => {
+      const matches = description.match(pattern);
+      if (matches) {
+        matches.forEach(match => {
+          const cleanMatch = match.replace(/^(?:requirements?|qualifications?|must have|should have|experience with|degree|education|bachelor|master|phd|university|college|years? of experience|experience level)[:.]?\s*/i, '').trim();
+          if (cleanMatch && cleanMatch.length > 10) {
+            requirements.push(cleanMatch);
+          }
+        });
+      }
+    });
+    
+    return requirements.slice(0, 5); // Limit to 5 requirements
+  }
+
+  /**
+   * Extract skills from job description and tags
+   */
+  private extractSkills(job: RapidAPIJob): string[] {
+    const skills: string[] = [];
+    
+    // Add tags as skills
+    if (job.tags && Array.isArray(job.tags)) {
+      skills.push(...job.tags.slice(0, 10)); // Limit to 10 skills
+    }
+    
+    // Extract skills from description
+    if (job.description) {
+      const description = job.description.toLowerCase();
+      const skillKeywords = [
+        'javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'go', 'rust', 'php', 'ruby',
+        'react', 'angular', 'vue', 'node.js', 'express', 'django', 'flask', 'spring', 'laravel',
+        'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'terraform', 'jenkins', 'git', 'github',
+        'sql', 'postgresql', 'mysql', 'mongodb', 'redis', 'elasticsearch', 'graphql', 'rest api',
+        'machine learning', 'ai', 'data science', 'analytics', 'blockchain', 'web3', 'devops',
+        'agile', 'scrum', 'ci/cd', 'testing', 'tdd', 'bdd', 'microservices', 'api development'
+      ];
+      
+      skillKeywords.forEach(skill => {
+        if (description.includes(skill) && !skills.includes(skill)) {
+          skills.push(skill);
+        }
+      });
+    }
+    
+    return skills.slice(0, 15); // Limit to 15 skills
+  }
+
+  /**
+   * Extract tech stack from job description and tags
+   */
+  private extractTechStack(job: RapidAPIJob): string[] {
+    const techStack: string[] = [];
+    
+    // Add tags as tech stack
+    if (job.tags && Array.isArray(job.tags)) {
+      techStack.push(...job.tags.slice(0, 8)); // Limit to 8 tech stack items
+    }
+    
+    // Extract tech stack from description
+    if (job.description) {
+      const description = job.description.toLowerCase();
+      const techKeywords = [
+        'react', 'angular', 'vue', 'svelte', 'next.js', 'nuxt.js', 'gatsby',
+        'node.js', 'express', 'fastify', 'koa', 'nest.js',
+        'django', 'flask', 'fastapi', 'spring boot', 'spring framework',
+        'laravel', 'symfony', 'codeigniter', 'rails', 'sinatra',
+        'aws', 'azure', 'gcp', 'heroku', 'vercel', 'netlify',
+        'docker', 'kubernetes', 'terraform', 'ansible', 'jenkins',
+        'postgresql', 'mysql', 'mongodb', 'redis', 'elasticsearch',
+        'graphql', 'apollo', 'prisma', 'typeorm', 'sequelize'
+      ];
+      
+      techKeywords.forEach(tech => {
+        if (description.includes(tech) && !techStack.includes(tech)) {
+          techStack.push(tech);
+        }
+      });
+    }
+    
+    return techStack.slice(0, 10); // Limit to 10 tech stack items
   }
 
   /**
