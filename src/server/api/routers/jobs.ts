@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure, adminProcedure } from "~/server/api/trpc";
 import { JobType, ExperienceLevel } from "@prisma/client";
+import { RemoteOKImporter } from "~/lib/job-import/remoteok";
 
 export const jobsRouter = createTRPCRouter({
   getCount: publicProcedure.query(async ({ ctx }) => {
@@ -603,6 +604,100 @@ export const jobsRouter = createTRPCRouter({
       } catch (error) {
         console.error("Error fetching premium jobs:", error);
         throw error;
+      }
+    }),
+
+  // Import jobs from RemoteOK
+  importFromRemoteOK: adminProcedure
+    .mutation(async ({ ctx }) => {
+      try {
+        const importer = new RemoteOKImporter();
+        const jobs = await importer.importJobs();
+        
+        const createdJobs = [];
+        const errors = [];
+        
+        for (const jobData of jobs) {
+          try {
+            // Check if job already exists
+            const existingJob = await ctx.db.job.findFirst({
+              where: {
+                title: jobData.title,
+                company: {
+                  name: jobData.company
+                }
+              }
+            });
+            
+            if (existingJob) {
+              console.log(`Job already exists: ${jobData.title} at ${jobData.company}`);
+              continue;
+            }
+            
+            // Find or create company
+            let company = await ctx.db.company.findFirst({
+              where: { name: jobData.company }
+            });
+            
+            if (!company) {
+              company = await ctx.db.company.create({
+                data: {
+                  name: jobData.company,
+                  description: `Company imported from RemoteOK`,
+                  website: jobData.applicationUrl.includes('http') ? jobData.applicationUrl : undefined,
+                  verified: true,
+                  verificationStatus: 'APPROVED'
+                }
+              });
+            }
+            
+            // Create job
+            const job = await ctx.db.job.create({
+              data: {
+                title: jobData.title,
+                description: jobData.description,
+                companyId: company.id,
+                location: jobData.location,
+                country: jobData.country,
+                jobType: jobData.jobType as JobType,
+                experienceLevel: jobData.experienceLevel as ExperienceLevel,
+                salaryMin: jobData.salaryMin,
+                salaryMax: jobData.salaryMax,
+                visaSponsorship: jobData.visaSponsorship,
+                remote: jobData.remote,
+                applicationUrl: jobData.applicationUrl,
+                requirements: jobData.requirements,
+                skills: jobData.skills,
+                techStack: jobData.techStack,
+                featured: false,
+                premium: false
+              }
+            });
+            
+            createdJobs.push(job);
+            console.log(`Created job: ${job.title} at ${company.name}`);
+            
+          } catch (error) {
+            console.error(`Error creating job ${jobData.title}:`, error);
+            errors.push({
+              job: jobData.title,
+              company: jobData.company,
+              error: error instanceof Error ? error.message : 'Unknown error'
+            });
+          }
+        }
+        
+        return {
+          success: true,
+          imported: createdJobs.length,
+          total: jobs.length,
+          errors: errors.length > 0 ? errors : undefined,
+          jobs: createdJobs
+        };
+        
+      } catch (error) {
+        console.error('Error importing jobs from RemoteOK:', error);
+        throw new Error(`Failed to import jobs: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }),
 });

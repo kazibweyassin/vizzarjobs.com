@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
+import { DescriptionPreview } from "~/components/DescriptionPreview";
 import { 
   Building2, 
   MapPin, 
@@ -218,11 +219,11 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
 
             {/* Description Preview */}
             <div className="text-sm text-slate-600">
-              {job.description ? (
-                <p className="line-clamp-2 leading-relaxed">{job.description}</p>
-              ) : (
-                <p className="text-slate-400 italic">No description available</p>
-              )}
+              <DescriptionPreview 
+                content={job.description} 
+                maxLines={2}
+                className="text-slate-600"
+              />
             </div>
 
             {/* Premium Content Preview */}

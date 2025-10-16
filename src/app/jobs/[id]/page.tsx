@@ -4,6 +4,7 @@ import { api } from "~/trpc/server";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { JobViewTracker } from "~/components/analytics/JobViewTracker";
+import { SafeHTML } from "~/components/SafeHTML";
 import {
   MapPin,
   DollarSign,
@@ -164,11 +165,10 @@ export default async function JobPage({ params, searchParams }: Props) {
                   <CardTitle className="text-xl font-semibold">Job Description</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="prose max-w-none">
-                    <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                      {job.description || "No description provided."}
-                    </p>
-                  </div>
+                  <SafeHTML 
+                    content={job.description || "No description provided."}
+                    className="text-gray-700 leading-relaxed"
+                  />
                 </CardContent>
               </Card>
 

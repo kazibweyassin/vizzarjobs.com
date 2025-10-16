@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { type Job, type Company } from "@prisma/client";
 import { Badge } from "~/components/ui/premium-badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
+import { DescriptionPreview } from "~/components/DescriptionPreview";
 import { motion } from "framer-motion";
 import { 
   MapPin, 
@@ -221,9 +222,11 @@ export function JobCard({ job }: JobCardProps) {
           )}
 
           {/* Job Description Preview */}
-          <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-            {job.description}
-          </p>
+          <DescriptionPreview 
+            content={job.description} 
+            maxLines={2}
+            className="text-sm text-gray-600"
+          />
         </div>
       </CardContent>
 
