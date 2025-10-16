@@ -27,8 +27,24 @@ export default function ImportJobsPage() {
   const [isImporting, setIsImporting] = useState(false);
   const [importResult, setImportResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [rapidApiKey, setRapidApiKey] = useState('e6aecaead8mshf8994f3857bb7b6p129f34jsnb806f67eea00');
+  const [rapidApiQuery, setRapidApiQuery] = useState('software engineer developer');
+  const [rapidApiLocation, setRapidApiLocation] = useState('United States');
+  const [rapidApiPages, setRapidApiPages] = useState(3);
 
   const importJobsMutation = api.jobs.importFromRemoteOK.useMutation({
+    onSuccess: (data) => {
+      setImportResult(data);
+      setError(null);
+      setIsImporting(false);
+    },
+    onError: (error) => {
+      setError(error.message);
+      setIsImporting(false);
+    }
+  });
+
+  const importRapidAPIMutation = api.jobs.importFromRapidAPI.useMutation({
     onSuccess: (data) => {
       setImportResult(data);
       setError(null);
@@ -47,6 +63,25 @@ export default function ImportJobsPage() {
     
     try {
       await importJobsMutation.mutateAsync();
+    } catch (error) {
+      // Error is handled by onError callback
+    }
+  };
+
+  const handleRapidAPIImport = async () => {
+    setIsImporting(true);
+    setError(null);
+    setImportResult(null);
+    
+    try {
+      await importRapidAPIMutation.mutateAsync({
+        apiKey: rapidApiKey || undefined,
+        query: rapidApiQuery,
+        location: rapidApiLocation,
+        numPages: rapidApiPages,
+        visaSponsorship: true,
+        remote: true
+      });
     } catch (error) {
       // Error is handled by onError callback
     }
@@ -199,6 +234,86 @@ export default function ImportJobsPage() {
                   <>
                     <Download className="mr-2 h-4 w-4" />
                     Import Jobs
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* RapidAPI */}
+        <Card className="border-2 hover:border-blue-300 transition-colors">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <ExternalLink className="h-5 w-5 text-blue-600" />
+              RapidAPI (JSearch)
+            </CardTitle>
+            <CardDescription>
+              Advanced job search with X-RapidAPI-Key integration
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">API Key</label>
+                  <input
+                    type="password"
+                    value={rapidApiKey}
+                    onChange={(e) => setRapidApiKey(e.target.value)}
+                    placeholder="Enter your RapidAPI key"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Search Query</label>
+                  <input
+                    type="text"
+                    value={rapidApiQuery}
+                    onChange={(e) => setRapidApiQuery(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    value={rapidApiLocation}
+                    onChange={(e) => setRapidApiLocation(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Pages to fetch</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={rapidApiPages}
+                    onChange={(e) => setRapidApiPages(parseInt(e.target.value) || 3)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                <Badge variant="secondary">Visa Sponsorship</Badge>
+                <Badge variant="secondary">Remote</Badge>
+                <Badge variant="secondary">Advanced Search</Badge>
+              </div>
+              <Button 
+                onClick={handleRapidAPIImport}
+                disabled={isImporting}
+                className="w-full"
+              >
+                {isImporting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Importing...
+                  </>
+                ) : (
+                  <>
+                    <Download className="mr-2 h-4 w-4" />
+                    Import from RapidAPI
                   </>
                 )}
               </Button>

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure, adminProcedure } from "~/server/api/trpc";
 import { JobType, ExperienceLevel } from "@prisma/client";
 import { RemoteOKImporter } from "~/lib/job-import/remoteok";
+import { RapidAPIImporter } from "~/lib/job-import/rapidapi";
 
 export const jobsRouter = createTRPCRouter({
   getCount: publicProcedure.query(async ({ ctx }) => {
@@ -697,6 +698,126 @@ export const jobsRouter = createTRPCRouter({
         
       } catch (error) {
         console.error('Error importing jobs from RemoteOK:', error);
+        throw new Error(`Failed to import jobs: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+    }),
+
+  // Import jobs from RapidAPI
+  importFromRapidAPI: adminProcedure
+    .input(
+      z.object({
+        apiKey: z.string().optional(),
+        endpoint: z.string().optional(),
+        query: z.string().optional(),
+        location: z.string().optional(),
+        numPages: z.number().min(1).max(10).default(3),
+        jobType: z.string().optional(),
+        experienceLevel: z.string().optional(),
+        remote: z.boolean().optional(),
+        visaSponsorship: z.boolean().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const importer = new RapidAPIImporter(input.apiKey);
+        
+        if (input.endpoint) {
+          importer.setEndpoint(input.endpoint);
+        }
+        
+        const jobs = await importer.fetchJobs({
+          query: input.query || 'software engineer developer',
+          location: input.location || 'United States',
+          num_pages: input.numPages,
+          job_type: input.jobType,
+          experience_level: input.experienceLevel,
+          remote: input.remote,
+          visa_sponsorship: input.visaSponsorship,
+        });
+        
+        const createdJobs = [];
+        const errors = [];
+        
+        for (const jobData of jobs) {
+          try {
+            // Check if job already exists
+            const existingJob = await ctx.db.job.findFirst({
+              where: {
+                title: jobData.title,
+                company: {
+                  name: jobData.company
+                }
+              }
+            });
+            
+            if (existingJob) {
+              console.log(`Job already exists: ${jobData.title} at ${jobData.company}`);
+              continue;
+            }
+            
+            // Find or create company
+            let company = await ctx.db.company.findFirst({
+              where: { name: jobData.company }
+            });
+            
+            if (!company) {
+              company = await ctx.db.company.create({
+                data: {
+                  name: jobData.company,
+                  description: `Company imported from RapidAPI`,
+                  website: jobData.application_url?.includes('http') ? jobData.application_url : undefined,
+                  verified: true,
+                  verificationStatus: 'APPROVED'
+                }
+              });
+            }
+            
+            // Parse the job data
+            const parsedJob = importer.parseJob(jobData);
+            
+            // Create job
+            const job = await ctx.db.job.create({
+              data: {
+                title: parsedJob.title,
+                description: parsedJob.description,
+                companyId: company.id,
+                location: parsedJob.location,
+                country: parsedJob.country,
+                jobType: parsedJob.jobType as JobType,
+                experienceLevel: parsedJob.experienceLevel as ExperienceLevel,
+                salaryMin: parsedJob.salaryMin,
+                salaryMax: parsedJob.salaryMax,
+                visaSponsorship: parsedJob.visaSponsorship,
+                remote: parsedJob.remote,
+                applicationUrl: parsedJob.applicationUrl,
+                featured: false,
+                premium: false
+              }
+            });
+            
+            createdJobs.push(job);
+            console.log(`Created job: ${job.title} at ${company.name}`);
+            
+          } catch (error) {
+            console.error(`Error creating job ${jobData.title}:`, error);
+            errors.push({
+              job: jobData.title,
+              company: jobData.company,
+              error: error instanceof Error ? error.message : 'Unknown error'
+            });
+          }
+        }
+        
+        return {
+          success: true,
+          imported: createdJobs.length,
+          total: jobs.length,
+          errors: errors.length > 0 ? errors : undefined,
+          jobs: createdJobs
+        };
+        
+      } catch (error) {
+        console.error('Error importing jobs from RapidAPI:', error);
         throw new Error(`Failed to import jobs: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }),
