@@ -101,23 +101,23 @@ export function PremiumHero() {
             <div className="w-8 h-8 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-lg flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
-            <span className="font-semibold">Visa-Sponsored Careers for African Talent</span>
+            <span className="font-semibold">AI-Powered Tech Career Platform</span>
           </motion.div>
 
           <motion.h1
             variants={fadeUp}
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight"
           >
-            <span className="block">Elevate your career.</span>
+            <span className="block">AI-Powered Career Platform.</span>
             <span className="block bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-500 animate-gradient-x">
-              Global opportunities, simplified.
+              Smart matching, global reach.
             </span>
           </motion.h1>
 
           <motion.p variants={fadeUp} className="text-xl sm:text-2xl text-gray-300 leading-relaxed max-w-3xl">
-            Connect with <span className="text-white font-semibold">Fortune 500 companies</span> and 
-            <span className="text-white font-semibold"> fast-growing startups</span> offering 
-            <span className="text-teal-400 font-semibold"> visa sponsorship</span> for African professionals.
+            Our AI analyzes <span className="text-white font-semibold">10M+ data points</span> to match you with 
+            <span className="text-white font-semibold"> perfect tech opportunities</span> from 
+            <span className="text-teal-400 font-semibold"> 500+ companies</span> worldwide.
           </motion.p>
 
           {/* search + CTAs */}

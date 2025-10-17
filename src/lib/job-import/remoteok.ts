@@ -215,10 +215,84 @@ export class RemoteOKImporter {
       cleaned = cleaned.replace(new RegExp(phrase, 'gi'), '');
     });
     
+    // Fix unsupported characters and encoding issues
+    cleaned = this.fixUnsupportedCharacters(cleaned);
+    
     // Convert HTML to proper formatting
     cleaned = this.convertToFormattedHTML(cleaned);
     
     return cleaned;
+  }
+
+  private fixUnsupportedCharacters(text: string): string {
+    if (!text) return '';
+    
+    let fixed = text;
+    
+    // Fix common encoding issues
+    fixed = fixed
+      // Fix curly quotes and apostrophes
+      .replace(/â€™/g, "'")
+      .replace(/â€œ/g, '"')
+      .replace(/â€/g, '"')
+      .replace(/â€˜/g, "'")
+      .replace(/â€/g, "'")
+      .replace(/â€"/g, '"')
+      .replace(/â€"/g, '"')
+      
+      // Fix em dashes and en dashes
+      .replace(/â€"/g, '—')
+      .replace(/â€"/g, '–')
+      .replace(/â€"/g, '-')
+      
+      // Fix ellipsis
+      .replace(/â€¦/g, '...')
+      
+      // Fix other common encoding issues
+      .replace(/â€¢/g, '•')
+      .replace(/â€"/g, '°')
+      .replace(/â€"/g, '®')
+      .replace(/â€"/g, '©')
+      .replace(/â€"/g, '™')
+      
+      // Fix currency symbols
+      .replace(/â‚¬/g, '€')
+      .replace(/Â£/g, '£')
+      .replace(/Â¥/g, '¥')
+      
+      // Fix other common issues
+      .replace(/Â /g, ' ') // Non-breaking space
+      .replace(/\u00A0/g, ' ') // Non-breaking space
+      .replace(/\u2013/g, '–') // En dash
+      .replace(/\u2014/g, '—') // Em dash
+      .replace(/\u2018/g, "'") // Left single quote
+      .replace(/\u2019/g, "'") // Right single quote
+      .replace(/\u201C/g, '"') // Left double quote
+      .replace(/\u201D/g, '"') // Right double quote
+      .replace(/\u2026/g, '...') // Ellipsis
+      .replace(/\u2022/g, '•') // Bullet
+      .replace(/\u00B0/g, '°') // Degree
+      .replace(/\u00AE/g, '®') // Registered
+      .replace(/\u00A9/g, '©') // Copyright
+      .replace(/\u2122/g, '™') // Trademark
+      .replace(/\u20AC/g, '€') // Euro
+      .replace(/\u00A3/g, '£') // Pound
+      .replace(/\u00A5/g, '¥') // Yen
+      
+      // Additional encoding issues
+      .replace(/â€¨/g, '\n')  // Line break character
+      .replace(/â€©/g, '\n')  // Another line break variant
+      .replace(/â€¬/g, '')    // Zero-width non-breaking space
+      .replace(/â€­/g, '')    // Soft hyphen
+      .replace(/â€®/g, '')    // Zero-width joiner
+      .replace(/â€¯/g, '')    // Zero-width non-joiner
+      
+      // Fix literal \n showing as text
+      .replace(/\\n/g, '\n')
+      .replace(/\\t/g, '\t')
+      .replace(/\\r/g, '\r');
+    
+    return fixed;
   }
 
   private convertToFormattedHTML(text: string): string {
@@ -262,6 +336,19 @@ export class RemoteOKImporter {
       .replace(/<\/h3><\/p>/gi, '</h3>')
       .replace(/<p><strong>/gi, '<p><strong>')
       .replace(/<\/strong><\/p>/gi, '</strong></p>')
+      // Remove numbered lists and convert to proper formatting
+      .replace(/^\d+\s*<p>/gm, '<p>')
+      .replace(/^\d+\s*/gm, '')
+      // Remove standalone numbers at start of lines
+      .replace(/^\d+\s*$/gm, '')
+      // Remove numbered prefixes from HTML tags
+      .replace(/^\d+\s*<p[^>]*>/gm, '<p>')
+      .replace(/^\d+\s*<b[^>]*>/gm, '<b>')
+      .replace(/^\d+\s*<u[^>]*>/gm, '<u>')
+      .replace(/^\d+\s*<i[^>]*>/gm, '<i>')
+      .replace(/^\d+\s*<strong[^>]*>/gm, '<strong>')
+      // Remove any remaining standalone numbers
+      .replace(/^\d+\s*$/gm, '')
       // Clean up whitespace
       .replace(/\s+/g, ' ')
       .trim();
@@ -276,8 +363,11 @@ export class RemoteOKImporter {
       .map(para => para.trim())
       .filter(para => para.length > 0 && para !== '<p>' && para !== '</p>')
       .map(para => {
-        // Remove existing p tags
+        // Remove existing p tags and clean up
         para = para.replace(/<\/?p[^>]*>/gi, '');
+        
+        // Remove standalone numbers at the beginning
+        para = para.replace(/^\d+\s*/, '');
         
         // Check if it's a heading (starts with h3 or contains strong text)
         if (para.match(/^<h3[^>]*>/) || para.match(/^<strong[^>]*>/)) {
@@ -299,9 +389,15 @@ export class RemoteOKImporter {
           return `<p>${para}</p>`;
         }
         
+        // Skip very short paragraphs that are likely artifacts
+        if (para.length < 10) {
+          return '';
+        }
+        
         // Regular paragraph
         return `<p>${para}</p>`;
       })
+      .filter(para => para.length > 0)
       .join('\n');
     
     return paragraphs;

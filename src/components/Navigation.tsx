@@ -14,7 +14,8 @@ import {
   Search,
   Building2,
   Settings,
-  FileText
+  FileText,
+  BarChart3
 } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 
@@ -29,8 +30,10 @@ export function Navigation() {
   const navigation = [
     { name: "Jobs", href: "/jobs", icon: Search },
     { name: "Companies", href: "/companies", icon: Building2 },
+    { name: "Insights", href: "/insights", icon: BarChart3 },
+    { name: "Resources", href: "/resources", icon: FileText },
+    { name: "Products", href: "/products", icon: Settings },
     { name: "About Us", href: "/about", icon: User },
-    { name: "Why Us", href: "/why-us", icon: FileText },
   ];
 
   const handleSignOut = async () => {

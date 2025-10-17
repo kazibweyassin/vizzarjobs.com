@@ -204,7 +204,81 @@ export class RapidAPIImporter {
       cleaned = cleaned.replace(new RegExp(phrase, 'gi'), '');
     });
     
+    // Fix unsupported characters and encoding issues
+    cleaned = this.fixUnsupportedCharacters(cleaned);
+    
     return cleaned;
+  }
+
+  private fixUnsupportedCharacters(text: string): string {
+    if (!text) return '';
+    
+    let fixed = text;
+    
+    // Fix common encoding issues
+    fixed = fixed
+      // Fix curly quotes and apostrophes
+      .replace(/â€™/g, "'")
+      .replace(/â€œ/g, '"')
+      .replace(/â€/g, '"')
+      .replace(/â€˜/g, "'")
+      .replace(/â€/g, "'")
+      .replace(/â€"/g, '"')
+      .replace(/â€"/g, '"')
+      
+      // Fix em dashes and en dashes
+      .replace(/â€"/g, '—')
+      .replace(/â€"/g, '–')
+      .replace(/â€"/g, '-')
+      
+      // Fix ellipsis
+      .replace(/â€¦/g, '...')
+      
+      // Fix other common encoding issues
+      .replace(/â€¢/g, '•')
+      .replace(/â€"/g, '°')
+      .replace(/â€"/g, '®')
+      .replace(/â€"/g, '©')
+      .replace(/â€"/g, '™')
+      
+      // Fix currency symbols
+      .replace(/â‚¬/g, '€')
+      .replace(/Â£/g, '£')
+      .replace(/Â¥/g, '¥')
+      
+      // Fix other common issues
+      .replace(/Â /g, ' ') // Non-breaking space
+      .replace(/\u00A0/g, ' ') // Non-breaking space
+      .replace(/\u2013/g, '–') // En dash
+      .replace(/\u2014/g, '—') // Em dash
+      .replace(/\u2018/g, "'") // Left single quote
+      .replace(/\u2019/g, "'") // Right single quote
+      .replace(/\u201C/g, '"') // Left double quote
+      .replace(/\u201D/g, '"') // Right double quote
+      .replace(/\u2026/g, '...') // Ellipsis
+      .replace(/\u2022/g, '•') // Bullet
+      .replace(/\u00B0/g, '°') // Degree
+      .replace(/\u00AE/g, '®') // Registered
+      .replace(/\u00A9/g, '©') // Copyright
+      .replace(/\u2122/g, '™') // Trademark
+      .replace(/\u20AC/g, '€') // Euro
+      .replace(/\u00A3/g, '£') // Pound
+      .replace(/\u00A5/g, '¥') // Yen
+      
+      // Additional encoding issues
+      .replace(/â€¨/g, '\n')  // Line break character
+      .replace(/â€©/g, '\n')  // Another line break variant
+      .replace(/â€¬/g, '')    // Zero-width non-breaking space
+      .replace(/â€­/g, '')    // Soft hyphen
+      .replace(/â€®/g, '')    // Zero-width joiner
+      .replace(/â€¯/g, '')    // Zero-width non-joiner
+      
+      // Fix literal \n showing as text
+      .replace(/\\n/g, '\n')
+      .replace(/\\t/g, '\t')
+      .replace(/\\r/g, '\r');
+    
+    return fixed;
   }
 
   /**
@@ -266,8 +340,6 @@ export class RapidAPIImporter {
       'freelance': 'FREELANCE',
       'freelancer': 'FREELANCE',
       // German types (ArbeitNow specific)
-      'berufserfahren': 'SENIOR',
-      'einsteiger': 'JUNIOR',
       'praktikum': 'INTERNSHIP',
       'werkstudent': 'PART_TIME',
       'vollzeit': 'FULL_TIME',

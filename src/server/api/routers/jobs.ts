@@ -307,7 +307,7 @@ export const jobsRouter = createTRPCRouter({
         return await ctx.db.job.findMany({
           take: input.limit,
           where: {
-            visaSponsorship: true // Featured jobs are visa-sponsored jobs
+            // Show all jobs, not just visa-sponsored ones
           },
           include: {
             company: true

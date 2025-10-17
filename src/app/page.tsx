@@ -217,9 +217,9 @@ export default function HomePage() {
       {/* Profile Creation Call-to-Action */}
       <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Launch Your Global Career?</h2>
+          <h2 className="text-3xl font-bold mb-6">Ready to Launch Your Global Tech Career?</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Complete your profile to get matched with visa-sponsored positions that fit your skills and ambitions.
+            Join our AI-powered platform to get matched with visa-sponsored tech positions and accelerate your career growth.
           </p>
           <div className="flex justify-center">
             <ProfileCreationButton />
@@ -233,10 +233,10 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Featured Elite Positions
+                AI-Matched Tech Positions
               </h2>
               <p className="text-gray-600">
-                Hand-picked, visa-sponsored opportunities from premium employers
+                Hand-picked opportunities powered by our advanced matching algorithms
               </p>
             </div>
             <Link 
