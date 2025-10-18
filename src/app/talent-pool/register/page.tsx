@@ -33,8 +33,6 @@ const formSchema = z.object({
   preferredDestination: z.string().optional(),
   needsVisaSponsorship: z.boolean().default(false),
   cvFilePath: z.string().optional(),
-  cvPublicId: z.string().optional(),
-  cvSecureUrl: z.string().optional(),
   jobAlerts: z.boolean().default(true),
 });
 
@@ -96,8 +94,6 @@ export default function MultiStepCandidateRegistration() {
       preferredDestination: '',
       needsVisaSponsorship: false,
       cvFilePath: '',
-      cvPublicId: '',
-      cvSecureUrl: '',
       jobAlerts: true,
     },
   });

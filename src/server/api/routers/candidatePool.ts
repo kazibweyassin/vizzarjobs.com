@@ -18,8 +18,6 @@ export const candidatePoolRouter = createTRPCRouter({
         preferredDestination: z.array(z.string()).default([]),
         needsVisaSponsorship: z.boolean().default(false),
         cvFilePath: z.string().optional(),
-        cvPublicId: z.string().optional(),
-        cvSecureUrl: z.string().optional(),
         jobAlerts: z.boolean().default(true),
       })
     )
@@ -47,8 +45,6 @@ export const candidatePoolRouter = createTRPCRouter({
             preferredDestination: input.preferredDestination,
             needsVisaSponsorship: input.needsVisaSponsorship,
             cvFilePath: input.cvFilePath,
-            cvPublicId: input.cvPublicId,
-            cvSecureUrl: input.cvSecureUrl,
             jobAlerts: input.jobAlerts,
             status: "ACTIVE",
           }
