@@ -22,6 +22,7 @@ export function Navigation() {
 
   const navigation = [
     { name: "Talent Pool", href: "/talent-pool" },
+    { name: "Career Assessment", href: "/career-assessment" },
     { name: "Insights", href: "/insights" },
     { name: "Resources", href: "/resources" },
     { name: "Products", href: "/products" },

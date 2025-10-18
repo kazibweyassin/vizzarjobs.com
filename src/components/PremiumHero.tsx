@@ -139,18 +139,18 @@ export function PremiumHero() {
           <motion.div variants={fadeUp} className="mt-10 flex flex-col gap-6">
             {/* Primary CTA */}
             <div className="flex flex-wrap gap-4">
-              <Link href="/talent-pool/register">
+              <Link href="/career-assessment">
                 <motion.div 
                   whileHover={{ scale: 1.05 }} 
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-white font-semibold shadow-xl bg-blue-600 text-lg"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-white font-semibold shadow-xl bg-emerald text-lg"
                 >
-                  <User className="w-5 h-5" /> Join Talent Pool <ArrowRight className="w-5 h-5" />
+                  <User className="w-5 h-5" /> Take Career Assessment <ArrowRight className="w-5 h-5" />
                 </motion.div>
               </Link>
 
-              <Link href="/talent-pool">
-                <motion.div whileHover={{ scale: 1.05 }} className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-white font-medium shadow-lg bg-teal-500">
-                  Learn More <ArrowRight className="w-4 h-4" />
+              <Link href="/talent-pool/register">
+                <motion.div whileHover={{ scale: 1.05 }} className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-white font-medium shadow-lg bg-blue-600">
+                  Join Talent Pool <ArrowRight className="w-4 h-4" />
                 </motion.div>
               </Link>
             </div>
