@@ -26,6 +26,7 @@ import {
   Download,
   Globe
 } from "lucide-react";
+import { RichTextEditor } from "~/components/RichTextEditor";
 import { JobType, ExperienceLevel } from "@prisma/client";
 import { api } from "~/trpc/react";
 
@@ -300,16 +301,17 @@ export function AdminJobWithCompanyForm() {
 
               <div>
                 <Label htmlFor="companyDescription">Company Description *</Label>
-                <Textarea
-                  id="companyDescription"
-                  name="companyDescription"
-                  value={formData.companyDescription}
-                  onChange={handleInputChange}
+                <RichTextEditor
+                  content={formData.companyDescription}
+                  onChange={(content) => handleInputChange("companyDescription", content)}
                   placeholder="Describe what the company does, its mission, values, and what makes it special..."
-                  rows={4}
+                  height={150}
                   className={errors.companyDescription ? "border-red-500" : ""}
                 />
                 {errors.companyDescription && <p className="text-red-500 text-sm mt-1">{errors.companyDescription}</p>}
+                <p className="text-sm text-gray-500 mt-2">
+                  Use formatting tools to create an engaging company description with headings, lists, and emphasis.
+                </p>
               </div>
 
               {/* Company Details */}
@@ -425,16 +427,17 @@ export function AdminJobWithCompanyForm() {
               {/* Job Description */}
               <div>
                 <Label htmlFor="description">Job Description *</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
+                <RichTextEditor
+                  content={formData.description}
+                  onChange={(content) => handleInputChange("description", content)}
                   placeholder="Describe the role, responsibilities, and what makes this opportunity special..."
-                  rows={6}
+                  height={200}
                   className={errors.description ? "border-red-500" : ""}
                 />
                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+                <p className="text-sm text-gray-500 mt-2">
+                  Use the formatting tools to create a professional job description with headings, lists, and emphasis.
+                </p>
               </div>
 
               {/* Requirements */}

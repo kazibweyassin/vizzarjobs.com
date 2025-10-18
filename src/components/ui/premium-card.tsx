@@ -4,10 +4,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '~/lib/utils';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardProps {
   children: React.ReactNode;
   premium?: boolean;
   hover?: boolean;
+  className?: string;
 }
 
 const PremiumCard: React.FC<CardProps> = ({ 
@@ -32,7 +33,7 @@ const PremiumCard: React.FC<CardProps> = ({
       {...props}
     >
       {premium && (
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-blue-500" />
       )}
       {children}
     </motion.div>

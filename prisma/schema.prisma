@@ -251,21 +251,47 @@ model Employee {
 }
 
 model JobSeekerProfile {
-  id                      String   @id @default(cuid())
-  userId                  String   @unique
+  id                      String    @id @default(cuid())
+  userId                  String    @unique
   title                   String
-  skills                  String
+  bio                     String?   @db.Text
+  phoneNumber             String?
+  currentJobTitle         String?
+  
+  // Skills and experience
+  skills                  String?   @db.Text
+  technicalSkills         String[]
+  languages               String[]
+  yearsOfExperience       String?
+  
+  // Career preferences
   preferredJobTypes       String[]
+  locationPreferences     String[]
   desiredSalary           String
+  salaryCurrency          String?   @default("USD")
   location                String
-  willingToRelocate       Boolean  @default(false)
-  visaSponsorshipRequired Boolean  @default(false)
+  willingToRelocate       Boolean   @default(false)
+  remotePreference        String?
+  visaSponsorshipRequired Boolean   @default(false)
+  availabilityDate        DateTime?
+  
+  // Education and experience
+  education               Json[]
+  workExperience          Json[]
+  certifications          Json[]
+  projectsAndPublications Json[]
+  
+  // Online presence
   linkedInProfile         String?
   portfolioUrl            String?
-  resumeUrl               String?
-  lastUpdated             DateTime @default(now())
-  createdAt               DateTime @default(now())
-  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  githubUrl               String?
+  twitterUrl              String?
+  personalWebsite         String?
+  
+  // System fields
+  lastUpdated             DateTime  @default(now())
+  createdAt               DateTime  @default(now())
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -388,4 +414,47 @@ enum PaymentProvider {
   AIRTEL_MONEY
   PAYSTACK
   MANUAL
+}
+
+model CandidatePool {
+  id                    String            @id @default(cuid())
+  fullName              String
+  email                 String            @unique
+  phoneNumber           String?
+  country               String
+  profession            String
+  skills                String[]          @default([])
+  yearsOfExperience     Int
+  educationLevel        EducationLevel
+  preferredDestination  String[]          @default([])
+  needsVisaSponsorship  Boolean           @default(false)
+  cvFilePath            String?
+  cvPublicId            String?  // Cloudinary public ID
+  cvSecureUrl           String?  // Cloudinary secure URL
+  jobAlerts             Boolean           @default(true)
+  status                CandidateStatus   @default(ACTIVE)
+  notes                 String?
+  contactedAt           DateTime?
+  contactedBy           String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  @@map("candidate_pool")
+}
+
+enum CandidateStatus {
+  ACTIVE
+  CONTACTED
+  PLACED
+  INACTIVE
+}
+
+enum EducationLevel {
+  HIGH_SCHOOL
+  ASSOCIATE
+  BACHELOR
+  MASTER
+  DOCTORATE
+  CERTIFICATION
+  OTHER
 }

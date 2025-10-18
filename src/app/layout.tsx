@@ -12,6 +12,8 @@ import { RoleSelector } from "~/components/RoleSelector";
 import { Footer } from "~/components/Footer";
 import { GoogleAnalytics } from "~/components/analytics/GoogleAnalytics";
 import { LeadCaptureWrapper } from "~/components/LeadCaptureWrapper";
+import { ProfileCompletionProvider } from "~/components/ProfileCompletionProvider";
+import { ProfileCompletionReminder } from "~/components/ProfileCompletionReminder";
 
 export const metadata: Metadata = {
   title: "VizzarJobs | Premium Visa-Sponsored Tech Opportunities",
@@ -32,17 +34,20 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <body className="min-h-screen bg-gradient-to-br from-white via-[#f8faff] to-[#f0f4ff]">
+      <body className="min-h-screen bg-gradient-to-br from-white via-opal-2 to-opal-1">
         <div className="fixed inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-[0.02] pointer-events-none" />
         <SessionProvider session={session}>
           <TRPCReactProvider>
-            <GoogleAnalytics />
-            <Navigation />
-            <LeadCaptureWrapper>
-              <main className="relative z-10">{children}</main>
-              <Footer />
-              <RoleSelector />
-            </LeadCaptureWrapper>
+            <ProfileCompletionProvider>
+              <GoogleAnalytics />
+              <Navigation />
+              <ProfileCompletionReminder />
+              <LeadCaptureWrapper>
+                <main className="relative z-10">{children}</main>
+                <Footer />
+                <RoleSelector />
+              </LeadCaptureWrapper>
+            </ProfileCompletionProvider>
           </TRPCReactProvider>
         </SessionProvider>
       </body>

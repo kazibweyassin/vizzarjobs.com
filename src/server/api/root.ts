@@ -8,6 +8,7 @@ import { contactRouter } from "~/server/api/routers/contact";
 import { contactRequestsRouter } from "~/server/api/routers/contactRequests";
 import { matchingRouter } from "~/server/api/routers/matching";
 import { subscriptionsRouter } from "~/server/api/routers/subscriptions";
+import { candidatePoolRouter } from "~/server/api/routers/candidatePool";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
   contactRequests: contactRequestsRouter,
   matching: matchingRouter,
   subscriptions: subscriptionsRouter,
+  candidatePool: candidatePoolRouter,
 });
 
 // export type definition of API

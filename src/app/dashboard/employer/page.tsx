@@ -25,7 +25,12 @@ import {
   Plus,
   Users,
   Settings,
-  MapPin
+  MapPin,
+  BarChart3,
+  Star,
+  ArrowRight,
+  Eye,
+  Shield
 } from "lucide-react";
 
 export default function EmployerDashboardPage() {
@@ -63,17 +68,175 @@ export default function EmployerDashboardPage() {
   // If user is not an employer or doesn't have company data, redirect to onboarding
   if (!userData?.employee?.company && !error) {
     return (
-      <div className="max-w-2xl mx-auto my-12 p-6 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
-        <h2 className="text-xl font-semibold text-yellow-700 mb-2">Company Profile Required</h2>
-        <p className="text-yellow-600 mb-4">
-          You need to create a company profile before accessing the employer dashboard.
-        </p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-blue-100 flex items-center justify-center p-4">
+        <div className="max-w-4xl w-full">
+          {/* Hero Section */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full mb-6 shadow-lg">
+              <Building2 className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Welcome to Your Employer Dashboard
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Let's get your company profile set up so you can start attracting top talent and managing your recruitment process.
+            </p>
+          </div>
+
+          {/* Main Card */}
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                    <Building2 className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">Company Profile Setup</h2>
+                    <p className="text-blue-100">Required to access employer features</p>
+                  </div>
+                </div>
+                <div className="hidden md:block">
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center">
+                    <span className="text-2xl">🏢</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8">
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                {/* Left Column - Benefits */}
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">What you'll get:</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Job Posting Management</h4>
+                        <p className="text-sm text-gray-600">Create, edit, and manage your job postings with rich formatting</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Users className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Application Tracking</h4>
+                        <p className="text-sm text-gray-600">View and manage candidate applications in real-time</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <BarChart3 className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Analytics & Insights</h4>
+                        <p className="text-sm text-gray-600">Track job performance and recruitment metrics</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Star className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Premium Features</h4>
+                        <p className="text-sm text-gray-600">Access featured job listings and advanced tools</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column - Setup Process */}
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Setup Process:</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-semibold text-sm">1</div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Company Information</h4>
+                        <p className="text-sm text-gray-600">Add your company name, description, and logo</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-semibold text-sm">2</div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Contact Details</h4>
+                        <p className="text-sm text-gray-600">Provide contact information and website</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-semibold text-sm">3</div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">Verification</h4>
+                        <p className="text-sm text-gray-600">Get verified to unlock all features</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-white text-xs">⚡</span>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-blue-900">Quick & Easy</h4>
+                        <p className="text-sm text-blue-700">Setup takes less than 5 minutes</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <button 
           onClick={() => router.push('/employer-onboarding')}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
+                  <Building2 className="w-5 h-5 mr-2" />
           Create Company Profile
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </button>
+                
+                <button 
+                  onClick={() => router.push('/jobs')}
+                  className="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                >
+                  <Eye className="w-5 h-5 mr-2" />
+                  Browse Jobs First
         </button>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
+                  <div className="flex items-center space-x-2">
+                    <Shield className="w-4 h-4 text-green-500" />
+                    <span>Secure & Private</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4 text-blue-500" />
+                    <span>5-minute setup</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Users className="w-4 h-4 text-purple-500" />
+                    <span>500+ companies</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -134,6 +297,13 @@ export default function EmployerDashboardPage() {
                 >
                   <Plus className="h-4 w-4 mr-1" />
                   Post a Job
+                </Link>
+                <Link 
+                  href="/dashboard/employer/jobs"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <Briefcase className="h-4 w-4 mr-1" />
+                  Manage Jobs
                 </Link>
               </div>
             </div>

@@ -5,17 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { 
-  Briefcase, 
-  Menu, 
-  X, 
-  User, 
-  LogOut, 
-  Plus,
-  Search,
-  Building2,
-  Settings,
+  User,
   FileText,
-  BarChart3
+  Menu,
+  X
 } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 
@@ -28,12 +21,11 @@ export function Navigation() {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const navigation = [
-    { name: "Jobs", href: "/jobs", icon: Search },
-    { name: "Companies", href: "/companies", icon: Building2 },
-    { name: "Insights", href: "/insights", icon: BarChart3 },
-    { name: "Resources", href: "/resources", icon: FileText },
-    { name: "Products", href: "/products", icon: Settings },
-    { name: "About Us", href: "/about", icon: User },
+    { name: "Talent Pool", href: "/talent-pool" },
+    { name: "Insights", href: "/insights" },
+    { name: "Resources", href: "/resources" },
+    { name: "Products", href: "/products" },
+    { name: "About Us", href: "/about" },
   ];
 
   const handleSignOut = async () => {
@@ -56,7 +48,7 @@ export function Navigation() {
                   priority
                   className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"  
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-blue-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </div>
             </Link>
           </div>
@@ -64,18 +56,14 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-4 xl:space-x-6">
             {navigation.map((item) => {
-              const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="group flex items-center gap-2 text-slate-300 hover:text-white transition-all duration-300 font-medium px-4 py-2 rounded-xl hover:bg-slate-800/50 text-sm lg:text-base relative overflow-hidden"
+                  className="group flex items-center text-slate-300 hover:text-white transition-all duration-300 font-medium px-4 py-2 rounded-xl hover:bg-slate-800/50 text-sm lg:text-base relative overflow-hidden"
                 >
-                  <div className="w-8 h-8 bg-slate-800 group-hover:bg-slate-700 rounded-lg flex items-center justify-center transition-all duration-300">
-                    <Icon className="w-4 h-4 text-slate-300 group-hover:text-white" />
-                  </div>
-                  <span className="hidden lg:inline font-semibold">{item.name}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl"></div>
+                  <span className="font-semibold">{item.name}</span>
+                  <div className="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl"></div>
                 </Link>
               );
             })}
@@ -89,24 +77,18 @@ export function Navigation() {
                 {session.user.role === "JOB_SEEKER" && (
                   <Link
                     href="/jobs"
-                    className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-teal-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
+                    className="group inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
                   >
-                    <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-                      <Briefcase className="w-4 h-4" />
-                    </div>
                     <span className="hidden lg:inline">Browse Jobs</span>
                     <span className="lg:hidden">Jobs</span>
                   </Link>
                 )}
                 
-                {session.user.role === "EMPLOYER" && (
+                {(session.user.role === "EMPLOYER" || session.user.role === "ADMIN") && (
                   <Link
                     href="/dashboard/employer"
-                    className="group inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
+                    className="group inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
                   >
-                    <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-                      <Building2 className="w-4 h-4" />
-                    </div>
                     <span className="hidden lg:inline">Dashboard</span>
                     <span className="lg:hidden">Dashboard</span>
                   </Link>
@@ -120,11 +102,8 @@ export function Navigation() {
             ) : !session ? (
               <Link
                 href="/auth/signin"
-                className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-teal-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
+                className="group inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
               >
-                <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-                  <User className="w-4 h-4" />
-                </div>
                 <span className="hidden lg:inline">Get Started</span>
                 <span className="lg:hidden">Sign In</span>
               </Link>
@@ -141,8 +120,10 @@ export function Navigation() {
                       className="w-10 h-10 rounded-xl border-2 border-white shadow-sm group-hover:shadow-md transition-all duration-300"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
-                      <User className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
+                      <span className="text-white font-bold">
+                        {session.user.name?.[0] || "U"}
+                      </span>
                     </div>
                   )}
                   <div className="text-left hidden xl:block min-w-0">
@@ -152,12 +133,12 @@ export function Navigation() {
                     <div className="flex items-center gap-1">
                       <Badge 
                         className={`text-xs font-semibold ${
-                          session.user.role === "EMPLOYER" 
-                            ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0" 
-                            : "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0"
+                          session.user.role === "EMPLOYER" || session.user.role === "ADMIN"
+                            ? "bg-green-500 text-white border-0" 
+                            : "bg-blue-500 text-white border-0"
                         }`}
                       >
-                        {session.user.role === "EMPLOYER" ? "Employer" : "Job Seeker"}
+                        {session.user.role === "EMPLOYER" || session.user.role === "ADMIN" ? "Employer" : "Job Seeker"}
                       </Badge>
                     </div>
                   </div>
@@ -166,7 +147,7 @@ export function Navigation() {
                 {/* Profile Dropdown */}
                 {isProfileDropdownOpen && (
                   <div className="absolute right-0 mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 py-2 z-50 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50">
+                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50">
                       <p className="text-sm font-bold text-slate-900 truncate">
                         {session.user.name}
                       </p>
@@ -203,22 +184,16 @@ export function Navigation() {
                         className="flex items-center gap-3 px-6 py-3 text-sm text-blue-700 font-semibold hover:bg-blue-50 transition-all duration-200 bg-blue-50/50"
                         onClick={() => setIsProfileDropdownOpen(false)}
                       >
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <User className="w-4 h-4 text-blue-600" />
-                        </div>
                         Create Your Profile
                       </Link>
                     )}
                     
-                    {(session.user.role === "EMPLOYEE" || session.user.role === "EMPLOYER") && session.user.profileComplete && (
+                    {(session.user.role === "EMPLOYEE" || session.user.role === "EMPLOYER" || session.user.role === "ADMIN") && session.user.profileComplete && (
                       <Link
                         href="/onboarding"
                         className="flex items-center gap-3 px-6 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 font-medium"
                         onClick={() => setIsProfileDropdownOpen(false)}
                       >
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <Briefcase className="w-4 h-4 text-blue-600" />
-                        </div>
                         Employee Onboarding
                       </Link>
                     )}
@@ -228,9 +203,6 @@ export function Navigation() {
                       className="flex items-center gap-3 px-6 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 font-medium"
                       onClick={() => setIsProfileDropdownOpen(false)}
                     >
-                      <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                        <Settings className="w-4 h-4 text-slate-600" />
-                      </div>
                       Settings
                     </Link>
                     
@@ -242,9 +214,6 @@ export function Navigation() {
                         }}
                         className="flex items-center gap-3 w-full px-6 py-3 text-sm text-red-600 hover:bg-red-50 transition-all duration-200 font-medium rounded-lg mx-2"
                       >
-                        <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                          <LogOut className="w-4 h-4 text-red-600" />
-                        </div>
                         Sign Out
                       </button>
                     </div>
@@ -258,34 +227,37 @@ export function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-3 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-300 border border-transparent hover:border-slate-600"
+              className="p-3 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-300 border border-transparent hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              aria-label="Toggle mobile menu"
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-slate-700/20 py-4">
-            <div className="space-y-3 px-2">
+          <div className="md:hidden border-t border-slate-700/20 py-4 animate-in slide-in-from-top-2 duration-200">
+            <div className="space-y-2 px-4">
               {navigation.map((item) => {
-                const Icon = item.icon;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors font-medium py-3 px-2 rounded-lg hover:bg-slate-800/50"
+                    className="flex items-center text-slate-300 hover:text-white transition-all duration-200 font-medium py-3 px-4 rounded-lg hover:bg-slate-800/50 hover:shadow-sm"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <Icon className="w-5 h-5" />
-                    {item.name}
+                    <span className="font-semibold">{item.name}</span>
                   </Link>
                 );
               })}
               
               {session ? (
-                <div className="pt-4 border-t border-slate-700/20 space-y-4 mt-2">
+                <div className="pt-4 border-t border-slate-700/20 space-y-2 mt-4">
                   <div className="flex items-center gap-3 px-2 py-2">
                     {session.user.image ? (
                       <img
@@ -294,34 +266,35 @@ export function Navigation() {
                         className="w-10 h-10 rounded-full border-2 border-blue-100"
                       />
                     ) : (
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                        <User className="w-5 h-5 text-white" />
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold">
+                          {session.user.name?.[0] || "U"}
+                        </span>
                       </div>
                     )}
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">
+                      <div className="text-sm font-semibold text-white">
                         {session.user.name}
                       </div>
                       <Badge 
                         variant="outline" 
                         className={`text-xs ${
-                          session.user.role === "EMPLOYER" 
+                          session.user.role === "EMPLOYER" || session.user.role === "ADMIN"
                             ? "bg-blue-50 text-blue-700 border-blue-200" 
                             : "bg-blue-50 text-blue-700 border-blue-200"
                         }`}
                       >
-                        {session.user.role === "EMPLOYER" ? "Employer" : "Job Seeker"}
+                        {session.user.role === "EMPLOYER" || session.user.role === "ADMIN" ? "Employer" : "Job Seeker"}
                       </Badge>
                     </div>
                   </div>
                   
-                  {session.user.role === "EMPLOYER" && (
+                  {(session.user.role === "EMPLOYER" || session.user.role === "ADMIN") && (
                     <Link
                       href="/post-job"
                       className="flex items-center gap-2 text-blue-600 font-medium py-3 px-2 rounded-lg hover:bg-blue-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <Plus className="w-5 h-5" />
                       Post Job
                     </Link>
                   )}
@@ -331,7 +304,6 @@ export function Navigation() {
                     className="flex items-center gap-2 text-gray-700 py-3 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-600"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <User className="w-5 h-5" />
                     Profile
                   </Link>
 
@@ -340,7 +312,6 @@ export function Navigation() {
                     className="flex items-center gap-2 text-gray-700 py-3 px-2 rounded-lg hover:bg-blue-50 hover:text-blue-600"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <FileText className="w-5 h-5" />
                     My Applications
                   </Link>
                   
@@ -351,7 +322,6 @@ export function Navigation() {
                     }}
                     className="flex items-center gap-2 text-red-600 py-3 px-2 w-full text-left rounded-lg hover:bg-red-50 mt-2"
                   >
-                    <LogOut className="w-5 h-5" />
                     Sign Out
                   </button>
                 </div>

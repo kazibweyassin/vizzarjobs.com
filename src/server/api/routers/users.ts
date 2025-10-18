@@ -11,6 +11,23 @@ const onboardingSteps = [
 ];
 
 export const usersRouter = createTRPCRouter({
+  getCurrentUser: protectedProcedure
+    .query(async ({ ctx }) => {
+      const user = await ctx.db.user.findUnique({
+        where: { id: ctx.session.user.id },
+        include: { 
+          jobSeekerProfile: true,
+          employee: {
+            include: {
+              company: true
+            }
+          }
+        }
+      });
+      
+      return user;
+    }),
+
   createWithPassword: publicProcedure
     .input(
       z.object({

@@ -6,6 +6,8 @@ import { api } from "~/trpc/react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { ProfileCompletionSection } from "./ProfileCompletionSection";
+import { useProfileCompletion } from "./ProfileCompletionProvider";
 import { 
   User, 
   Building2, 
@@ -50,6 +52,7 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
   const [selectedRole, setSelectedRole] = useState<UserRole>(user.role);
   const [isUpdating, setIsUpdating] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "activity" | "settings">("overview");
+  const { completionPercentage, isProfileComplete } = useProfileCompletion();
 
   // Fetch user profile data
   const { data: userData, isLoading: userLoading } = api.users.getProfile.useQuery(undefined, {
@@ -262,6 +265,9 @@ export function EnhancedProfilePage({ user }: EnhancedProfilePageProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === "overview" && (
           <div className="space-y-8">
+            {/* Profile Completion Section */}
+            <ProfileCompletionSection />
+            
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Applications Card */}

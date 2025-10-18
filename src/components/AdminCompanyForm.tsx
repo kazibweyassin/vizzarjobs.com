@@ -17,6 +17,7 @@ import {
   Save,
   CheckCircle
 } from "lucide-react";
+import { RichTextEditor } from "~/components/RichTextEditor";
 import { api } from "~/trpc/react";
 
 interface AdminCompanyFormData {
@@ -164,16 +165,17 @@ export function AdminCompanyForm() {
 
           <div>
             <Label htmlFor="description">Company Description *</Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
+            <RichTextEditor
+              content={formData.description}
+              onChange={(content) => handleInputChange("description", content)}
               placeholder="Describe what your company does, its mission, values, and what makes it special..."
-              rows={6}
+              height={200}
               className={errors.description ? "border-red-500" : ""}
             />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+            <p className="text-sm text-gray-500 mt-2">
+              Use formatting tools to create an engaging company description with headings, lists, and emphasis.
+            </p>
           </div>
 
           {/* Location and Size */}

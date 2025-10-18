@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
+import { RichTextEditor } from "~/components/RichTextEditor";
 import { 
   Card, 
   CardContent, 
@@ -204,17 +205,14 @@ export function EmployerProfileForm({ user }: EmployerProfileFormProps) {
                   <label className="text-sm font-medium" htmlFor="companyDescription">
                     About Us *
                   </label>
-                  <textarea
-                    id="companyDescription"
-                    name="companyDescription"
-                    value={formData.companyDescription}
-                    onChange={handleChange}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm h-40"
+                  <RichTextEditor
+                    content={formData.companyDescription}
+                    onChange={(content) => setFormData({ ...formData, companyDescription: content })}
                     placeholder="Tell us about your company, its mission, values, and what makes it unique. This will help job seekers understand your company culture and decide if they want to work with you."
-                    required
+                    height={150}
                   />
                   <p className="text-xs text-gray-500">
-                    A compelling company description helps attract the right talent. Include your mission, values, and what makes your company special.
+                    A compelling company description helps attract the right talent. Include your mission, values, and what makes your company special. Use formatting to make it more engaging.
                   </p>
                 </div>
                 

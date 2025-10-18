@@ -22,6 +22,7 @@ import {
   Save,
   CheckCircle
 } from "lucide-react";
+import { RichTextEditor } from "~/components/RichTextEditor";
 import { JobType, ExperienceLevel } from "@prisma/client";
 import { api } from "~/trpc/react";
 
@@ -220,16 +221,17 @@ export function AdminJobForm() {
 
           <div>
             <Label htmlFor="description">Job Description *</Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
+            <RichTextEditor
+              content={formData.description}
+              onChange={(content) => handleInputChange("description", content)}
               placeholder="Describe the role, responsibilities, and what makes this opportunity special..."
-              rows={6}
+              height={200}
               className={errors.description ? "border-red-500" : ""}
             />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+            <p className="text-sm text-gray-500 mt-2">
+              Use the formatting tools to create a professional job description with headings, lists, and emphasis.
+            </p>
           </div>
 
           {/* Requirements */}

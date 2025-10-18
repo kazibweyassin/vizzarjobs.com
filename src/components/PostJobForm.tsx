@@ -22,6 +22,7 @@ import {
   Save,
   CheckCircle
 } from "lucide-react";
+import { RichTextEditor } from "~/components/RichTextEditor";
 
 interface FormData {
   title: string;
@@ -316,16 +317,17 @@ export function PostJobForm() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Job Description *
                 </label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
-                  rows={6}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-vertical ${
-                    errors.description ? "border-red-500" : "border-gray-300"
-                  }`}
+                <RichTextEditor
+                  content={formData.description}
+                  onChange={(content) => handleInputChange("description", content)}
                   placeholder="Describe the role, responsibilities, and what makes this opportunity exciting..."
+                  height={200}
+                  className={errors.description ? "border-red-500" : ""}
                 />
                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+                <p className="text-sm text-gray-500 mt-2">
+                  Use the formatting tools to create a professional job description with headings, lists, and emphasis.
+                </p>
               </div>
             </CardContent>
           </Card>

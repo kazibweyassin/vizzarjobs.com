@@ -177,7 +177,12 @@ export const jobsRouter = createTRPCRouter({
       }
 
       return {
-        jobs,
+        jobs: jobs.map(job => ({
+          ...job,
+          _count: {
+            applications: 0 // Hide application count for privacy
+          }
+        })),
         nextCursor,
       };
       } catch (error) {
@@ -207,7 +212,33 @@ export const jobsRouter = createTRPCRouter({
         throw new Error("Job not found");
       }
 
-      return job;
+      // If user is logged in, check if they can see application details
+      if (ctx.session?.user) {
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        // If user is an employer/admin from the same company, include application details
+        if (user?.employee?.company?.id === job.companyId && 
+            ctx.session?.user && (ctx.session.user.role === "EMPLOYER" || ctx.session.user.role === "ADMIN")) {
+          return job;
+        }
+      }
+
+      // For public access or users from other companies, exclude application details
+      return {
+        ...job,
+        _count: {
+          applications: 0 // Hide application count for privacy
+        }
+      };
     }),
 
   create: protectedProcedure
@@ -257,54 +288,13 @@ export const jobsRouter = createTRPCRouter({
       });
     }),
 
-  update: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        title: z.string().min(1).optional(),
-        description: z.string().min(1).optional(),
-        requirements: z.array(z.string()).optional(),
-        location: z.string().min(1).optional(),
-        country: z.string().min(1).optional(),
-        visaSponsorship: z.boolean().optional(),
-        salaryMin: z.number().positive().optional(),
-        salaryMax: z.number().positive().optional(),
-        jobType: z.nativeEnum(JobType).optional(),
-        experienceLevel: z.nativeEnum(ExperienceLevel).optional(),
-        techStack: z.array(z.string()).optional(),
-        applicationUrl: z.string().url().optional(),
-      })
-    )
-    .mutation(async ({ input, ctx }) => {
-      const { id, ...updateData } = input;
 
-      // Validate salary range if both are provided
-      if (updateData.salaryMin && updateData.salaryMax && updateData.salaryMin > updateData.salaryMax) {
-        throw new Error("Minimum salary cannot be greater than maximum salary");
-      }
-
-      return await ctx.db.job.update({
-        where: { id },
-        data: updateData,
-        include: {
-          company: true
-        }
-      });
-    }),
-
-  delete: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input, ctx }) => {
-      return await ctx.db.job.delete({
-        where: { id: input.id }
-      });
-    }),
 
   getFeatured: publicProcedure
     .input(z.object({ limit: z.number().min(1).max(20).default(6) }))
     .query(async ({ input, ctx }) => {
       try {
-        return await ctx.db.job.findMany({
+        const jobs = await ctx.db.job.findMany({
           take: input.limit,
           where: {
             // Show all jobs, not just visa-sponsored ones
@@ -316,10 +306,267 @@ export const jobsRouter = createTRPCRouter({
             createdAt: "desc"
           }
         });
+        
+        // Hide application counts for privacy
+        return jobs.map(job => ({
+          ...job,
+          _count: {
+            applications: 0
+          }
+        }));
       } catch (error) {
         console.error('Error fetching featured jobs:', error);
         // Return empty array if database is unavailable
         return [];
+      }
+    }),
+
+  // Employer CRUD Operations
+  getByEmployer: protectedProcedure
+    .query(async ({ ctx }) => {
+      try {
+        // Get user's company through employee relationship
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        if (!user?.employee?.company) {
+          throw new Error("User is not associated with a company");
+        }
+
+        return await ctx.db.job.findMany({
+          where: {
+            companyId: user.employee.company.id
+          },
+          include: {
+            company: true,
+            applications: {
+              select: {
+                id: true,
+                status: true,
+                user: {
+                  select: {
+                    name: true,
+                    email: true
+                  }
+                }
+              }
+            }
+          },
+          orderBy: {
+            createdAt: "desc"
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching employer jobs:', error);
+        throw new Error("Failed to fetch your jobs");
+      }
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1, "Job title is required"),
+        description: z.string().min(1, "Job description is required"),
+        location: z.string().min(1, "Location is required"),
+        country: z.string().optional(),
+        jobType: z.nativeEnum(JobType),
+        experienceLevel: z.nativeEnum(ExperienceLevel),
+        salaryMin: z.number().optional(),
+        salaryMax: z.number().optional(),
+        visaSponsorship: z.boolean().default(false),
+        remote: z.boolean().default(false),
+        applicationUrl: z.string().url("Valid application URL is required"),
+        requirements: z.array(z.string()).default([]),
+        skills: z.array(z.string()).default([]),
+        techStack: z.array(z.string()).default([]),
+        featured: z.boolean().default(false),
+        premium: z.boolean().default(false),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        // Verify user owns this job
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        if (!user?.employee?.company) {
+          throw new Error("User is not associated with a company");
+        }
+
+        const existingJob = await ctx.db.job.findFirst({
+          where: {
+            id: input.id,
+            companyId: user.employee.company.id
+          }
+        });
+
+        if (!existingJob) {
+          throw new Error("Job not found or you don't have permission to edit it");
+        }
+
+        const updatedJob = await ctx.db.job.update({
+          where: { id: input.id },
+          data: {
+            title: input.title,
+            description: input.description,
+            location: input.location,
+            country: input.country,
+            jobType: input.jobType,
+            experienceLevel: input.experienceLevel,
+            salaryMin: input.salaryMin,
+            salaryMax: input.salaryMax,
+            visaSponsorship: input.visaSponsorship,
+            remote: input.remote,
+            applicationUrl: input.applicationUrl,
+            requirements: input.requirements,
+            skills: input.skills,
+            techStack: input.techStack,
+            featured: input.featured,
+            premium: input.premium,
+            updatedAt: new Date(),
+          },
+          include: {
+            company: true
+          }
+        });
+
+        return updatedJob;
+      } catch (error) {
+        console.error('Error updating job:', error);
+        throw new Error(error instanceof Error ? error.message : "Failed to update job");
+      }
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        // Verify user owns this job
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        if (!user?.employee?.company) {
+          throw new Error("User is not associated with a company");
+        }
+
+        const existingJob = await ctx.db.job.findFirst({
+          where: {
+            id: input.id,
+            companyId: user.employee.company.id
+          }
+        });
+
+        if (!existingJob) {
+          throw new Error("Job not found or you don't have permission to delete it");
+        }
+
+        // Delete the job
+        await ctx.db.job.delete({
+          where: { id: input.id }
+        });
+
+        return { success: true, message: "Job deleted successfully" };
+      } catch (error) {
+        console.error('Error deleting job:', error);
+        throw new Error(error instanceof Error ? error.message : "Failed to delete job");
+      }
+    }),
+
+  getJobApplications: protectedProcedure
+    .input(z.object({ jobId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        // Verify user is an employer/admin
+        if (ctx.session.user.role !== "EMPLOYER" && ctx.session.user.role !== "ADMIN") {
+          throw new Error("Unauthorized: Only employers can view job applications");
+        }
+
+        // Get user's company
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        if (!user?.employee?.company) {
+          throw new Error("User is not associated with a company");
+        }
+
+        // Verify the job belongs to the user's company
+        const job = await ctx.db.job.findFirst({
+          where: {
+            id: input.jobId,
+            companyId: user.employee.company.id
+          }
+        });
+
+        if (!job) {
+          throw new Error("Job not found or you don't have permission to view its applications");
+        }
+
+        // Get applications for this job
+        const applications = await ctx.db.application.findMany({
+          where: {
+            jobId: input.jobId
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                jobSeekerProfile: {
+                  select: {
+                    title: true,
+                    bio: true,
+                    skills: true,
+                    technicalSkills: true,
+                    yearsOfExperience: true,
+                    location: true
+                  }
+                }
+              }
+            }
+          },
+          orderBy: {
+            id: "desc"
+          }
+        });
+
+        return applications;
+      } catch (error) {
+        console.error('Error fetching job applications:', error);
+        throw new Error(error instanceof Error ? error.message : "Failed to fetch applications");
       }
     }),
 
@@ -378,8 +625,52 @@ export const jobsRouter = createTRPCRouter({
         }
       });
       
+      // If user is logged in, check if they can see application details
+      if (ctx.session?.user) {
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        // Filter jobs based on user's company access
+        const filteredJobs = jobs.map(job => {
+          // If user is an employer/admin from the same company, include application details
+          if (user?.employee?.company?.id === job.companyId && 
+              ctx.session?.user && (ctx.session.user.role === "EMPLOYER" || ctx.session.user.role === "ADMIN")) {
+            return job;
+          }
+          
+          // For other companies or public access, hide application details
+          return {
+            ...job,
+            _count: {
+              applications: 0
+            }
+          };
+        });
+        
+        // Sort results by the order of ids provided
+        return filteredJobs.sort((a, b) => {
+          return input.ids.indexOf(a.id) - input.ids.indexOf(b.id);
+        });
+      }
+      
+      // For public access, hide application details for all jobs
+      const publicJobs = jobs.map(job => ({
+        ...job,
+        _count: {
+          applications: 0
+        }
+      }));
+      
       // Sort results by the order of ids provided
-      return jobs.sort((a, b) => {
+      return publicJobs.sort((a, b) => {
         return input.ids.indexOf(a.id) - input.ids.indexOf(b.id);
       });
     }),
@@ -449,6 +740,27 @@ export const jobsRouter = createTRPCRouter({
         // Only allow employers to see their own company's jobs
         if (ctx.session.user.role !== "EMPLOYER" && ctx.session.user.role !== "ADMIN") {
           throw new Error("Unauthorized: Only employers can view their jobs");
+        }
+        
+        // Verify user belongs to the company they're trying to access
+        const user = await ctx.db.user.findUnique({
+          where: { id: ctx.session.user.id },
+          include: {
+            employee: {
+              include: {
+                company: true
+              }
+            }
+          }
+        });
+
+        if (!user?.employee?.company) {
+          throw new Error("User is not associated with a company");
+        }
+
+        // Only allow access to their own company's jobs (unless admin)
+        if (ctx.session.user.role !== "ADMIN" && user.employee.company.id !== input.companyId) {
+          throw new Error("Unauthorized: You can only view your own company's jobs");
         }
         
         const jobs = await ctx.db.job.findMany({

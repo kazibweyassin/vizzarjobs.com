@@ -305,7 +305,7 @@ export default function AboutUsPage() {
               className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white text-sm font-semibold mb-8 shadow-2xl hover:bg-white/15 transition-all"
             >
               <motion.div 
-                className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center shadow-lg"
+                className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               >
@@ -323,16 +323,12 @@ export default function AboutUsPage() {
             >
               About{" "}
               <motion.span 
-                className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500 bg-clip-text text-transparent inline-block"
-                animate={{ 
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
+                className="text-blue-500 inline-block"
                 transition={{ 
                   duration: 5, 
                   repeat: Infinity,
                   ease: "linear"
                 }}
-                style={{ backgroundSize: '200% 200%' }}
               >
                 VizzarJobs
               </motion.span>
@@ -357,7 +353,7 @@ export default function AboutUsPage() {
             >
               <Link 
                 href="/jobs"
-                className="group inline-flex items-center px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-base font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="group inline-flex items-center px-8 py-4 rounded-xl bg-blue-600 text-white text-base font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300 hover:bg-blue-700"
               >
                 Explore Opportunities
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
@@ -401,7 +397,7 @@ export default function AboutUsPage() {
 
       {/* Mission & Vision - Enhanced with parallax */}
       <div className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-blue-50/20"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {[
@@ -424,7 +420,7 @@ export default function AboutUsPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
                         fill
                       />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${item.gradient} opacity-60 group-hover:opacity-70 transition-opacity`}></div>
+                    <div className="absolute inset-0 bg-blue-600 opacity-60 group-hover:opacity-70 transition-opacity"></div>
             <motion.div
                       className="absolute top-6 left-6 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30"
                       whileHover={{ rotate: 360, scale: 1.1 }}
@@ -434,7 +430,7 @@ export default function AboutUsPage() {
                     </motion.div>
                     </div>
                   <div className="p-8">
-                    <h2 className={`text-3xl font-bold bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent mb-4`}>
+                    <h2 className="text-3xl font-bold text-blue-600 mb-4">
                       {item.title}
                   </h2>
                     <p className="text-gray-600 text-lg leading-relaxed">{item.desc}</p>
@@ -447,7 +443,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Our Story - Enhanced */}
-      <div className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-900 relative overflow-hidden">
+      <div className="py-32 bg-blue-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
           backgroundSize: '40px 40px'
@@ -470,7 +466,7 @@ export default function AboutUsPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Our Story
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1.5 bg-blue-500 mx-auto rounded-full"></div>
           </motion.div>
 
           <div className="max-w-6xl mx-auto">
@@ -486,7 +482,7 @@ export default function AboutUsPage() {
               viewport={{ once: true }}
                   transition={{ delay: index * 0.2 }}
                   whileHover={{ y: -8, scale: 1.02 }}
-                  className={`bg-gradient-to-br ${item.gradient} backdrop-blur-xl rounded-2xl p-8 border ${item.border}`}
+                  className="bg-blue-600/20 backdrop-blur-xl rounded-2xl p-8 border border-blue-400/30"
                 >
                   <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
                   <p className="text-blue-100 leading-relaxed">{item.content}</p>
@@ -514,7 +510,7 @@ export default function AboutUsPage() {
 
       {/* Values - Ultra Enhanced */}
       <div className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100"></div>
+        <div className="absolute inset-0 bg-blue-50"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center mb-20"
@@ -523,16 +519,16 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <Zap className="w-4 h-4 mr-2" />
               Our Foundation
             </motion.div>
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               Our Values
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full mb-8"></div>
+            <div className="w-32 h-1.5 bg-blue-600 mx-auto rounded-full mb-8"></div>
           </motion.div>
 
           <motion.div 
@@ -549,10 +545,10 @@ export default function AboutUsPage() {
                 whileHover={{ y: -15, scale: 1.03 }}
                 className="group relative"
               >
-                <div className={`bg-gradient-to-br ${value.bgGradient} rounded-3xl p-8 border-2 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-500 h-full relative overflow-hidden`}>
+                <div className="bg-blue-50 rounded-3xl p-8 border-2 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-500 h-full relative overflow-hidden">
                   {/* Animated background blob */}
                   <motion.div 
-                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${value.gradient} rounded-full opacity-20 blur-2xl`}
+                    className="absolute top-0 right-0 w-32 h-32 bg-blue-600 rounded-full opacity-20 blur-2xl"
                     animate={{ 
                       scale: [1, 1.2, 1],
                       rotate: [0, 90, 0]
@@ -565,7 +561,7 @@ export default function AboutUsPage() {
                   />
                   
                   <motion.div 
-                    className={`w-20 h-20 bg-gradient-to-r ${value.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg relative z-10`}
+                    className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg relative z-10"
                     whileHover={{ rotate: 360, scale: 1.1 }}
                     transition={{ duration: 0.6 }}
                   >
@@ -582,7 +578,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Team Section - Ultra Enhanced */}
-      <div className="py-32 bg-gradient-to-br from-slate-50 to-blue-100 relative">
+      <div className="py-32 bg-blue-50 relative">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div 
             className="text-center mb-20"
@@ -591,13 +587,13 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <Users className="w-4 h-4 mr-2" />
               Meet the Team
             </motion.div>
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               The People Behind VizzarJobs
             </h2>
             <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full"></div>
@@ -625,7 +621,7 @@ export default function AboutUsPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
                     fill
                   />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${member.gradient} opacity-0 group-hover:opacity-70 transition-opacity duration-500`}></div>
+                    <div className="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-70 transition-opacity duration-500"></div>
                     
                     {/* Social icons overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -657,7 +653,7 @@ export default function AboutUsPage() {
                   
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
-                    <p className={`bg-gradient-to-r ${member.gradient} bg-clip-text text-transparent font-semibold mb-3`}>{member.role}</p>
+                    <p className="text-blue-600 font-semibold mb-3">{member.role}</p>
                     <div className="flex items-center text-gray-500 text-sm mb-4">
                       <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
                     {member.location}
@@ -673,7 +669,7 @@ export default function AboutUsPage() {
 
       {/* Milestones - Enhanced Timeline */}
       <div className="py-32 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-50/30 to-transparent"></div>
+        <div className="absolute inset-0 bg-blue-50/30"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center mb-20"
@@ -682,13 +678,13 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Our Progress
             </motion.div>
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               Our Journey
             </h2>
             <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full"></div>
@@ -707,7 +703,7 @@ export default function AboutUsPage() {
                 {/* Timeline indicator */}
                 <div className="w-40 flex-shrink-0 flex flex-col items-center">
                   <motion.div 
-                    className={`w-20 h-20 rounded-2xl bg-gradient-to-br from-${milestone.color}-500 to-${milestone.color}-600 flex items-center justify-center shadow-xl relative z-10`}
+                    className="w-20 h-20 rounded-2xl bg-blue-500 flex items-center justify-center shadow-xl relative z-10"
                     whileHover={{ scale: 1.1, rotate: 360 }}
                     transition={{ duration: 0.6 }}
                   >
@@ -716,7 +712,7 @@ export default function AboutUsPage() {
                   
                   {index < milestones.length - 1 && (
                     <motion.div 
-                      className={`w-1 flex-grow bg-gradient-to-b from-${milestone.color}-500 to-${milestone.color}-600 my-4 rounded-full relative`}
+                      className="w-1 flex-grow bg-blue-500 my-4 rounded-full relative"
                       initial={{ scaleY: 0 }}
                       whileInView={{ scaleY: 1 }}
                       transition={{ duration: 0.8, delay: 0.3 }}
@@ -738,14 +734,14 @@ export default function AboutUsPage() {
                   className="flex-grow mb-4 ml-8 group"
                   whileHover={{ x: 10 }}
                 >
-                  <div className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl p-8 border border-gray-100 relative overflow-hidden hover:shadow-2xl transition-all duration-500">
+                  <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 relative overflow-hidden hover:shadow-2xl transition-all duration-500">
                     {/* Animated background */}
-                    <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-${milestone.color}-500/10 to-transparent rounded-full transform translate-x-32 -translate-y-32 group-hover:scale-150 transition-transform duration-700`}></div>
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full transform translate-x-32 -translate-y-32 group-hover:scale-150 transition-transform duration-700"></div>
                     
                   <div className="relative z-10">
                       <div className="flex items-center justify-between mb-4">
                         <motion.div 
-                          className={`px-6 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-${milestone.color}-500 to-${milestone.color}-600 text-white shadow-lg`}
+                          className="px-6 py-2 rounded-full text-sm font-bold bg-blue-500 text-white shadow-lg"
                           whileHover={{ scale: 1.05 }}
                         >
                       {milestone.year}
@@ -769,7 +765,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Testimonials Section - New Addition */}
-      <div className="py-32 bg-gradient-to-br from-blue-900 via-blue-900 to-blue-900 relative overflow-hidden">
+      <div className="py-32 bg-blue-900 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
           backgroundSize: '40px 40px'
@@ -792,7 +788,7 @@ export default function AboutUsPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               What Our Community Says
             </h2>
-            <div className="w-32 h-1.5 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1.5 bg-blue-500 mx-auto rounded-full"></div>
           </motion.div>
 
           <motion.div 
@@ -809,13 +805,13 @@ export default function AboutUsPage() {
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 relative overflow-hidden group"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/10 to-transparent rounded-full transform translate-x-16 -translate-y-16 group-hover:scale-150 transition-transform duration-500"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full transform translate-x-16 -translate-y-16 group-hover:scale-150 transition-transform duration-500"></div>
                 
                 <Quote className="w-12 h-12 text-cyan-300/50 mb-6" />
                 <p className="text-white text-lg leading-relaxed mb-6 relative z-10">{testimonial.quote}</p>
                 
                 <div className="flex items-center relative z-10">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold text-lg mr-4">
+                  <div className="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg mr-4">
                     {testimonial.author.charAt(0)}
                   </div>
                   <div>
@@ -831,7 +827,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Enhanced Stats Section */}
-      <div className="py-32 bg-gradient-to-br from-slate-50 to-blue-50 relative">
+      <div className="py-32 bg-blue-50 relative">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div 
             className="text-center mb-16"
@@ -840,13 +836,13 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-blue-100 text-blue-700 text-sm font-medium mb-6"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6"
               animate={floatingAnimation}
             >
               <Award className="w-4 h-4 mr-2" />
               Our Impact
             </motion.div>
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               Numbers That Matter
             </h2>
             <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 to-blue-600 mx-auto rounded-full"></div>
@@ -868,22 +864,22 @@ export default function AboutUsPage() {
                 whileHover={{ y: -15, scale: 1.05 }}
                 className="group"
               >
-                <div className={`bg-gradient-to-br ${stat.bg} rounded-3xl p-8 text-center relative overflow-hidden border-2 border-white shadow-xl hover:shadow-2xl transition-all duration-500`}>
+                <div className="bg-blue-50 rounded-3xl p-8 text-center relative overflow-hidden border-2 border-white shadow-xl hover:shadow-2xl transition-all duration-500">
                   <motion.div 
-                    className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 transform translate-x-16 -translate-y-16 bg-gradient-to-br"
+                    className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 transform translate-x-16 -translate-y-16 bg-blue-600"
                     animate={{ scale: [1, 1.5, 1], rotate: [0, 180, 360] }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   ></motion.div>
                   
                   <motion.div 
-                    className={`w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-xl bg-gradient-to-r ${stat.gradient}`}
+                    className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-xl bg-blue-600"
                     whileHover={{ rotate: 360, scale: 1.2 }}
                     transition={{ duration: 0.6 }}
                   >
                     <stat.icon className="w-10 h-10 text-white" />
                   </motion.div>
                   
-                  <div className={`text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent`}>
+                  <div className="text-3xl md:text-4xl font-bold mb-3 text-blue-600">
                     {stat.number}
                   </div>
                   <div className="text-gray-700 font-semibold text-lg">
@@ -897,7 +893,7 @@ export default function AboutUsPage() {
       </div>
 
       {/* Ultra-Enhanced CTA Section */}
-      <div className="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-900 relative overflow-hidden">
+      <div className="py-32 bg-blue-900 relative overflow-hidden">
         <div className="absolute inset-0">
           <Image 
             src="/images/about/cta-background.jpg" 
@@ -952,12 +948,8 @@ export default function AboutUsPage() {
             >
               Join Us in Shaping the 
               <motion.span 
-                className="block bg-gradient-to-r from-cyan-300 via-blue-300 to-blue-400 bg-clip-text text-transparent"
-                animate={{ 
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
+                className="block text-blue-300"
                 transition={{ duration: 5, repeat: Infinity }}
-                style={{ backgroundSize: '200% 200%' }}
               >
                 Future of Global Careers
               </motion.span>
@@ -984,7 +976,7 @@ export default function AboutUsPage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
                 href="/jobs" 
-                  className="group inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-lg font-bold shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300"
+                  className="group inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-blue-600 text-white text-lg font-bold shadow-2xl hover:bg-blue-700 transition-all duration-300"
               >
                   <Briefcase className="w-6 h-6 mr-3" />
                 Find Opportunities

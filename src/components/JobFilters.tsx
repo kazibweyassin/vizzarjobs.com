@@ -239,7 +239,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               onClick={() => updateFilters({ premiumOnly: true })}
               className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
                 filters.premiumOnly === true
-                  ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium shadow-sm"
+                  ? "bg-yellow-500 text-white font-medium shadow-sm"
                   : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-yellow-300 hover:bg-gray-100"
               }`}
             >
@@ -454,7 +454,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           <div className="pt-4 border-t border-gray-100">
             <button
               onClick={clearFilters}
-              className="w-full py-2.5 premium-gradient hover:shadow-lg text-white font-medium rounded-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 hover:shadow-lg text-white font-medium rounded-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
             >
               <Filter className="w-4 h-4" />
               Reset all filters

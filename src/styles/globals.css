@@ -132,8 +132,8 @@ To use the new design system in your components:
    - Use text-light-green for muted green text
 
 3. Gradients:
-   - Use premium-gradient class for blue to kale gradient
-   - Or create custom: background: linear-gradient(135deg, var(--color--blue), var(--color--kale))
+   - Use premium-gradient class for blue background
+   - Or create custom: background: var(--color--blue)
 
 4. Borders:
    - Use border-light-green for subtle green borders
@@ -148,12 +148,12 @@ Example component usage:
 </div>
 */
 .premium-gradient {
-  background: linear-gradient(135deg, var(--color--blue) 0%, var(--color--kale) 100%);
+  background: var(--color--blue);
 }
 
 .premium-card {
   border: 1px solid var(--border--light-green);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
 }
 
@@ -203,12 +203,12 @@ Example component usage:
 
 /* Premium UI Elements */
 .premium-gradient {
-  background: linear-gradient(135deg, var(--color--blue) 0%, var(--color--kale) 100%);
+  background: var(--color--blue);
 }
 
 .premium-card {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
 }
 
@@ -221,7 +221,7 @@ Example component usage:
 }
 
 .gold-badge {
-  background: linear-gradient(90deg, #f3d78e, #e2b758);
+  background: #e2b758;
   color: #5f4200;
   border: 1px solid #e2b758;
 }
