@@ -39,7 +39,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-gray-300 mb-6 max-w-sm">
-              Connecting talent with global opportunities. Find your dream job with visa sponsorship.
+              Connecting AI/ML talent with Canadian opportunities. Find your dream job with visa sponsorship.
             </p>
             <div className="flex items-center gap-4">
               <a 
@@ -57,7 +57,7 @@ export function Footer() {
                 <Twitter className="w-4 h-4" />
               </a>
               <a 
-                href="#" 
+                href="#"
                 className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
                 aria-label="Instagram"
               >
