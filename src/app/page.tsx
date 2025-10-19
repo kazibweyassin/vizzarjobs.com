@@ -155,7 +155,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-20 max-w-6xl mx-auto px-6 text-center">
+        <div className="relative z-20 max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,7 +167,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-6xl font-bold text-white leading-tight"
+              className="text-5xl md:text-6xl font-bold text-white leading-tight text-left"
             >
               Build better AI/ML solutions — faster
             </motion.h1>
@@ -177,7 +177,7 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-white/90 max-w-4xl leading-relaxed text-left"
             >
               There are more than 500 highly skilled AI/ML professionals in our talent pool. 
               Most in largely untapped markets. Ready to be placed quickly and effectively in Canada.
@@ -188,7 +188,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
+              className="flex flex-col sm:flex-row gap-4 items-start pt-8"
             >
               <Link
                 href="/talent-pool"
