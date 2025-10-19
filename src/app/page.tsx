@@ -155,12 +155,12 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-20 max-w-6xl mx-auto px-6">
+        <div className="relative z-20 max-w-6xl mx-auto px-6 pt-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-6"
           >
             {/* Main Headline */}
             <motion.h1
