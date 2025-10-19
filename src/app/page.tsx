@@ -17,7 +17,9 @@ import {
   Brain,
   Code,
   Database,
-  Sparkles
+  Sparkles,
+  Zap,
+  Shield
 } from "lucide-react";
 
 interface Company {
