@@ -9,42 +9,47 @@
 }
 
 :root {
-  /* Core Brand Colors */
-  --color--blue: #0fddcc;
-  --color--emerald: #338632;
-  --color--bright-yellow: #ffff00;
-  --color--kale: #173b3f;
-  --color--darker-kale: #10292c;
-  --color--nandor: #475653;
-  --color--dark-green-black: #424d53;
-  --color--grey-green: #6a817c;
-  --color--light-green: #b0d6ce;
-  --color--opal-1: #e3f2ef;
-  --color--opal-2: #e7f2f0;
+  /* Core Brand Colors - Updated for cleaner design with Canada focus */
+  --color--blue: #0057B8; /* Canadian blue */
+  --color--red: #FF0000; /* Canadian red */
+  --color--white: #FFFFFF;
+  --color--black: #000000;
+  --color--navy: #0F2C4C;
+  --color--light-navy: #2A4A6D;
+  --color--gray-100: #f8f9fa;
+  --color--gray-200: #e9ecef;
+  --color--gray-300: #dee2e6;
+  --color--gray-400: #ced4da;
+  --color--gray-500: #adb5bd;
+  --color--gray-600: #6c757d;
+  --color--gray-700: #495057;
+  --color--gray-800: #343a40;
+  --color--gray-900: #212529;
 
   /* Text Colors */
-  --text--text-dark: #010101;
-  --text--text-white: #ffffff;
-  --text--text-light-green: var(--color--light-green);
-  --text--text-color-grey-green: var(--color--grey-green);
+  --text--text-dark: var(--color--black);
+  --text--text-white: var(--color--white);
+  --text--text-primary: var(--color--navy);
+  --text--text-secondary: var(--color--gray-700);
 
   /* Border Colors */
-  --border--light-green: #b0d6ce99;
+  --border--light: var(--color--gray-300);
+  --border--primary: var(--color--blue);
 
   /* Container Sizes */
   --container-small: 48rem;
   --container-medium: 64rem;
   --container-large: 73.125rem;
 
-  /* Legacy Support - Map to new system */
+  /* New System Mappings */
   --primary: var(--color--blue);
-  --primary-darker: var(--color--kale);
-  --accent: var(--color--emerald);
-  --gold: var(--color--bright-yellow);
-  --dark: var(--color--darker-kale);
-  --muted: var(--color--nandor);
-  --surface: var(--color--opal-1);
-  --surface-subtle: var(--color--opal-2);
+  --primary-darker: var(--color--navy);
+  --accent: var(--color--red);
+  --secondary: var(--color--light-navy);
+  --dark: var(--color--gray-900);
+  --muted: var(--color--gray-600);
+  --surface: var(--color--gray-100);
+  --surface-subtle: var(--color--gray-200);
   --radius: 0.625rem;
   --background: var(--text--text-white);
   --foreground: var(--text--text-dark);
@@ -201,29 +206,25 @@ Example component usage:
   border-color: var(--border--light-green);
 }
 
-/* Premium UI Elements */
+/* Premium UI Elements - Clean Andela-inspired design */
 .premium-gradient {
-  background: var(--color--blue);
+  background: var(--color--navy);
 }
 
 .premium-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-}
-
-.gold-accent {
-  color: hsl(var(--gold));
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .premium-shadow {
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.gold-badge {
-  background: #e2b758;
-  color: #5f4200;
-  border: 1px solid #e2b758;
+.featured-badge {
+  background: rgba(15, 44, 76, 0.1);
+  color: var(--color--navy);
+  border: none;
 }
 
 @theme inline {

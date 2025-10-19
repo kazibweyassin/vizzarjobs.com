@@ -34,37 +34,36 @@ export function Navigation() {
   };
 
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/20 sticky top-0 z-50 shadow-lg">
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 min-w-0">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Link href="/" className="flex items-center group">
-              <div className="relative">
+              <div className="relative flex items-center">
                 <Image
                   src="/logowhite.png"
                   alt="VizzarJobs"
                   width={40}
                   height={40}
                   priority
-                  className="h-10 w-auto transition-transform duration-300 group-hover:scale-110"  
+                  className="h-10 w-auto"  
                 />
-                <div className="absolute inset-0 bg-blue-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <span className="ml-2 text-navy font-medium text-lg">VizzarJobs <span className="text-red-600 font-bold">Canada</span></span>
               </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-4 xl:space-x-6">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-6 xl:space-x-8">
             {navigation.map((item) => {
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="group flex items-center text-slate-300 hover:text-white transition-all duration-300 font-medium px-4 py-2 rounded-xl hover:bg-slate-800/50 text-sm lg:text-base relative overflow-hidden"
+                  className="text-gray-700 hover:text-navy transition-colors font-medium px-2 py-1 text-sm lg:text-base"
                 >
-                  <span className="font-semibold">{item.name}</span>
-                  <div className="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl"></div>
+                  {item.name}
                 </Link>
               );
             })}
@@ -77,10 +76,10 @@ export function Navigation() {
               <>
                 {session.user.role === "JOB_SEEKER" && (
                   <Link
-                    href="/jobs"
-                    className="group inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
+                    href="/jobs?location=Canada"
+                    className="inline-flex items-center bg-navy text-white px-6 py-3 rounded-md font-medium transition-colors text-sm xl:text-base"
                   >
-                    <span className="hidden lg:inline">Browse Jobs</span>
+                    <span className="hidden lg:inline">Browse Canadian Jobs</span>
                     <span className="lg:hidden">Jobs</span>
                   </Link>
                 )}
@@ -88,7 +87,7 @@ export function Navigation() {
                 {(session.user.role === "EMPLOYER" || session.user.role === "ADMIN") && (
                   <Link
                     href="/dashboard/employer"
-                    className="group inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
+                    className="inline-flex items-center bg-navy text-white px-6 py-3 rounded-md font-medium transition-colors text-sm xl:text-base"
                   >
                     <span className="hidden lg:inline">Dashboard</span>
                     <span className="lg:hidden">Dashboard</span>
@@ -99,44 +98,44 @@ export function Navigation() {
             
             {/* Profile Button */}
             {status === "loading" ? (
-              <div className="w-10 h-10 bg-slate-200 rounded-xl animate-pulse"></div>
+              <div className="w-10 h-10 bg-gray-100 rounded-md animate-pulse"></div>
             ) : !session ? (
               <Link
                 href="/auth/signin"
-                className="group inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm xl:text-base shadow-lg"
+                className="inline-flex items-center bg-navy text-white px-6 py-3 rounded-md font-medium transition-colors hover:bg-navy/90 text-sm xl:text-base"
               >
-                <span className="hidden lg:inline">Get Started</span>
+                <span className="hidden lg:inline">Find Canadian Jobs</span>
                 <span className="lg:hidden">Sign In</span>
               </Link>
             ) : (
               <div className="relative">
                 <button
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="group flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-all duration-300 border border-transparent hover:border-slate-200 hover:shadow-sm"
+                  className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200"
                 >
                   {session.user.image ? (
                     <img
                       src={session.user.image}
                       alt={session.user.name || "User"}
-                      className="w-10 h-10 rounded-xl border-2 border-white shadow-sm group-hover:shadow-md transition-all duration-300"
+                      className="w-10 h-10 rounded-md object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
-                      <span className="text-white font-bold">
+                    <div className="w-10 h-10 bg-navy rounded-md flex items-center justify-center">
+                      <span className="text-white font-medium">
                         {session.user.name?.[0] || "U"}
                       </span>
                     </div>
                   )}
                   <div className="text-left hidden xl:block min-w-0">
-                    <div className="text-sm font-bold text-slate-900 truncate max-w-32">
+                    <div className="text-sm font-medium text-gray-900 truncate max-w-32">
                       {session.user.name}
                     </div>
                     <div className="flex items-center gap-1">
                       <Badge 
-                        className={`text-xs font-semibold ${
+                        className={`text-xs ${
                           session.user.role === "EMPLOYER" || session.user.role === "ADMIN"
-                            ? "bg-green-500 text-white border-0" 
-                            : "bg-blue-500 text-white border-0"
+                            ? "bg-navy/10 text-navy border-0" 
+                            : "bg-navy/10 text-navy border-0"
                         }`}
                       >
                         {session.user.role === "EMPLOYER" || session.user.role === "ADMIN" ? "Employer" : "Job Seeker"}
@@ -147,21 +146,21 @@ export function Navigation() {
 
                 {/* Profile Dropdown */}
                 {isProfileDropdownOpen && (
-                  <div className="absolute right-0 mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 py-2 z-50 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 bg-slate-50">
-                      <p className="text-sm font-bold text-slate-900 truncate">
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg border border-gray-100 py-1 z-50 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                      <p className="text-sm font-medium text-gray-900 truncate">
                         {session.user.name}
                       </p>
-                      <p className="text-sm text-slate-600 truncate">{session.user.email}</p>
+                      <p className="text-sm text-gray-600 truncate">{session.user.email}</p>
                     </div>
                     
                     <Link
                       href="/profile"
-                      className="flex items-center gap-3 px-6 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 font-medium"
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setIsProfileDropdownOpen(false)}
                     >
-                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <User className="w-4 h-4 text-blue-600" />
+                      <div className="w-6 h-6 bg-navy/10 rounded-md flex items-center justify-center">
+                        <User className="w-4 h-4 text-navy" />
                       </div>
                       Profile
                     </Link>
@@ -169,11 +168,11 @@ export function Navigation() {
                     {session.user.role === "JOB_SEEKER" && (
                       <Link
                         href="/applications"
-                        className="flex items-center gap-3 px-6 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 font-medium"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         onClick={() => setIsProfileDropdownOpen(false)}
                       >
-                        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                          <FileText className="w-4 h-4 text-green-600" />
+                        <div className="w-6 h-6 bg-navy/10 rounded-md flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-navy" />
                         </div>
                         My Applications
                       </Link>
@@ -182,10 +181,10 @@ export function Navigation() {
                     {!session.user.profileComplete && (
                       <Link
                         href="/onboarding"
-                        className="flex items-center gap-3 px-6 py-3 text-sm text-blue-700 font-semibold hover:bg-blue-50 transition-all duration-200 bg-blue-50/50"
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-navy font-medium hover:bg-gray-50 transition-colors"
                         onClick={() => setIsProfileDropdownOpen(false)}
                       >
-                        Create Your Profile
+                        Complete Your Canadian Profile
                       </Link>
                     )}
                     
@@ -201,19 +200,19 @@ export function Navigation() {
                     
                     <Link
                       href="/settings"
-                      className="flex items-center gap-3 px-6 py-3 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 font-medium"
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setIsProfileDropdownOpen(false)}
                     >
                       Settings
                     </Link>
                     
-                    <div className="border-t border-slate-100 mt-2 pt-2">
+                    <div className="border-t border-gray-100 mt-1">
                       <button
                         onClick={() => {
                           setIsProfileDropdownOpen(false);
                           handleSignOut();
                         }}
-                        className="flex items-center gap-3 w-full px-6 py-3 text-sm text-red-600 hover:bg-red-50 transition-all duration-200 font-medium rounded-lg mx-2"
+                        className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         Sign Out
                       </button>
@@ -228,7 +227,7 @@ export function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-3 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/50 transition-all duration-300 border border-transparent hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
               aria-label="Toggle mobile menu"
             >
               {isMenuOpen ? (

@@ -7,31 +7,31 @@ export function PremiumStats() {
   const stats = [
     {
       id: 1,
-      name: "Elite Professionals",
-      value: "5,000+",
-      icon: <Users className="w-5 h-5 text-blue-500" />,
-      description: "Vetted candidates"
+      name: "Active Professionals",
+      value: "10,000+",
+      icon: <Users className="w-5 h-5 text-navy" />,
+      description: "Canadian job seekers"
     },
     {
       id: 2,
-      name: "Global Companies",
-      value: "100+",
-      icon: <Globe className="w-5 h-5 text-blue-500" />,
-      description: "Offering visa sponsorship"
+      name: "Canadian Companies",
+      value: "500+",
+      icon: <Globe className="w-5 h-5 text-navy" />,
+      description: "Hiring on our platform"
     },
     {
       id: 3,
-      name: "Premium Positions",
-      value: "2,500+",
-      icon: <BriefcaseBusiness className="w-5 h-5 text-blue-500" />,
-      description: "Exclusive opportunities"
+      name: "Available Positions",
+      value: "1,200+",
+      icon: <BriefcaseBusiness className="w-5 h-5 text-navy" />,
+      description: "Across major cities"
     },
     {
       id: 4,
-      name: "Success Rate",
-      value: "85%",
-      icon: <Award className="w-5 h-5 text-blue-500" />,
-      description: "Placement efficiency"
+      name: "Placement Rate",
+      value: "92%",
+      icon: <Award className="w-5 h-5 text-navy" />,
+      description: "Success within 30 days"
     }
   ];
 
@@ -41,19 +41,19 @@ export function PremiumStats() {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-700">
-                Premium Connections
+              <span className="text-navy">
+                Canadian Job Market
               </span>
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600">
-              Connecting elite African tech talent with world-class companies offering visa sponsorship
+              Connecting qualified professionals with leading employers across Canada
             </p>
           </div>
-          <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-16 grid grid-cols-1 gap-6 text-center sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.id}
-                className="flex flex-col bg-white p-8"
+                className="flex flex-col bg-white p-8 rounded-lg shadow-sm border border-gray-100"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ 
                   opacity: 1, 
@@ -65,11 +65,11 @@ export function PremiumStats() {
                 }}
                 viewport={{ once: true }}
               >
-                <dt className="text-sm font-semibold leading-6 text-gray-600 flex items-center justify-center gap-2">
+                <dt className="text-sm font-semibold leading-6 text-gray-700 flex items-center justify-center gap-2">
                   {stat.icon}
                   {stat.name}
                 </dt>
-                <dd className="order-first text-3xl font-semibold tracking-tight text-blue-600">
+                <dd className="order-first text-3xl font-semibold tracking-tight text-navy">
                   {stat.value}
                 </dd>
                 <p className="mt-2 text-sm text-gray-500">{stat.description}</p>

@@ -19,13 +19,20 @@ export function JobList({
   initialFilters = {},
   limit = 20 
 }: JobListProps) {
+  // Default job categories to focus on specialized tech roles
+  const techSpecializations = useMemo(() => 
+    initialFilters.techSpecialization || [], 
+    [initialFilters.techSpecialization]
+  );
+  
   const [filters, setFilters] = useState<JobFiltersState>({
     search: "",
-    location: "",
+    location: "Canada", // Default to Canada
     visaSponsorship: undefined,
     jobType: undefined,
     experienceLevel: undefined,
     techStack: [],
+    techSpecialization: techSpecializations.length ? techSpecializations : ['DevOps', 'AI', 'Machine Learning'], // Focus on these specializations
     salaryMin: undefined,
     salaryMax: undefined,
     postedWithin: 'any',
@@ -45,6 +52,7 @@ export function JobList({
     search: filters.search || undefined,
     location: filters.location || undefined,
     techStack: filters.techStack.length > 0 ? filters.techStack : undefined,
+    techSpecialization: filters.techSpecialization?.length > 0 ? filters.techSpecialization : undefined,
     salaryMin: filters.salaryMin || undefined,
     salaryMax: filters.salaryMax || undefined,
     postedWithin: filters.postedWithin !== 'any' ? filters.postedWithin : undefined,
@@ -103,7 +111,7 @@ export function JobList({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar - Desktop */}
@@ -122,14 +130,14 @@ export function JobList({
           <div className="flex-1">
             {/* Search feedback banner */}
             {isFromSearch && (
-              <div className="mb-8 bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-lg">
+              <div className="mb-8 bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
                     <Search className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-slate-900">Search Results</h3>
-                    <p className="text-slate-600">
+                    <h3 className="font-bold text-lg text-gray-900">Search Results</h3>
+                    <p className="text-gray-600">
                       {filters.search && `Showing jobs matching "${filters.search}"`}
                       {filters.search && filters.location && " in "}
                       {filters.location && `${filters.location}`}
@@ -144,15 +152,15 @@ export function JobList({
               <div className="lg:hidden mb-8">
                 <button
                   onClick={() => setShowMobileFilters(!showMobileFilters)}
-                  className="w-full flex items-center justify-center gap-3 bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl px-6 py-4 text-slate-700 hover:bg-white/90 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg px-6 py-4 text-gray-700 hover:bg-gray-50 transition-all duration-200 shadow-sm"
                 >
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
                     <Filter className="w-4 h-4 text-blue-600" />
                   </div>
                   <span className="font-semibold">Filters</span>
                   {(filters.search || filters.location || filters.visaSponsorship !== undefined || 
                     filters.jobType || filters.experienceLevel || filters.techStack.length > 0) && (
-                    <span className="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
+                    <span className="bg-blue-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
                       Active
                     </span>
                   )}
@@ -172,30 +180,30 @@ export function JobList({
             {/* Results Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
               <div>
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
-                  {filters.visaSponsorship === true ? "Visa Sponsored Jobs" : "Browse Jobs"}
+                <h1 className="text-4xl font-bold text-blue-600">
+                  {filters.visaSponsorship === true ? "Visa Sponsored Jobs" : "Canadian Jobs"}
                 </h1>
                 {!isLoading && (
                   <div className="flex items-center mt-3 gap-2">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">
                       <Briefcase className="w-4 h-4" />
-                      {jobs.length} jobs
+                      {jobs.length} jobs in Canada
                     </span>
                     {filters.search && (
-                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">
                         Search: "{filters.search}"
-                        <button onClick={() => setFilters({...filters, search: ""})} className="text-slate-500 hover:text-slate-800 transition-colors">
+                        <button onClick={() => setFilters({...filters, search: ""})} className="text-gray-500 hover:text-gray-800 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                           </svg>
                         </button>
                       </span>
                     )}
-                    {filters.location && (
-                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                    {filters.location && filters.location !== "Canada" && (
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">
                         <MapPin className="w-4 h-4" />
                         {filters.location}
-                        <button onClick={() => setFilters({...filters, location: ""})} className="text-slate-500 hover:text-slate-800 transition-colors">
+                        <button onClick={() => setFilters({...filters, location: "Canada"})} className="text-gray-500 hover:text-gray-800 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                           </svg>
@@ -249,27 +257,27 @@ export function JobList({
             {/* No Results */}
             {!isLoading && jobs.length === 0 && (
               <div className="text-center py-16">
-                <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Search className="w-10 h-10 text-slate-400" />
+                <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-10 h-10 text-gray-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                  No jobs found
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  No jobs found in Canada
                 </h3>
-                <p className="text-slate-600 mb-8 max-w-md mx-auto">
-                  Try adjusting your filters or search terms to find more jobs that match your criteria.
+                <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                  We're focused on Canadian job opportunities. Try adjusting your filters or search terms to find more jobs that match your criteria.
                 </p>
                 <button
                   onClick={() => setFilters({
                     search: "",
-                    location: "",
+                    location: "Canada",
                     visaSponsorship: undefined,
                     jobType: undefined,
                     experienceLevel: undefined,
                     techStack: [],
                   })}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold transition-all duration-200 shadow-sm"
                 >
-                  <span>Clear all filters</span>
+                  <span>Reset filters</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
@@ -294,7 +302,7 @@ export function JobList({
                     <button
                       onClick={handleLoadMore}
                       disabled={isFetchingNextPage}
-                      className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-lg hover:shadow-xl hover:scale-105"
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-sm"
                     >
                       {isFetchingNextPage ? (
                         <>

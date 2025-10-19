@@ -28,10 +28,14 @@ export interface JobFiltersState {
   jobType: JobType | undefined;
   experienceLevel: ExperienceLevel | undefined;
   techStack: string[];
+  techSpecialization?: string[]; // Specialized tech roles (DevOps, AI, ML)
   salaryMin?: number;
   salaryMax?: number;
   postedWithin?: 'day' | 'week' | 'month' | 'any';
   premiumOnly?: boolean;
+  gtsEligible?: boolean; // Global Talent Stream eligible positions
+  complianceManaged?: boolean; // Jobs with compliance automation
+  categoryA?: boolean; // Category A GTS-eligible employers
 }
 
 interface JobFiltersProps {
@@ -46,6 +50,22 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
   // Get available tech stacks and locations from the API
   const { data: techStacks = [] } = api.jobs.getTechStacks.useQuery();
   const { data: locations = [] } = api.jobs.getLocations.useQuery();
+  
+  // Canadian locations to prioritize
+  const canadianCities = [
+    "Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton",
+    "Ottawa", "Quebec City", "Winnipeg", "Halifax", "Victoria"
+  ];
+  
+  // Filter and prioritize Canadian locations
+  const sortedLocations = [...locations].sort((a, b) => {
+    const aIsCanadian = a.includes("Canada") || canadianCities.some(city => a.includes(city));
+    const bIsCanadian = b.includes("Canada") || canadianCities.some(city => b.includes(city));
+    
+    if (aIsCanadian && !bIsCanadian) return -1;
+    if (!aIsCanadian && bIsCanadian) return 1;
+    return a.localeCompare(b);
+  });
 
   const jobTypes = [
     { value: "FULL_TIME", label: "Full Time" },
@@ -63,6 +83,15 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
     "React", "TypeScript", "Node.js", "Python", "JavaScript", 
     "Next.js", "PostgreSQL", "AWS", "Docker", "Kubernetes"
   ];
+  
+  const specializedRoles = [
+    { value: "DevOps", label: "DevOps Engineer" },
+    { value: "AI", label: "AI Engineer" },
+    { value: "Machine Learning", label: "ML Engineer" },
+    { value: "Data Science", label: "Data Scientist" },
+    { value: "Cloud", label: "Cloud Engineer" },
+    { value: "Security", label: "Security Engineer" }
+  ];
 
   const displayedTechStacks = showAllTechStacks 
     ? techStacks 
@@ -75,11 +104,12 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
   const clearFilters = () => {
     onFiltersChange({
       search: "",
-      location: "",
+      location: "Canada", // Default back to Canada when clearing filters
       visaSponsorship: undefined,
       jobType: undefined,
       experienceLevel: undefined,
       techStack: [],
+      techSpecialization: ['DevOps', 'AI', 'Machine Learning'], // Keep specializations focused
       salaryMin: undefined,
       salaryMax: undefined,
       postedWithin: 'any',
@@ -299,6 +329,53 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 {level.label}
               </button>
             ))}
+          </div>
+        </div>
+        
+        {/* Tech Specialization - Highlighted section for DevOps, AI, ML roles */}
+        <div className="space-y-2.5 bg-navy/5 p-4 rounded-lg border border-navy/10">
+          <div className="flex justify-between items-center">
+            <label className="text-sm font-medium text-navy flex items-center gap-2">
+              <Code className="w-4 h-4 text-navy" />
+              Tech Specialization
+            </label>
+            {filters.techSpecialization && filters.techSpecialization.length > 0 && (
+              <button
+                onClick={() => updateFilters({ techSpecialization: [] })}
+                className="text-xs text-navy hover:text-navy/80 transition-colors"
+              >
+                Reset
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {specializedRoles.map((role) => (
+              <button
+                key={role.value}
+                onClick={() => {
+                  // Toggle role in techSpecialization array
+                  const currentSpecializations = filters.techSpecialization || [];
+                  const isSelected = currentSpecializations.includes(role.value);
+                  
+                  updateFilters({ 
+                    techSpecialization: isSelected
+                      ? currentSpecializations.filter(r => r !== role.value)
+                      : [...currentSpecializations, role.value]
+                  });
+                }}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${
+                  filters.techSpecialization?.includes(role.value)
+                    ? "bg-navy text-white font-medium shadow-sm"
+                    : "bg-white text-navy border border-navy/30 hover:bg-navy/5"
+                }`}
+              >
+                {filters.techSpecialization?.includes(role.value) && <Check className="w-3.5 h-3.5 inline mr-1" />}
+                {role.label}
+              </button>
+            ))}
+          </div>
+          <div className="text-xs text-navy/70 mt-2">
+            Focus on in-demand tech specializations across Canada
           </div>
         </div>
 

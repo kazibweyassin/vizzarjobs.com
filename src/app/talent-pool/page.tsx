@@ -20,39 +20,39 @@ export default function TalentPoolLandingPage() {
   const features = [
     {
       icon: Globe,
-      title: "Global Opportunities",
-      description: "Connect with employers worldwide offering visa sponsorship and relocation support."
+      title: "Canadian AI/ML Opportunities",
+      description: "Connect with leading Canadian AI/ML companies offering visa sponsorship and relocation support."
     },
     {
       icon: Briefcase,
-      title: "Curated Matches",
-      description: "Get matched with opportunities that align with your skills, experience, and career goals."
+      title: "AI/ML Specialized Matching",
+      description: "Get matched with AI/ML opportunities that align with your technical skills and career goals."
     },
     {
       icon: FileText,
-      title: "CV Management",
-      description: "Upload and manage your CV securely. Employers can view your profile when relevant."
+      title: "Portfolio Showcase",
+      description: "Showcase your AI/ML projects, GitHub, and research publications to Canadian employers."
     },
     {
       icon: Shield,
       title: "Privacy Protected",
-      description: "Your information is secure and only shared with verified employers when you're interested."
+      description: "Your information is secure and only shared with verified Canadian AI/ML employers."
     }
   ];
 
   const benefits = [
-    "Access to exclusive job opportunities",
-    "Direct connection with hiring managers",
-    "Visa sponsorship assistance",
+    "Access to exclusive AI/ML job opportunities in Canada",
+    "Direct connection with Canadian AI/ML hiring managers",
+    "Visa sponsorship assistance for Canada",
     "Relocation support guidance",
-    "Career development resources",
-    "Priority consideration for roles"
+    "AI/ML career development resources",
+    "Priority consideration for AI/ML roles"
   ];
 
   const stats = [
-    { number: "500+", label: "Active Candidates" },
-    { number: "50+", label: "Partner Companies" },
-    { number: "15+", label: "Countries" },
+    { number: "200+", label: "AI/ML Candidates" },
+    { number: "25+", label: "Canadian AI/ML Companies" },
+    { number: "Canada", label: "Primary Focus" },
     { number: "95%", label: "Success Rate" }
   ];
 
@@ -83,17 +83,17 @@ export default function TalentPoolLandingPage() {
           <div className="text-center max-w-4xl mx-auto">
           <Badge className="mb-4 bg-opal-1 text-kale border-light-green">
             <Star className="w-4 h-4 mr-1" />
-            Join Our Exclusive Talent Pool
+            Join Our AI/ML Talent Pool
           </Badge>
           
           <h1 className="text-5xl font-bold text-white mb-6">
-            Connect with Global
-            <span className="text-light-green"> Opportunities</span>
+            Connect with Canadian
+            <span className="text-light-green"> AI/ML Companies</span>
           </h1>
           
           <p className="text-xl text-light-green mb-8 leading-relaxed">
-            Join VizzarJobs Talent Pool and get discovered by top employers worldwide. 
-            We specialize in connecting skilled professionals with companies offering 
+            Join VizzarJobs AI/ML Talent Pool and get discovered by leading Canadian companies. 
+            We specialize in connecting AI/ML professionals with Canadian companies offering 
             visa sponsorship and relocation support.
           </p>
 

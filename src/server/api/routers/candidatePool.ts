@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure, adminProcedure } from "~/server/api/trpc";
-import { CandidateStatus, EducationLevel } from "@prisma/client";
+import { CandidateStatus, EducationLevel, AIMLFocus, SkillLevel } from "@prisma/client";
 
 export const candidatePoolRouter = createTRPCRouter({
   // Public procedure for candidate registration
@@ -15,10 +15,18 @@ export const candidatePoolRouter = createTRPCRouter({
         skills: z.array(z.string()).default([]),
         yearsOfExperience: z.number().min(0, "Years of experience must be 0 or more"),
         educationLevel: z.nativeEnum(EducationLevel),
-        preferredDestination: z.array(z.string()).default([]),
-        needsVisaSponsorship: z.boolean().default(false),
+        preferredDestination: z.array(z.string()).default(["Canada"]),
+        needsVisaSponsorship: z.boolean().default(true),
         cvFilePath: z.string().optional(),
         jobAlerts: z.boolean().default(true),
+        // AI/ML specific fields
+        aiMlFocus: z.nativeEnum(AIMLFocus).default("MACHINE_LEARNING"),
+        skillLevel: z.nativeEnum(SkillLevel).default("MID"),
+        certifications: z.array(z.string()).default([]),
+        githubUrl: z.string().optional(),
+        portfolioUrl: z.string().optional(),
+        projects: z.array(z.string()).default([]),
+        publications: z.array(z.string()).default([]),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -47,6 +55,14 @@ export const candidatePoolRouter = createTRPCRouter({
             cvFilePath: input.cvFilePath,
             jobAlerts: input.jobAlerts,
             status: "ACTIVE",
+            // AI/ML specific fields
+            aiMlFocus: input.aiMlFocus,
+            skillLevel: input.skillLevel,
+            certifications: input.certifications,
+            githubUrl: input.githubUrl,
+            portfolioUrl: input.portfolioUrl,
+            projects: input.projects,
+            publications: input.publications,
           }
         });
 
@@ -70,6 +86,8 @@ export const candidatePoolRouter = createTRPCRouter({
         needsVisaSponsorship: z.boolean().optional(),
         status: z.nativeEnum(CandidateStatus).optional(),
         search: z.string().optional(),
+        aiMlFocus: z.nativeEnum(AIMLFocus).optional(),
+        skillLevel: z.nativeEnum(SkillLevel).optional(),
         limit: z.number().min(1).max(100).default(50),
         cursor: z.string().optional(),
       })
@@ -82,6 +100,8 @@ export const candidatePoolRouter = createTRPCRouter({
           needsVisaSponsorship,
           status,
           search,
+          aiMlFocus,
+          skillLevel,
           limit,
           cursor
         } = input;
@@ -92,12 +112,16 @@ export const candidatePoolRouter = createTRPCRouter({
             destination ? { preferredDestination: { has: destination } } : {},
             needsVisaSponsorship !== undefined ? { needsVisaSponsorship } : {},
             status ? { status } : {},
+            aiMlFocus ? { aiMlFocus } : {},
+            skillLevel ? { skillLevel } : {},
             search ? {
               OR: [
                 { fullName: { contains: search, mode: "insensitive" as const } },
                 { email: { contains: search, mode: "insensitive" as const } },
                 { profession: { contains: search, mode: "insensitive" as const } },
-                { skills: { hasSome: [search] } }
+                { skills: { hasSome: [search] } },
+                { certifications: { hasSome: [search] } },
+                { projects: { hasSome: [search] } }
               ]
             } : {}
           ]
@@ -305,6 +329,13 @@ export const candidatePoolRouter = createTRPCRouter({
           'Needs Visa Sponsorship',
           'Job Alerts',
           'Status',
+          'AI/ML Focus',
+          'Skill Level',
+          'Certifications',
+          'GitHub URL',
+          'Portfolio URL',
+          'Projects',
+          'Publications',
           'Notes',
           'Contacted At',
           'Contacted By',
@@ -324,6 +355,13 @@ export const candidatePoolRouter = createTRPCRouter({
           candidate.needsVisaSponsorship ? 'Yes' : 'No',
           candidate.jobAlerts ? 'Yes' : 'No',
           candidate.status,
+          candidate.aiMlFocus,
+          candidate.skillLevel,
+          candidate.certifications.join('; '),
+          candidate.githubUrl || '',
+          candidate.portfolioUrl || '',
+          candidate.projects.join('; '),
+          candidate.publications.join('; '),
           candidate.notes || '',
           candidate.contactedAt?.toISOString() || '',
           candidate.contactedBy || '',

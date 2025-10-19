@@ -14,44 +14,43 @@ export function PremiumHowItWorks() {
   const steps = [
     {
       id: 1,
-      name: 'Create Your Elite Profile',
+      name: 'Create Your Profile',
       description: 'Complete your professional profile with skills, experience, and career preferences.',
       icon: UserPlus,
-      color: 'bg-blue-500',
+      color: 'bg-navy',
     },
     {
       id: 2,
-      name: 'Apply to Premium Positions',
-      description: 'Browse our exclusive visa-sponsored opportunities and apply with one click.',
+      name: 'Browse Canadian Jobs',
+      description: 'Explore opportunities from top employers across major Canadian cities.',
       icon: FileCheck,
-      color: 'bg-blue-600',
+      color: 'bg-navy',
     },
     {
       id: 3,
-      name: 'Fast-Track Application Process',
-      description: 'Get priority processing and direct connections with hiring managers.',
+      name: 'Streamlined Application',
+      description: 'Apply with ease and get direct connections with Canadian hiring managers.',
       icon: Briefcase,
-      color: 'bg-blue-600',
+      color: 'bg-navy',
     },
     {
       id: 4,
-      name: 'Secure Global Placement',
-      description: 'Receive visa sponsorship guidance and support throughout the relocation process.',
+      name: 'Land Your Dream Job',
+      description: 'Get hired by leading Canadian companies that value your skills and experience.',
       icon: Globe,
-      color: 'bg-blue-700',
+      color: 'bg-navy',
     },
   ];
 
   return (
-    <div className="relative py-16 sm:py-24 overflow-hidden">
+    <div className="relative py-16 sm:py-24 overflow-hidden bg-gray-50">
       <div className="absolute inset-y-0 w-full h-80 xl:h-auto xl:w-1/2 xl:right-0">
-        <div className="h-full w-full bg-gradient-to-tr from-blue-50 to-blue-100 xl:rounded-l-3xl relative">
-          {/* World map background image */}
+        <div className="h-full w-full bg-white xl:rounded-l-lg relative">
+          {/* Canadian map background image */}
           <div 
             className="absolute inset-0 bg-no-repeat bg-center bg-contain xl:bg-cover"
             style={{ 
-              backgroundImage: "url('/map.svg')",
-              mixBlendMode: "multiply",
+              backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/3/38/Canada_blank_map.svg')",
               opacity: 0.15
             }}
           />
@@ -61,12 +60,12 @@ export function PremiumHowItWorks() {
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center xl:mx-0 xl:max-w-none xl:text-left">
           <div>
-            <h2 className="text-base font-semibold leading-7 text-blue-600">Seamless Process</h2>
+            <h2 className="text-base font-semibold leading-7 text-navy">Simple Process</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How VizzarJobs Elite Works
+              How VizzarJobs Works
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600 mx-auto xl:mx-0 max-w-2xl">
-              Our streamlined process connects elite African professionals with premium visa-sponsored positions globally.
+              Our streamlined process connects qualified professionals with top employers across Canada's thriving tech hubs.
             </p>
           </div>
           
@@ -74,7 +73,7 @@ export function PremiumHowItWorks() {
             {steps.map((step, index) => (
               <motion.div 
                 key={step.id}
-                className="rounded-xl bg-white shadow-md ring-1 ring-slate-200 p-8"
+                className="rounded-lg bg-white shadow-sm border border-gray-100 p-8"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ 
                   opacity: 1, 
@@ -103,9 +102,9 @@ export function PremiumHowItWorks() {
           <div className="mt-10 flex justify-center xl:justify-start">
             <Link 
               href="/profile" 
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-navy text-white hover:bg-navy/90 font-medium transition-colors"
             >
-              Get Started Today
+              Complete Your Profile
               <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           </div>

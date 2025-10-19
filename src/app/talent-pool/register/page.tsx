@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { FileUpload } from '~/components/ui/file-upload';
 import { api } from '~/trpc/react';
 import { Loader2, CheckCircle, XCircle, ArrowRight, ArrowLeft, User, Briefcase, Target, FileText } from 'lucide-react';
-import { EducationLevel } from '@prisma/client';
+import { EducationLevel, AIMLFocus, SkillLevel } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -31,9 +31,21 @@ const formSchema = z.object({
     errorMap: () => ({ message: "Education level is required" }),
   }),
   preferredDestination: z.string().optional(),
-  needsVisaSponsorship: z.boolean().default(false),
+  needsVisaSponsorship: z.boolean().default(true), // Default true for Canada focus
   cvFilePath: z.string().optional(),
   jobAlerts: z.boolean().default(true),
+  // AI/ML specific fields
+  aiMlFocus: z.nativeEnum(AIMLFocus, {
+    errorMap: () => ({ message: "AI/ML focus area is required" }),
+  }),
+  skillLevel: z.nativeEnum(SkillLevel, {
+    errorMap: () => ({ message: "Skill level is required" }),
+  }),
+  certifications: z.string().optional(),
+  githubUrl: z.string().optional(),
+  portfolioUrl: z.string().optional(),
+  projects: z.string().optional(),
+  publications: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -47,18 +59,24 @@ const steps = [
   },
   {
     id: 2,
+    title: "AI/ML Focus",
+    description: "Your AI/ML specialization",
+    icon: Target,
+  },
+  {
+    id: 3,
     title: "Professional Details",
     description: "Your career background",
     icon: Briefcase,
   },
   {
-    id: 3,
-    title: "Skills & Preferences",
-    description: "What you're looking for",
+    id: 4,
+    title: "Skills & Portfolio",
+    description: "Technical skills and projects",
     icon: Target,
   },
   {
-    id: 4,
+    id: 5,
     title: "CV Upload",
     description: "Upload your resume",
     icon: FileText,
@@ -91,10 +109,18 @@ export default function MultiStepCandidateRegistration() {
       skills: '',
       yearsOfExperience: 0,
       educationLevel: EducationLevel.BACHELOR,
-      preferredDestination: '',
-      needsVisaSponsorship: false,
+      preferredDestination: 'Canada', // Default to Canada
+      needsVisaSponsorship: true, // Default true for Canada
       cvFilePath: '',
       jobAlerts: true,
+      // AI/ML specific defaults
+      aiMlFocus: AIMLFocus.MACHINE_LEARNING,
+      skillLevel: SkillLevel.MID,
+      certifications: '',
+      githubUrl: '',
+      portfolioUrl: '',
+      projects: '',
+      publications: '',
     },
   });
 
@@ -124,7 +150,11 @@ export default function MultiStepCandidateRegistration() {
       await createCandidate.mutateAsync({
         ...data,
         skills: data.skills.split(',').map(s => s.trim()).filter(Boolean),
-        preferredDestination: data.preferredDestination?.split(',').map(s => s.trim()).filter(Boolean) || [],
+        preferredDestination: data.preferredDestination?.split(',').map(s => s.trim()).filter(Boolean) || ['Canada'],
+        // AI/ML specific fields
+        certifications: data.certifications?.split(',').map(s => s.trim()).filter(Boolean) || [],
+        projects: data.projects?.split(',').map(s => s.trim()).filter(Boolean) || [],
+        publications: data.publications?.split(',').map(s => s.trim()).filter(Boolean) || [],
       });
     } catch (error) {
       // Error handled by onError callback
@@ -151,10 +181,16 @@ export default function MultiStepCandidateRegistration() {
         fieldsToValidate = ['fullName', 'email', 'country'];
         break;
       case 2:
-        fieldsToValidate = ['profession', 'yearsOfExperience', 'educationLevel'];
+        fieldsToValidate = ['aiMlFocus', 'skillLevel'];
         break;
       case 3:
-        fieldsToValidate = ['skills'];
+        fieldsToValidate = ['profession', 'yearsOfExperience', 'educationLevel'];
+        break;
+      case 4:
+        fieldsToValidate = ['skills', 'preferredDestination'];
+        break;
+      case 5:
+        // CV upload is optional, so no validation needed
         break;
     }
 
@@ -189,9 +225,9 @@ export default function MultiStepCandidateRegistration() {
     <div className="min-h-screen relative py-8 px-4 bg-gradient-to-br from-white via-opal-2 to-opal-1">
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-kale mb-2">Join Our Talent Pool</h1>
+          <h1 className="text-4xl font-bold text-kale mb-2">Join Our AI/ML Talent Pool</h1>
           <p className="text-lg text-grey-green">
-            Connect with global opportunities and let employers find you
+            Connect with AI/ML opportunities in Canada and let employers find you
           </p>
         </div>
 
@@ -277,13 +313,53 @@ export default function MultiStepCandidateRegistration() {
                 </div>
               )}
 
-              {/* Step 2: Professional Details */}
+              {/* Step 2: AI/ML Focus */}
               {currentStep === 2 && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
+                      <Label htmlFor="aiMlFocus">AI/ML Focus Area</Label>
+                      <Select onValueChange={(value) => setValue('aiMlFocus', value as AIMLFocus)} defaultValue={watch('aiMlFocus')}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your AI/ML focus" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.values(AIMLFocus).map((focus) => (
+                            <SelectItem key={focus} value={focus}>
+                              {focus.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.aiMlFocus && <p className="text-red-500 text-sm mt-1">{errors.aiMlFocus.message}</p>}
+                    </div>
+                    <div>
+                      <Label htmlFor="skillLevel">Skill Level</Label>
+                      <Select onValueChange={(value) => setValue('skillLevel', value as SkillLevel)} defaultValue={watch('skillLevel')}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your skill level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.values(SkillLevel).map((level) => (
+                            <SelectItem key={level} value={level}>
+                              {level.charAt(0).toUpperCase() + level.slice(1).toLowerCase()}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.skillLevel && <p className="text-red-500 text-sm mt-1">{errors.skillLevel.message}</p>}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Professional Details */}
+              {currentStep === 3 && (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
                       <Label htmlFor="profession">Profession / Job Title</Label>
-                      <Input id="profession" {...register('profession')} placeholder="e.g., Software Engineer" />
+                      <Input id="profession" {...register('profession')} placeholder="e.g., Machine Learning Engineer" />
                       {errors.profession && <p className="text-red-500 text-sm mt-1">{errors.profession.message}</p>}
                     </div>
                     <div>
@@ -311,17 +387,44 @@ export default function MultiStepCandidateRegistration() {
                 </div>
               )}
 
-              {/* Step 3: Skills & Preferences */}
-              {currentStep === 3 && (
+              {/* Step 4: Skills & Portfolio */}
+              {currentStep === 4 && (
                 <div className="space-y-6">
                   <div>
-                    <Label htmlFor="skills">Skills (Comma-separated)</Label>
-                    <Textarea id="skills" {...register('skills')} placeholder="e.g., React, Node.js, AWS, Python" rows={3} />
+                    <Label htmlFor="skills">AI/ML Skills (Comma-separated)</Label>
+                    <Textarea id="skills" {...register('skills')} placeholder="e.g., Python, TensorFlow, PyTorch, Scikit-learn, AWS, Docker" rows={3} />
                     {errors.skills && <p className="text-red-500 text-sm mt-1">{errors.skills.message}</p>}
                   </div>
                   <div>
-                    <Label htmlFor="preferredDestination">Preferred Destination (Comma-separated)</Label>
-                    <Input id="preferredDestination" {...register('preferredDestination')} placeholder="e.g., Canada, Germany, USA" />
+                    <Label htmlFor="certifications">AI/ML Certifications (Comma-separated)</Label>
+                    <Input id="certifications" {...register('certifications')} placeholder="e.g., AWS Machine Learning, Google ML Engineer" />
+                    {errors.certifications && <p className="text-red-500 text-sm mt-1">{errors.certifications.message}</p>}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <Label htmlFor="githubUrl">GitHub URL (Optional)</Label>
+                      <Input id="githubUrl" {...register('githubUrl')} placeholder="https://github.com/username" />
+                      {errors.githubUrl && <p className="text-red-500 text-sm mt-1">{errors.githubUrl.message}</p>}
+                    </div>
+                    <div>
+                      <Label htmlFor="portfolioUrl">Portfolio URL (Optional)</Label>
+                      <Input id="portfolioUrl" {...register('portfolioUrl')} placeholder="https://yourportfolio.com" />
+                      {errors.portfolioUrl && <p className="text-red-500 text-sm mt-1">{errors.portfolioUrl.message}</p>}
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="projects">AI/ML Projects (Comma-separated)</Label>
+                    <Textarea id="projects" {...register('projects')} placeholder="e.g., Image Classification Model, NLP Chatbot, Recommendation System" rows={3} />
+                    {errors.projects && <p className="text-red-500 text-sm mt-1">{errors.projects.message}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="publications">Research Publications (Comma-separated)</Label>
+                    <Textarea id="publications" {...register('publications')} placeholder="e.g., Paper Title - Journal Name, Conference Paper" rows={2} />
+                    {errors.publications && <p className="text-red-500 text-sm mt-1">{errors.publications.message}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="preferredDestination">Preferred Destination</Label>
+                    <Input id="preferredDestination" {...register('preferredDestination')} placeholder="Canada" defaultValue="Canada" />
                     {errors.preferredDestination && <p className="text-red-500 text-sm mt-1">{errors.preferredDestination.message}</p>}
                   </div>
                   <div className="space-y-3">
@@ -332,7 +435,7 @@ export default function MultiStepCandidateRegistration() {
                         onCheckedChange={(checked) => setValue('needsVisaSponsorship', checked as boolean)}
                       />
                       <Label htmlFor="needsVisaSponsorship" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        I need visa sponsorship / relocation support
+                        I need visa sponsorship for Canada
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -342,15 +445,15 @@ export default function MultiStepCandidateRegistration() {
                         onCheckedChange={(checked) => setValue('jobAlerts', checked as boolean)}
                       />
                       <Label htmlFor="jobAlerts" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Send me job alerts for matching opportunities
+                        Send me AI/ML job alerts for Canada
                       </Label>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Step 4: CV Upload */}
-              {currentStep === 4 && (
+              {/* Step 5: CV Upload */}
+              {currentStep === 5 && (
                 <div className="space-y-6">
                   <div>
                     <FileUpload
@@ -365,13 +468,17 @@ export default function MultiStepCandidateRegistration() {
                   </div>
                   
                   <div className="bg-opal-1 p-4 rounded-lg">
-                    <h3 className="font-semibold text-kale mb-2">Review Your Information</h3>
+                    <h3 className="font-semibold text-kale mb-2">Review Your AI/ML Profile</h3>
                     <div className="text-sm text-grey-green space-y-1">
                       <p><strong>Name:</strong> {watch('fullName')}</p>
                       <p><strong>Email:</strong> {watch('email')}</p>
+                      <p><strong>AI/ML Focus:</strong> {watch('aiMlFocus')?.replace(/_/g, ' ')}</p>
+                      <p><strong>Skill Level:</strong> {watch('skillLevel')}</p>
                       <p><strong>Profession:</strong> {watch('profession')}</p>
                       <p><strong>Experience:</strong> {watch('yearsOfExperience')} years</p>
                       <p><strong>Skills:</strong> {watch('skills')}</p>
+                      <p><strong>Certifications:</strong> {watch('certifications') || 'None'}</p>
+                      <p><strong>Destination:</strong> {watch('preferredDestination') || 'Canada'}</p>
                       <p><strong>Visa Sponsorship:</strong> {watch('needsVisaSponsorship') ? 'Yes' : 'No'}</p>
                     </div>
                   </div>

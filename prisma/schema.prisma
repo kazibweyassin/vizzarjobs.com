@@ -33,26 +33,33 @@ model Job {
   title           String
   description     String?
   companyId       String
-  location        String?
-  skills          String[]         @default([])
+  location        String?          // City in Canada
+  skills          String[]         @default([]) // AI/ML specific skills
   remote          Boolean          @default(false)
-  visaSponsorship Boolean          @default(true)
+  visaSponsorship Boolean          @default(true) // Always true for Canada focus
   featured        Boolean          @default(false)
   premium         Boolean          @default(false)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  country         String?
-  techStack       String[]         @default([])
+  country         String           @default("Canada") // Fixed to Canada
+  techStack       String[]         @default([]) // AI/ML tech stack
   requirements    String[]         @default([])
   applicationUrl  String?
   jobType         JobType?
   salaryMax       Int?
   salaryMin       Int?
   experienceLevel ExperienceLevel?
+  // AI/ML specific fields
+  aiMlFocus       AIMLFocus        @default(MACHINE_LEARNING)
+  skillLevel      SkillLevel       @default(MID)
+  certifications  String[]         @default([]) // AI/ML certifications
+  projects        String[]         @default([]) // Required project types
   applications    Application[]
   company         Company          @relation(fields: [companyId], references: [id], map: "companyRelation")
 
   @@index([companyId])
+  @@index([aiMlFocus])
+  @@index([skillLevel])
 }
 
 model Application {
@@ -111,7 +118,7 @@ model User {
   website              String?
   githubUrl            String?
   linkedinUrl          String?
-  skills               String[]
+  skills               String[]             // AI/ML focused skills
   verificationStatus   VerificationStatus   @default(PENDING)
   verified             Boolean              @default(false)
   premium              Boolean              @default(false)
@@ -125,6 +132,13 @@ model User {
   password             String?
   passwordResetExpires DateTime?
   passwordResetToken   String?
+  // AI/ML specific fields
+  aiMlFocus            AIMLFocus?           // Primary AI/ML focus area
+  skillLevel           SkillLevel?          // Skill level assessment
+  certifications       String[]             @default([]) // AI/ML certifications
+  portfolioUrl         String?              // AI/ML portfolio
+  projects             String[]             @default([]) // AI/ML projects
+  publications         String[]             @default([]) // Research publications
   accounts             Account[]
   applications         Application[]
   employee             Employee?
@@ -134,6 +148,8 @@ model User {
   subscriptions        Subscription[]
 
   @@index([email])
+  @@index([aiMlFocus])
+  @@index([skillLevel])
 }
 
 model VerificationToken {
@@ -208,22 +224,27 @@ model Lead {
 model MatchingPreferences {
   id                    String   @id @default(cuid())
   userId                String   @unique
-  jobRoles              String[]
-  skills                String[]
-  industries            String[]
-  locations             String[]
+  jobRoles              String[]             // AI/ML specific roles
+  skills                String[]             // AI/ML skills
+  industries            String[]             @default(["Technology", "AI/ML", "Data Science"])
+  locations             String[]             @default(["Canada"]) // Focus on Canada
   remotePreference      Boolean  @default(false)
   salaryMin             Int?
   salaryMax             Int?
   experienceLevels      String[]
   employmentTypes       String[]
-  visaSponsorshipNeeded Boolean  @default(true)
+  visaSponsorshipNeeded Boolean  @default(true) // Always true for Canada
   relocationWillingness Boolean  @default(true)
+  // AI/ML specific preferences
+  aiMlFocus             AIMLFocus[]          @default([]) // Preferred AI/ML focus areas
+  skillLevel            SkillLevel?         // Preferred skill level
+  certifications        String[]            @default([]) // Preferred certifications
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
   user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([aiMlFocus])
 }
 
 model Employee {
@@ -422,12 +443,12 @@ model CandidatePool {
   email                 String            @unique
   phoneNumber           String?
   country               String
-  profession            String
-  skills                String[]          @default([])
+  profession            String            // AI/ML focused profession
+  skills                String[]          @default([]) // AI/ML specific skills
   yearsOfExperience     Int
   educationLevel        EducationLevel
-  preferredDestination  String[]          @default([])
-  needsVisaSponsorship  Boolean           @default(false)
+  preferredDestination  String[]          @default(["Canada"]) // Default to Canada
+  needsVisaSponsorship  Boolean           @default(true) // Default true for Canada
   cvFilePath            String?
   cvPublicId            String?  // Cloudinary public ID
   cvSecureUrl           String?  // Cloudinary secure URL
@@ -436,10 +457,20 @@ model CandidatePool {
   notes                 String?
   contactedAt           DateTime?
   contactedBy           String?
+  // AI/ML specific fields
+  aiMlFocus             AIMLFocus        @default(MACHINE_LEARNING)
+  skillLevel            SkillLevel        @default(MID)
+  certifications        String[]         @default([]) // AI/ML certifications
+  githubUrl              String?          // GitHub portfolio
+  portfolioUrl           String?          // Personal portfolio
+  projects               String[]         @default([]) // AI/ML projects
+  publications           String[]         @default([]) // Research publications
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
   @@map("candidate_pool")
+  @@index([aiMlFocus])
+  @@index([skillLevel])
 }
 
 enum CandidateStatus {
@@ -457,4 +488,25 @@ enum EducationLevel {
   DOCTORATE
   CERTIFICATION
   OTHER
+}
+
+enum AIMLFocus {
+  MACHINE_LEARNING
+  DEEP_LEARNING
+  NATURAL_LANGUAGE_PROCESSING
+  COMPUTER_VISION
+  DATA_SCIENCE
+  AI_RESEARCH
+  ML_ENGINEERING
+  AI_PRODUCT_MANAGEMENT
+  ROBOTICS
+  AUTONOMOUS_SYSTEMS
+}
+
+enum SkillLevel {
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  EXPERT
 }
