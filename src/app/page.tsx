@@ -143,7 +143,7 @@ export default function HomePage() {
     <div className="bg-white">
       <RoleUpdateHandler />
       
-      {/* Hero Section - Steve Jobs Style */}
+      {/* Hero Section - Andela Style */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <motion.div
@@ -168,11 +168,9 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-6xl md:text-7xl font-bold text-gray-900 leading-tight"
+              className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight"
             >
-              Think Different.
-              <br />
-              <span className="text-blue-600">Work Different.</span>
+              Build better AI/ML solutions — faster
             </motion.h1>
 
             {/* Subtitle */}
@@ -180,11 +178,10 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
             >
-              Connect with Canada's most innovative AI/ML companies. 
-              <br />
-              Where exceptional talent meets exceptional opportunities.
+              There are more than 500 highly skilled AI/ML professionals in our talent pool. 
+              Most in largely untapped markets. Ready to be placed quickly and effectively in Canada.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -195,25 +192,41 @@ export default function HomePage() {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
             >
               <Link
-                href="/talent-pool/register"
+                href="/talent-pool"
                 className="group inline-flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                Join Our Talent Pool
+                Hire AI/ML Talent
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               
               <Link
-                href="/jobs?location=Canada&category=AI-ML"
+                href="/talent-pool/register"
                 className="inline-flex items-center gap-3 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 transition-all duration-300"
               >
-                Browse AI/ML Jobs
+                Join Our Talent Pool
+              </Link>
+            </motion.div>
+
+            {/* What is Adaptive Hiring? */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              className="pt-8"
+            >
+              <Link
+                href="/how-it-works"
+                className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                What is AI/ML Talent Matching?
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section - Andela Style */}
       <section className="py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
@@ -223,23 +236,22 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            {[
-              { number: "500+", label: "AI/ML Professionals", icon: Brain },
-              { number: "50+", label: "Canadian Companies", icon: Building2 },
-              { number: "95%", label: "Success Rate", icon: CheckCircle },
-              { number: "Canada", label: "Primary Focus", icon: MapPin }
-            ].map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div key={index} className="text-center">
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-8 h-8 text-blue-600" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
-                  <div className="text-gray-600">{stat.label}</div>
-                </div>
-              );
-            })}
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">500+</div>
+              <div className="text-gray-600 font-medium">Top-rated, highly skilled AI/ML talent pool</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">$50,000</div>
+              <div className="text-gray-600 font-medium">Cost savings per talent hired through VizzarJobs</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">75%</div>
+              <div className="text-gray-600 font-medium">Faster time to hire</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">40%</div>
+              <div className="text-gray-600 font-medium">Faster project delivery</div>
+            </div>
           </motion.div>
         </div>
       </section>
