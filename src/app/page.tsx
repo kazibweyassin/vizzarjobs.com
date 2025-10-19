@@ -155,7 +155,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-20 max-w-6xl mx-auto px-6 pt-16">
+        <div className="relative z-20 max-w-6xl mx-auto px-6 pt-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -206,6 +206,18 @@ export default function HomePage() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Logo in Bottom Left */}
+        <div className="absolute bottom-6 left-6 z-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 1.0 }}
+            className="w-8 h-8 bg-white rounded-lg flex items-center justify-center"
+          >
+            <span className="text-gray-900 font-bold text-lg">V</span>
           </motion.div>
         </div>
 
