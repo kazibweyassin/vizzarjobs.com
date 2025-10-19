@@ -28,11 +28,11 @@ export function JobList({
   const [filters, setFilters] = useState<JobFiltersState>({
     search: "",
     location: "Canada", // Default to Canada
-    visaSponsorship: undefined,
+    visaSponsorship: true, // Default to visa sponsorship for Canada
     jobType: undefined,
     experienceLevel: undefined,
     techStack: [],
-    techSpecialization: techSpecializations.length ? techSpecializations : ['DevOps', 'AI', 'Machine Learning'], // Focus on these specializations
+    techSpecialization: techSpecializations.length ? techSpecializations : ['Machine Learning', 'Deep Learning', 'Computer Vision', 'NLP', 'Data Science', 'AI Research'], // Focus on AI/ML specializations
     salaryMin: undefined,
     salaryMax: undefined,
     postedWithin: 'any',
@@ -181,13 +181,13 @@ export function JobList({
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
               <div>
                 <h1 className="text-4xl font-bold text-blue-600">
-                  {filters.visaSponsorship === true ? "Visa Sponsored Jobs" : "Canadian Jobs"}
+                  AI/ML Jobs in Canada
                 </h1>
                 {!isLoading && (
                   <div className="flex items-center mt-3 gap-2">
                     <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">
                       <Briefcase className="w-4 h-4" />
-                      {jobs.length} jobs in Canada
+                      {jobs.length} AI/ML jobs in Canada
                     </span>
                     {filters.search && (
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">

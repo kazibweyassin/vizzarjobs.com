@@ -18,7 +18,10 @@ import {
   Share2,
   CheckCircle,
   Shield,
-  Sparkles
+  Sparkles,
+  Brain,
+  Code,
+  Database
 } from "lucide-react";
 import { saveJob, removeJob, isJobSaved } from "~/lib/savedJobs";
 import { hasApplied, getApplicationStatus, getStatusLabel, getStatusColor } from "~/lib/applications";
@@ -169,9 +172,9 @@ export function JobCard({ job }: JobCardProps) {
             </div>
           </div>
           {job.visaSponsorship && (
-            <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 font-medium">
+            <Badge className="bg-blue-600 text-white border-0 font-medium">
               <Award className="w-3 h-3 mr-1" />
-              Visa Sponsored
+              Canada Visa Sponsored
             </Badge>
           )}
         </div>
@@ -201,18 +204,26 @@ export function JobCard({ job }: JobCardProps) {
             </Badge>
           </div>
 
-          {/* Tech Stack */}
+          {/* AI/ML Tech Stack */}
           {job.techStack && job.techStack.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {job.techStack.slice(0, 4).map((tech, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className="text-xs bg-gray-50 text-gray-700 hover:bg-gray-100"
-                >
-                  {tech}
-                </Badge>
-              ))}
+              {job.techStack.slice(0, 4).map((tech, index) => {
+                const isAIML = ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'Pandas', 'NumPy', 'OpenCV', 'NLTK', 'spaCy', 'Transformers', 'MLflow', 'Kubeflow', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'GCP'].includes(tech);
+                return (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className={`text-xs hover:bg-gray-100 ${
+                      isAIML 
+                        ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                        : 'bg-gray-50 text-gray-700'
+                    }`}
+                  >
+                    {isAIML && <Brain className="w-3 h-3 mr-1" />}
+                    {tech}
+                  </Badge>
+                );
+              })}
               {job.techStack.length > 4 && (
                 <Badge variant="outline" className="text-xs bg-gray-50 text-gray-500">
                   +{job.techStack.length - 4} more
