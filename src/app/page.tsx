@@ -251,7 +251,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Jobs Section */}
+      {/* Why Choose VizzarJobs Section */}
       <section className="py-24 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
@@ -262,82 +262,65 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Featured AI/ML Opportunities
+              Why Choose VizzarJobs?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover hand-picked positions from Canada's leading technology companies
+              We're not just another job board. We're Canada's premier AI/ML talent platform.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredJobs.map((job, index) => (
-              <motion.div
-                key={job.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
-              >
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {job.title}
-                    </h3>
-                    <p className="text-gray-600 font-medium">
-                      {typeof job.company === 'object' && job.company?.name 
-                        ? job.company.name 
-                        : typeof job.company === 'string' 
-                          ? job.company 
-                          : "Company"}
-                    </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Brain,
+                title: "AI/ML Expertise",
+                description: "Our team understands AI/ML roles and can match you with the perfect opportunity."
+              },
+              {
+                icon: CheckCircle,
+                title: "Visa Support",
+                description: "We handle Canadian work visa sponsorship for all our placements."
+              },
+              {
+                icon: Star,
+                title: "Premium Companies",
+                description: "Access to Canada's most innovative AI/ML companies and startups."
+              },
+              {
+                icon: Zap,
+                title: "Fast Matching",
+                description: "Our AI-powered matching connects you with opportunities in days, not months."
+              },
+              {
+                icon: Shield,
+                title: "Secure Process",
+                description: "Your data is protected with enterprise-grade security and privacy controls."
+              },
+              {
+                icon: Users,
+                title: "Expert Support",
+                description: "Dedicated AI/ML career advisors to guide you through your journey."
+              }
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
+                >
+                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-blue-600" />
                   </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin className="w-4 h-4" />
-                      <span>Canada</span>
-                    </div>
-                    
-                    {job.salary && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <DollarSign className="w-4 h-4" />
-                        <span>${job.salary.min.toLocaleString()} - ${job.salary.max.toLocaleString()} CAD</span>
-                      </div>
-                    )}
-
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Clock className="w-4 h-4" />
-                      <span>{formatJobType(job.jobType || '')}</span>
-                    </div>
-                  </div>
-
-                  {job.visaSponsorship && (
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium">
-                      <CheckCircle className="w-4 h-4" />
-                      Visa Sponsored
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-center mt-12"
-          >
-            <Link
-              href="/jobs?location=Canada&category=AI-ML"
-              className="inline-flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              View All AI/ML Jobs
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </motion.div>
         </div>
       </section>
 
