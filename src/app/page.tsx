@@ -143,32 +143,31 @@ export default function HomePage() {
     <div className="bg-white">
       <RoleUpdateHandler />
       
-      {/* Hero Section - Andela Style */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+      {/* Hero Section - Andela Style with Background Image */}
+      <section className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
+        {/* Background Image with Dark Overlay */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/60 z-10"></div>
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            alt="AI/ML Professional"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="relative z-20 max-w-6xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
-            >
-              <Sparkles className="w-4 h-4" />
-              AI/ML Talent • Canada Focus
-            </motion.div>
-
             {/* Main Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-6xl font-bold text-white leading-tight"
             >
               Build better AI/ML solutions — faster
             </motion.h1>
@@ -177,8 +176,8 @@ export default function HomePage() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed"
             >
               There are more than 500 highly skilled AI/ML professionals in our talent pool. 
               Most in largely untapped markets. Ready to be placed quickly and effectively in Canada.
@@ -188,7 +187,7 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
             >
               <Link
@@ -200,23 +199,8 @@ export default function HomePage() {
               </Link>
               
               <Link
-                href="/talent-pool/register"
-                className="inline-flex items-center gap-3 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 transition-all duration-300"
-              >
-                Join Our Talent Pool
-              </Link>
-            </motion.div>
-
-            {/* What is Adaptive Hiring? */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="pt-8"
-            >
-              <Link
                 href="/how-it-works"
-                className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                className="inline-flex items-center gap-2 text-white hover:text-blue-300 transition-colors text-lg"
               >
                 What is AI/ML Talent Matching?
                 <ArrowRight className="w-4 h-4" />
@@ -224,35 +208,34 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
-      </section>
 
-      {/* Stats Section - Andela Style */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
-          >
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">500+</div>
-              <div className="text-gray-600 font-medium">Top-rated, highly skilled AI/ML talent pool</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-green-600 mb-2">$50,000</div>
-              <div className="text-gray-600 font-medium">Cost savings per talent hired through VizzarJobs</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-purple-600 mb-2">75%</div>
-              <div className="text-gray-600 font-medium">Faster time to hire</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-orange-600 mb-2">40%</div>
-              <div className="text-gray-600 font-medium">Faster project delivery</div>
-            </div>
-          </motion.div>
+        {/* Statistics Section - Integrated into Hero */}
+        <div className="absolute bottom-0 left-0 right-0 z-20">
+          <div className="max-w-6xl mx-auto px-6 pb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            >
+              <div className="text-center border-r border-white/20 pr-8">
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">500+</div>
+                <div className="text-white/80 font-medium">Top-rated, highly skilled AI/ML talent pool</div>
+              </div>
+              <div className="text-center border-r border-white/20 pr-8">
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">$50,000</div>
+                <div className="text-white/80 font-medium">Cost savings per talent hired through VizzarJobs</div>
+              </div>
+              <div className="text-center border-r border-white/20 pr-8">
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">75%</div>
+                <div className="text-white/80 font-medium">Faster time to hire</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">40%</div>
+                <div className="text-white/80 font-medium">Faster project delivery</div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
