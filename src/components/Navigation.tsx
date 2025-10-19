@@ -47,20 +47,14 @@ export function Navigation() {
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Link href="/" className="flex items-center group">
-              <div className="relative flex items-center">
-                <Image
-                  src="/logowhite.png"
-                  alt="VizzarJobs"
-                  width={28}
-                  height={28}
-                  priority
-                  className="h-7 w-auto"  
-                />
-                <span className="ml-3 text-gray-900 font-semibold text-lg">
-                  VizzarJobs
-                  <span className="text-blue-600 font-medium"> Canada</span>
-                </span>
-              </div>
+              <Image
+                src="/logowhite.png"
+                alt="VizzarJobs"
+                width={40}
+                height={40}
+                priority
+                className="h-10 w-auto"  
+              />
             </Link>
           </div>
 
