@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { motion } from 'framer-motion';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
@@ -13,7 +14,7 @@ import { Label } from '~/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { FileUpload } from '~/components/ui/file-upload';
 import { api } from '~/trpc/react';
-import { Loader2, CheckCircle, XCircle, ArrowRight, ArrowLeft, User, Briefcase, Target, FileText } from 'lucide-react';
+import { Loader2, CheckCircle, XCircle, ArrowRight, ArrowLeft, User, Briefcase, Target, FileText, Brain, Code, Sparkles } from 'lucide-react';
 import { EducationLevel, AIMLFocus, SkillLevel } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -222,17 +223,30 @@ export default function MultiStepCandidateRegistration() {
   }
 
   return (
-    <div className="min-h-screen relative py-8 px-4 bg-gradient-to-br from-white via-opal-2 to-opal-1">
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-kale mb-2">Join Our AI/ML Talent Pool</h1>
-          <p className="text-lg text-grey-green">
-            Connect with AI/ML opportunities in Canada and let employers find you
-          </p>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-4"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium">
+              <Sparkles className="w-4 h-4" />
+              AI/ML Talent Pool Registration
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+              Join Canada's Elite
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Connect with AI/ML opportunities in Canada and let employers find you
+            </p>
+          </motion.div>
         </div>
 
         {/* Progress Indicator */}
-        <div className="mb-8">
+        <div className="mb-12">
           <div className="flex items-center justify-between">
             {steps.map((step, index) => {
               const isActive = currentStep === step.id;
@@ -241,12 +255,12 @@ export default function MultiStepCandidateRegistration() {
               
               return (
                 <div key={step.id} className="flex flex-col items-center">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-colors ${
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 transition-all duration-300 ${
                     isCompleted 
-                      ? 'bg-emerald text-white' 
+                      ? 'bg-blue-600 text-white shadow-lg' 
                       : isActive 
-                        ? 'bg-kale text-white' 
-                        : 'bg-gray-200 text-gray-500'
+                        ? 'bg-blue-100 text-blue-600 border-2 border-blue-600' 
+                        : 'bg-gray-100 text-gray-400'
                   }`}>
                     {isCompleted ? (
                       <CheckCircle className="h-6 w-6" />
@@ -255,10 +269,10 @@ export default function MultiStepCandidateRegistration() {
                     )}
                   </div>
                   <div className="text-center">
-                    <p className={`text-sm font-medium ${isActive ? 'text-kale' : isCompleted ? 'text-emerald' : 'text-gray-500'}`}>
+                    <p className={`text-sm font-semibold ${isActive ? 'text-blue-600' : isCompleted ? 'text-blue-600' : 'text-gray-400'}`}>
                       {step.title}
                     </p>
-                    <p className="text-xs text-gray-500">{step.description}</p>
+                    <p className="text-xs text-gray-500 mt-1">{step.description}</p>
                   </div>
                 </div>
               );
@@ -266,24 +280,24 @@ export default function MultiStepCandidateRegistration() {
           </div>
           
           {/* Progress Bar */}
-          <div className="mt-4 w-full bg-gray-200 rounded-full h-2">
+          <div className="mt-6 w-full bg-gray-200 rounded-full h-2">
             <div 
-              className="bg-emerald h-2 rounded-full transition-all duration-300"
+              className="bg-blue-600 h-2 rounded-full transition-all duration-500"
               style={{ width: `${(currentStep / steps.length) * 100}%` }}
             ></div>
           </div>
         </div>
 
-        <Card className="shadow-xl border-light-green">
-          <CardHeader>
-            <CardTitle className="text-2xl text-center text-kale">
-              {steps[currentStep - 1]?.title}
-            </CardTitle>
-            <CardDescription className="text-center text-grey-green">
-              {steps[currentStep - 1]?.description}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {steps[currentStep - 1]?.title}
+              </h2>
+              <p className="text-gray-600">
+                {steps[currentStep - 1]?.description}
+              </p>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Step 1: Personal Information */}
               {currentStep === 1 && (

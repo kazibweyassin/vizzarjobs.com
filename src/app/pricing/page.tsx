@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 import { api } from "~/trpc/react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
@@ -19,7 +20,10 @@ import {
   CreditCard,
   Smartphone,
   Building2,
-  ExternalLink
+  ExternalLink,
+  Sparkles,
+  Brain,
+  CheckCircle
 } from "lucide-react";
 import Link from "next/link";
 
@@ -48,374 +52,353 @@ export default function PricingPage() {
       if (data.paymentUrl) {
         window.open(data.paymentUrl, '_blank');
       } else {
-        alert("Payment initiated successfully! Please check your email for further instructions.");
+        console.log('Payment initiated:', data);
       }
     },
     onError: (error) => {
-      alert(`Error initiating payment: ${error.message}`);
+      console.error('Payment error:', error);
     }
   });
 
-  // Create subscription mutation (for testing)
-  const createSubscriptionMutation = api.subscriptions.createSubscription.useMutation({
-    onSuccess: () => {
-      alert("Subscription created successfully! You now have premium access.");
-      window.location.reload();
-    },
-    onError: (error) => {
-      alert(`Error creating subscription: ${error.message}`);
-    }
-  });
-
-  const handleSubscribe = (planId: string, planName: string, price: number) => {
-    if (!session?.user) {
-      alert("Please sign in to subscribe");
+  const handlePayment = async (planId: string) => {
+    if (!selectedPaymentMethod) {
+      alert('Please select a payment method');
       return;
     }
 
-    if (currentSubscription) {
-      alert("You already have an active subscription");
-      return;
-    }
-
-    // Show payment method selection
-    setSelectedPlan(planId);
-    setShowPaymentMethods(true);
-  };
-
-  const handlePaymentMethodSelect = (paymentMethod: any) => {
-    setSelectedPaymentMethod(paymentMethod);
-    setShowPaymentMethods(false);
-    
-    // Initiate payment
-    const plan = plans?.find(p => p.id === selectedPlan);
-    if (plan) {
-      initiatePaymentMutation.mutate({
-        planId: plan.id,
-        planName: plan.name,
-        price: plan.price,
+    try {
+      await initiatePaymentMutation.mutateAsync({
+        planId,
+        paymentMethodId: selectedPaymentMethod.id,
         billingCycle,
-        paymentProvider: paymentMethod.provider,
-        paymentMethod: paymentMethod.method,
-        currency: 'USD', // You might want to detect user's currency
       });
+    } catch (error) {
+      console.error('Payment initiation failed:', error);
     }
   };
 
-  const filteredPlans = plans?.filter(plan => 
-    billingCycle === "MONTHLY" ? plan.billingCycle === "MONTHLY" : plan.billingCycle === "YEARLY"
-  ) || [];
+  const plans = [
+    {
+      id: "free",
+      name: "Free",
+      description: "Perfect for getting started",
+      price: { monthly: 0, yearly: 0 },
+      features: [
+        "Browse AI/ML jobs in Canada",
+        "Basic profile creation",
+        "Apply to 5 jobs per month",
+        "Email support"
+      ],
+      limitations: [
+        "Limited job applications",
+        "Basic matching algorithm",
+        "No priority support"
+      ],
+      popular: false,
+      color: "gray"
+    },
+    {
+      id: "premium",
+      name: "Premium",
+      description: "For serious AI/ML professionals",
+      price: { monthly: 29, yearly: 290 },
+      features: [
+        "Unlimited job applications",
+        "Advanced AI/ML matching",
+        "Priority in talent pool",
+        "Direct employer access",
+        "Portfolio showcase",
+        "Priority support",
+        "Canada visa guidance"
+      ],
+      limitations: [],
+      popular: true,
+      color: "blue"
+    },
+    {
+      id: "enterprise",
+      name: "Enterprise",
+      description: "For companies hiring AI/ML talent",
+      price: { monthly: 199, yearly: 1990 },
+      features: [
+        "Post unlimited AI/ML jobs",
+        "Access to premium talent pool",
+        "Advanced candidate filtering",
+        "Direct candidate contact",
+        "Custom job matching",
+        "Dedicated account manager",
+        "Canada immigration support"
+      ],
+      limitations: [],
+      popular: false,
+      color: "purple"
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Choose Your Plan
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Unlock premium job opportunities and accelerate your career
-          </p>
-          
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center space-x-4 mb-8">
-            <span className={`text-sm font-medium ${billingCycle === "MONTHLY" ? "text-gray-900" : "text-gray-500"}`}>
-              Monthly
-            </span>
-            <button
-              onClick={() => setBillingCycle(billingCycle === "MONTHLY" ? "YEARLY" : "MONTHLY")}
-              className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
             >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  billingCycle === "YEARLY" ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
-            <span className={`text-sm font-medium ${billingCycle === "YEARLY" ? "text-gray-900" : "text-gray-500"}`}>
-              Yearly
-            </span>
-            {billingCycle === "YEARLY" && (
-              <Badge variant="outline" className="ml-2 bg-green-100 border-green-300 text-green-800">
-                Save 17%
-              </Badge>
-            )}
-          </div>
-        </div>
+              <Sparkles className="w-4 h-4" />
+              AI/ML Talent • Canada Focus
+            </motion.div>
 
-        {/* Current Subscription Status */}
-        {currentSubscription && (
-          <div className="max-w-2xl mx-auto mb-8">
-            <Card className="border-green-200 bg-green-50">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-green-900">Active Subscription</h3>
-                      <p className="text-sm text-green-700">
-                        {currentSubscription.planName} - ${currentSubscription.price}/{currentSubscription.billingCycle.toLowerCase()}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge variant="outline" className="bg-green-100 border-green-300 text-green-800">
-                    Active
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight"
+            >
+              Simple Pricing.
+              <br />
+              <span className="text-blue-600">Maximum Value.</span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            >
+              Choose the perfect plan for your AI/ML career in Canada.
+              <br />
+              No hidden fees, no surprises.
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Billing Toggle */}
+      <section className="py-12 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex justify-center mb-12"
+          >
+            <div className="flex bg-gray-100 rounded-2xl p-1">
+              <button
+                onClick={() => setBillingCycle("MONTHLY")}
+                className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  billingCycle === "MONTHLY"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-gray-600"
+                }`}
+              >
+                Monthly
+            </button>
+              <button
+                onClick={() => setBillingCycle("YEARLY")}
+                className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  billingCycle === "YEARLY"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-gray-600"
+                }`}
+              >
+              Yearly
+                <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded-full">
+                  Save 20%
+            </span>
+              </button>
           </div>
-        )}
+          </motion.div>
 
         {/* Pricing Cards */}
-        {plansLoading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {filteredPlans.map((plan) => (
-              <Card 
+          <div className="grid md:grid-cols-3 gap-8">
+            {plans.map((plan, index) => (
+              <motion.div
                 key={plan.id}
-                className={`relative overflow-hidden transition-all duration-300 hover:shadow-xl ${
-                  plan.popular ? 'border-blue-500 shadow-lg scale-105' : 'border-gray-200'
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
+                className={`relative bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 hover:shadow-xl ${
+                  plan.popular 
+                    ? "border-blue-600 scale-105" 
+                    : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-center py-2 text-sm font-medium">
-                    <Star className="w-4 h-4 inline mr-1" />
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <div className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium">
                     Most Popular
+                    </div>
                   </div>
                 )}
                 
-                <CardHeader className={`text-center ${plan.popular ? 'pt-12' : 'pt-6'}`}>
-                  <div className="flex justify-center mb-4">
-                    {plan.id === "basic" ? (
-                      <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Briefcase className="w-6 h-6 text-gray-600" />
-                      </div>
+                <CardHeader className="p-8 text-center">
+                  <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${
+                    plan.color === "blue" ? "bg-blue-100" : 
+                    plan.color === "purple" ? "bg-purple-100" : "bg-gray-100"
+                  }`}>
+                    {plan.color === "blue" ? (
+                      <Brain className="w-8 h-8 text-blue-600" />
+                    ) : plan.color === "purple" ? (
+                      <Building2 className="w-8 h-8 text-purple-600" />
                     ) : (
-                      <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-                        <Crown className="w-6 h-6 text-white" />
-                      </div>
+                      <Users className="w-8 h-8 text-gray-600" />
                     )}
                   </div>
                   
-                  <CardTitle className="text-xl font-semibold">{plan.name}</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
+                    {plan.name}
+                  </CardTitle>
+                  <p className="text-gray-600 mb-6">{plan.description}</p>
                   
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-gray-900">
-                      ${plan.price}
-                    </span>
-                    <span className="text-gray-600 ml-2">
-                      /{plan.billingCycle.toLowerCase()}
-                    </span>
+                  <div className="mb-6">
+                    <div className="text-4xl font-bold text-gray-900">
+                      ${billingCycle === "YEARLY" ? plan.price.yearly : plan.price.monthly}
+                    </div>
+                    <div className="text-gray-600">
+                      {billingCycle === "YEARLY" ? "per year" : "per month"}
+                    </div>
                   </div>
-                  
-                  {plan.id !== "basic" && billingCycle === "YEARLY" && (
-                    <p className="text-sm text-green-600 mt-2">
-                      Save ${(plan.price * 12) - 199.99} per year
-                    </p>
-                  )}
                 </CardHeader>
 
-                <CardContent className="pt-0">
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-600">{feature}</span>
-                      </li>
+                <CardContent className="p-8 pt-0">
+                  <div className="space-y-4 mb-8">
+                    {plan.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        <span className="text-gray-700">{feature}</span>
+                      </div>
                     ))}
-                  </ul>
-
-                  {currentSubscription ? (
-                    <div className="text-center">
-                      <Badge variant="outline" className="bg-gray-100 text-gray-600">
-                        Current Plan
-                      </Badge>
                     </div>
-                  ) : (
+
                     <button
-                      onClick={() => handleSubscribe(plan.id, plan.name, plan.price)}
-                      disabled={createSubscriptionMutation.isPending}
-                      className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                        plan.id === "basic"
-                          ? "bg-gray-100 text-gray-600 cursor-not-allowed"
-                          : plan.popular
-                          ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800"
-                          : "bg-blue-600 text-white hover:bg-blue-700"
-                      }`}
-                    >
-                      {createSubscriptionMutation.isPending ? (
-                        <Loader2 className="w-4 h-4 animate-spin mx-auto" />
-                      ) : plan.id === "basic" ? (
-                        "Current Plan"
-                      ) : (
-                        "Subscribe Now"
-                      )}
+                    onClick={() => setSelectedPlan(plan.id)}
+                    className={`w-full py-3 px-6 rounded-xl font-medium transition-all duration-200 ${
+                      plan.popular
+                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                    }`}
+                  >
+                    {plan.price.monthly === 0 ? "Get Started" : "Choose Plan"}
                     </button>
-                  )}
                 </CardContent>
-              </Card>
+              </motion.div>
             ))}
           </div>
-        )}
+        </div>
+      </section>
 
-        {/* Features Comparison */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Why Choose Premium?
+      {/* Features Comparison */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Everything You Need
           </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Eye className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Premium Job Access</h3>
-              <p className="text-gray-600">
-                Access to exclusive premium job listings with higher salaries and better benefits.
-              </p>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              All plans include access to Canada's premier AI/ML job market
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Brain,
+                title: "AI/ML Focus",
+                description: "Specialized matching for artificial intelligence and machine learning roles"
+              },
+              {
+                icon: CheckCircle,
+                title: "Canada Visa Support",
+                description: "Guidance and support for Canadian work visa applications"
+              },
+              {
+                icon: Star,
+                title: "Premium Companies",
+                description: "Access to Canada's most innovative AI/ML companies"
+              },
+              {
+                icon: Zap,
+                title: "Fast Matching",
+                description: "Advanced algorithms to match you with the perfect role"
+              },
+              {
+                icon: Shield,
+                title: "Secure Platform",
+                description: "Enterprise-grade security for your personal information"
+              },
+              {
+                icon: Users,
+                title: "Expert Support",
+                description: "Dedicated support team with AI/ML industry expertise"
+              }
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
+                >
+                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-blue-600" />
             </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-8 h-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Priority Applications</h3>
-              <p className="text-gray-600">
-                Your applications get reviewed first by employers, increasing your chances of landing interviews.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Direct Contact</h3>
-              <p className="text-gray-600">
-                Connect directly with hiring managers and skip the traditional application process.
-              </p>
-            </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
-
-        {/* FAQ Section */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Frequently Asked Questions
-          </h2>
-          
-          <div className="max-w-3xl mx-auto space-y-6">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Can I cancel my subscription anytime?
-              </h3>
-              <p className="text-gray-600">
-                Yes, you can cancel your subscription at any time. You'll continue to have premium access until the end of your current billing period.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What's the difference between monthly and yearly plans?
-              </h3>
-              <p className="text-gray-600">
-                Yearly plans offer a 17% discount compared to monthly billing. You get the same features but save money by paying annually.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Do I get a refund if I'm not satisfied?
-              </h3>
-              <p className="text-gray-600">
-                We offer a 30-day money-back guarantee. If you're not satisfied with your premium experience, contact us for a full refund.
-              </p>
-            </div>
-          </div>
-        </div>
+      </section>
 
         {/* CTA Section */}
-        <div className="mt-20 text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-12 text-white">
-            <h2 className="text-3xl font-bold mb-4">
-              Ready to Accelerate Your Career?
+      <section className="py-24 bg-blue-600">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white">
+              Ready to Get Started?
             </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join thousands of professionals who have found their dream jobs through VizzarJobs Premium.
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              Join thousands of AI/ML professionals who've found their dream jobs in Canada.
             </p>
-            {!session?.user ? (
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/auth/signin?callbackUrl=/pricing"
-                className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                href="/auth/signup"
+                className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                Sign Up for Premium
+                Start Your Journey
+                <ExternalLink className="w-5 h-5" />
               </Link>
-            ) : (
-              <button
-                onClick={() => setSelectedPlan("premium")}
-                className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-              >
-                <Crown className="w-5 h-5 mr-2" />
-                Start Premium Trial
-              </button>
-            )}
-          </div>
+            </div>
+          </motion.div>
         </div>
-      </div>
-
-      {/* Payment Method Selection Modal */}
-      {showPaymentMethods && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Choose Payment Method
-              </h3>
-              <p className="text-gray-600">
-                Select your preferred payment method for Uganda
-              </p>
-            </div>
-
-            <div className="space-y-3 mb-6">
-              {paymentMethods?.map((method, index) => (
-                <button
-                  key={index}
-                  onClick={() => handlePaymentMethodSelect(method)}
-                  className="w-full flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">{method.icon}</span>
-                    <div className="text-left">
-                      <div className="font-medium text-gray-900">{method.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {method.provider === 'FLUTTERWAVE' && 'Secure payment processing'}
-                        {method.provider === 'PAYPAL' && 'International payment'}
-                        {method.provider === 'MANUAL' && 'Bank transfer or manual payment'}
-                      </div>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-4 h-4 text-gray-400" />
-                </button>
-              ))}
-            </div>
-
-            <div className="flex space-x-3">
-              <button
-                onClick={() => setShowPaymentMethods(false)}
-                className="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      </section>
     </div>
   );
 }
