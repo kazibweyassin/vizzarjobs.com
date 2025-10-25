@@ -21,48 +21,11 @@ import {
   Zap,
   Shield,
   Play,
-  TrendingUp
+  TrendingUp,
+  Globe,
+  Award,
+  Target
 } from "lucide-react";
-
-interface Company {
-  name: string;
-  location: string;
-}
-
-interface Job {
-  id: string;
-  title: string;
-  company?: string | {
-    id: string;
-    name: string;
-    location: string | null;
-    [key: string]: any;
-  };
-  companyRelation?: Company;
-  createdAt: Date;
-  visaSponsorship: boolean;
-  jobType: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP' | 'FREELANCE' | null;
-  experienceLevel: 'ENTRY_LEVEL' | 'JUNIOR' | 'MID' | 'SENIOR' | 'LEAD' | null;
-  salary?: {
-    min: number;
-    max: number;
-    currency: string;
-  };
-}
-
-// Helper function to format job type
-const formatJobType = (type: string): string => {
-  return type.split('_').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  ).join(' ');
-};
-
-// Helper function to format experience level
-const formatExperienceLevel = (level: string): string => {
-  return level.split('_').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  ).join(' ');
-};
 
 // Animated Counter Component
 const AnimatedCounter = ({ end, duration = 2, prefix = "", suffix = "" }: { 
@@ -97,85 +60,7 @@ const AnimatedCounter = ({ end, duration = 2, prefix = "", suffix = "" }: {
   );
 };
 
-// Fallback jobs data
-const getFallbackJobs = (): Job[] => [
-  {
-    id: "1",
-    title: "Senior Machine Learning Engineer",
-    company: "Shopify",
-    createdAt: new Date(),
-    visaSponsorship: true,
-    jobType: "FULL_TIME",
-    experienceLevel: "SENIOR",
-    salary: { min: 120000, max: 180000, currency: "CAD" }
-  },
-  {
-    id: "2", 
-    title: "AI Research Scientist",
-    company: "DeepMind",
-    createdAt: new Date(),
-    visaSponsorship: true,
-    jobType: "FULL_TIME",
-    experienceLevel: "SENIOR",
-    salary: { min: 150000, max: 220000, currency: "CAD" }
-  },
-  {
-    id: "3",
-    title: "Computer Vision Engineer",
-    company: "Tesla",
-    createdAt: new Date(),
-    visaSponsorship: true,
-    jobType: "FULL_TIME",
-    experienceLevel: "MID",
-    salary: { min: 100000, max: 140000, currency: "CAD" }
-  },
-  {
-    id: "4",
-    title: "NLP Engineer",
-    company: "OpenAI",
-    createdAt: new Date(),
-    visaSponsorship: true,
-    jobType: "FULL_TIME",
-    experienceLevel: "MID",
-    salary: { min: 110000, max: 160000, currency: "CAD" }
-  },
-  {
-    id: "5",
-    title: "Data Science Lead",
-    company: "Microsoft",
-    createdAt: new Date(),
-    visaSponsorship: true,
-    jobType: "FULL_TIME",
-    experienceLevel: "SENIOR",
-    salary: { min: 130000, max: 190000, currency: "CAD" }
-  },
-  {
-    id: "6",
-    title: "ML Infrastructure Engineer",
-    company: "Google",
-    createdAt: new Date(),
-    visaSponsorship: true,
-    jobType: "FULL_TIME",
-    experienceLevel: "SENIOR",
-    salary: { min: 140000, max: 200000, currency: "CAD" }
-  }
-];
-
 export default function HomePage() {
-  const [featuredJobs, setFeaturedJobs] = useState<Job[]>([]);
-  
-  // Use client-side tRPC query
-  const { data: apiJobs, isLoading, error } = api.jobs.getFeatured.useQuery({ limit: 6 });
-  
-  useEffect(() => {
-    if (apiJobs && Array.isArray(apiJobs) && apiJobs.length > 0) {
-      setFeaturedJobs(apiJobs as Job[]);
-    } else if (error || (!isLoading && (!apiJobs || apiJobs.length === 0))) {
-      console.log('No featured jobs found in database, using fallback data');
-      setFeaturedJobs(getFallbackJobs());
-    }
-  }, [apiJobs, isLoading, error]);
-
   return (
     <div className="bg-white">
       <RoleUpdateHandler />
@@ -184,7 +69,7 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
         {/* Background Image with Enhanced Overlay */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-900/70 to-gray-900/85 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-gray-900/90 z-10"></div>
           <img
             src="https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974"
             alt="AI/ML Technology"
@@ -235,86 +120,82 @@ export default function HomePage() {
               transition={{ duration: 1, delay: 0.2 }}
               className="space-y-4"
             >
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.9] text-left">
-                <span className="block">Build better</span>
-                <span className="block bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
-                  AI/ML solutions
-                </span>
-                <span className="block">— faster</span>
-              </h1>
-              
               {/* Trust Badge */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-white/90 text-sm font-medium"
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-sm border border-emerald-500/30 rounded-full px-4 py-2"
               >
-                <TrendingUp className="w-4 h-4 text-emerald-400" />
-                Trusted by 500+ AI/ML professionals
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <span className="text-emerald-300 text-sm font-medium">
+                  Canada's Premier AI/ML Talent Platform
+                </span>
               </motion.div>
-            </motion.div>
 
-            {/* Enhanced Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl md:text-2xl lg:text-3xl text-white/90 max-w-5xl leading-relaxed text-left font-light"
-            >
-              There are more than{" "}
-              <span className="font-semibold text-emerald-400">500 highly skilled</span>{" "}
-              AI/ML professionals in our talent pool. Most in largely untapped markets. 
-              Ready to be placed{" "}
-              <span className="font-semibold text-blue-400">quickly and effectively</span>{" "}
-              in Canada.
-            </motion.p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-left">
+                <span className="block">Hire World-Class</span>
+                <span className="block bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 bg-clip-text">
+                  AI/ML Talent
+                </span>
+                <span className="block">From Africa</span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-white/90 max-w-4xl leading-relaxed text-left">
+                Access pre-vetted AI/ML engineers, data scientists, and researchers from Nigeria, Kenya, Uganda, and South Africa.
+                <span className="block text-emerald-400 font-semibold mt-3">
+                  We handle visa sponsorship. You get exceptional talent at 40% lower cost.
+                </span>
+              </p>
+            </motion.div>
 
             {/* Enhanced CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-6 items-start pt-8"
+              className="flex flex-col sm:flex-row gap-6 items-start pt-6"
             >
+              {/* Primary CTA - Employers */}
               <Link
-                href="/talent-pool"
-                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-5 rounded-full text-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 hover:scale-105 overflow-hidden"
+                href="/employers/hire"
+                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-5 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 hover:scale-105 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <span className="relative z-10">Hire AI/ML Talent</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
+                <Building2 className="w-4 h-4 relative z-10" />
+                <span className="relative z-6">Hire AI/ML Talent</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
               </Link>
               
+              {/* Secondary CTA - Job Seekers */}
               <Link
-                href="/how-it-works"
-                className="group inline-flex items-center gap-3 text-white hover:text-blue-300 transition-all duration-300 text-xl font-medium"
+                href="/talent-pool/register"
+                className="group inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300"
               >
-                <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                  <Play className="w-5 h-5 ml-0.5" />
-                </div>
-                <span>See how it works</span>
+                <Users className="w-6 h-6" />
+                <span>Join Talent Pool</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </motion.div>
 
-            {/* Quick Stats */}
+            {/* Trust Indicators */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-wrap gap-8 pt-8"
+              className="flex flex-wrap gap-8 pt-6"
             >
               <div className="flex items-center gap-3 text-white/80">
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
-                <span className="text-lg">Free to join</span>
+                <Shield className="w-5 h-5 text-emerald-400" />
+                <span className="text-base">Full visa sponsorship</span>
               </div>
               <div className="flex items-center gap-3 text-white/80">
                 <Clock className="w-5 h-5 text-blue-400" />
-                <span className="text-lg">48-hour matching</span>
+                <span className="text-base">48-hour candidate matching</span>
               </div>
               <div className="flex items-center gap-3 text-white/80">
-                <Shield className="w-5 h-5 text-emerald-400" />
-                <span className="text-lg">Visa sponsorship</span>
+                <CheckCircle className="w-5 h-5 text-emerald-400" />
+                <span className="text-base">Top 5% talent only</span>
               </div>
             </motion.div>
           </motion.div>
@@ -332,55 +213,98 @@ export default function HomePage() {
           </motion.div>
         </div>
 
-        {/* Enhanced Statistics Section */}
-        <div className="absolute bottom-20 left-0 right-0 z-10">
-          <div className="max-w-7xl mx-auto px-6 pb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.0 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8"
+        {/* Statistics Section */}
+     
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              How VizzarJobs Works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              From search to hire in 3 simple steps
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {/* Step 1 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative"
             >
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="text-center border-r border-white/20 pr-8 group"
-              >
-                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                  <AnimatedCounter end={500} suffix="+" />
-                </div>
-                <div className="text-white/80 font-medium text-lg">Top-rated, highly skilled AI/ML talent pool</div>
-              </motion.div>
-              
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="text-center border-r border-white/20 pr-8 group"
-              >
-                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-                  <AnimatedCounter end={50} prefix="$" suffix="k" />
-                </div>
-                <div className="text-white/80 font-medium text-lg">Cost savings per talent hired through VizzarJobs</div>
-              </motion.div>
-              
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="text-center border-r border-white/20 pr-8 group"
-              >
-                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                  <AnimatedCounter end={75} suffix="%" />
-                </div>
-                <div className="text-white/80 font-medium text-lg">Faster time to hire</div>
-              </motion.div>
-              
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="text-center group"
-              >
-                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
-                  <AnimatedCounter end={40} suffix="%" />
-                </div>
-                <div className="text-white/80 font-medium text-lg">Faster project delivery</div>
-              </motion.div>
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+                <span className="text-white text-3xl font-bold">1</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                Tell Us Your Needs
+              </h3>
+              <p className="text-gray-600 text-center text-lg">
+                Share your role requirements, tech stack, and timeline. 
+                We'll understand your exact hiring needs and budget.
+              </p>
             </motion.div>
+
+            {/* Step 2 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="relative"
+            >
+              <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+                <span className="text-white text-3xl font-bold">2</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                Meet Pre-Vetted Candidates
+              </h3>
+              <p className="text-gray-600 text-center text-lg">
+                Within 48 hours, we present 3-5 qualified candidates 
+                matched to your specific requirements with verified skills.
+              </p>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="relative"
+            >
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+                <span className="text-white text-3xl font-bold">3</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                Hire with Confidence
+              </h3>
+              <p className="text-gray-600 text-center text-lg">
+                Interview, select, and we handle all visa sponsorship paperwork. 
+                Your new team member starts in weeks, not months.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-16">
+            <Link
+              href="/employers/hire"
+              className="inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              Start Hiring Today
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
@@ -395,45 +319,45 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Why Choose VizzarJobs?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We're not just another job board. We're Canada's premier AI/ML talent platform.
+              We're not just another job board. We're your strategic partner for building world-class AI/ML teams.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: Brain,
-                title: "AI/ML Expertise",
-                description: "Our team understands AI/ML roles and can match you with the perfect opportunity."
+                icon: Globe,
+                title: "Africa's Top AI/ML Talent",
+                description: "Access highly skilled engineers from Nigeria, Kenya, Uganda, and South Africa at 40% lower cost than North American hires."
               },
               {
                 icon: CheckCircle,
-                title: "Visa Support",
-                description: "We handle Canadian work visa sponsorship for all our placements."
-              },
-              {
-                icon: Star,
-                title: "Premium Companies",
-                description: "Access to Canada's most innovative AI/ML companies and startups."
+                title: "Full Visa Sponsorship",
+                description: "We handle all Canadian work permit applications, immigration paperwork, and relocation logistics from start to finish."
               },
               {
                 icon: Zap,
-                title: "Fast Matching",
-                description: "Our AI-powered matching connects you with opportunities in days, not months."
+                title: "48-Hour Candidate Matching",
+                description: "Our curated talent pool means you meet qualified candidates within 2 days, not 2 months of searching."
               },
               {
                 icon: Shield,
-                title: "Secure Process",
-                description: "Your data is protected with enterprise-grade security and privacy controls."
+                title: "Pre-Vetted & Verified",
+                description: "Every candidate undergoes technical assessments, background checks, and English proficiency testing before joining our pool."
+              },
+              {
+                icon: Award,
+                title: "Performance Guarantee",
+                description: "30-day replacement guarantee if the hire doesn't meet your expectations. Your success is our priority."
               },
               {
                 icon: Users,
-                title: "Expert Support",
-                description: "Dedicated AI/ML career advisors to guide you through your journey."
+                title: "Dedicated Support",
+                description: "Your account manager guides you through hiring, onboarding, and provides support for the first 90 days."
               }
             ].map((feature, index) => {
               const Icon = feature.icon;
@@ -444,13 +368,14 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
                 >
-                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-blue-600" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl flex items-center justify-center mb-6">
+                    <Icon className="w-7 h-7 text-blue-600" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
                 </motion.div>
               );
             })}
@@ -458,32 +383,154 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-blue-600">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* Pricing Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white">
-              Ready to Make Your Mark?
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Transparent, Performance-Based Pricing
             </h2>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Join Canada's most innovative AI/ML companies and build the future of technology.
+            <p className="text-xl text-gray-600">
+              No upfront fees. Only pay when you hire.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/talent-pool/register"
-                className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                Get Started Today
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="bg-gradient-to-br from-blue-50 via-white to-emerald-50 rounded-3xl p-12 border-2 border-blue-100 shadow-xl"
+          >
+            <div className="space-y-8">
+              <div className="text-center">
+                <div className="text-6xl font-bold text-gray-900 mb-3">
+                  15% of first year salary
+                </div>
+                <div className="text-xl text-gray-600">One-time placement fee</div>
+              </div>
+
+              <div className="pt-8 border-t-2 border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">What's Included:</h3>
+                <div className="grid md:grid-cols-2 gap-5">
+                  {[
+                    "Full visa sponsorship & immigration support",
+                    "Comprehensive background verification",
+                    "Technical skills assessments",
+                    "30-day replacement guarantee",
+                    "Relocation & onboarding support",
+                    "90-day dedicated account management"
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700 text-lg">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-8 text-center">
+                <Link
+                  href="/employers/hire"
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-5 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  Schedule a Call
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+                <p className="text-gray-500 text-sm mt-4">
+                  Free consultation • No commitment required
+                </p>
+              </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Dual CTA Section */}
+      <section className="py-24 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Ready to Get Started?
+            </h2>
+            <p className="text-xl text-blue-100">
+              Whether you're hiring or looking for opportunities, we're here to help.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* For Employers */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              whileHover={{ y: -8 }}
+              className="bg-white/10 backdrop-blur-sm rounded-3xl p-10 border-2 border-white/20 hover:border-white/40 transition-all"
+            >
+              <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                <Building2 className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-4">
+                For Employers
+              </h3>
+              <p className="text-blue-100 text-lg mb-8 leading-relaxed">
+                Build your AI/ML team with world-class African talent. 
+                We handle everything from sourcing to visa sponsorship.
+              </p>
+              <Link
+                href="/employers/hire"
+                className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl hover:scale-105 w-full justify-center"
+              >
+                Start Hiring
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
+
+            {/* For Job Seekers */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              whileHover={{ y: -8 }}
+              className="bg-white/10 backdrop-blur-sm rounded-3xl p-10 border-2 border-white/20 hover:border-white/40 transition-all"
+            >
+              <div className="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-4">
+                For AI/ML Professionals
+              </h3>
+              <p className="text-blue-100 text-lg mb-8 leading-relaxed">
+                Launch your career in Canada with visa-sponsored opportunities 
+                at leading tech companies and innovative startups.
+              </p>
+              <Link
+                href="/talent-pool/register"
+                className="inline-flex items-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl hover:scale-105 w-full justify-center"
+              >
+                Join Talent Pool
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>
