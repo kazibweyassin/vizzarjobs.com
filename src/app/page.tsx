@@ -69,7 +69,7 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
         {/* Background Image with Enhanced Overlay */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-gray-900/90 z-10"></div>
+          <div className="absolute inset-0 bg-gray-900/85 z-10"></div>
           <img
             src="https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974"
             alt="AI/ML Technology"
@@ -135,7 +135,7 @@ export default function HomePage() {
 
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-left">
                 <span className="block">Hire World-Class</span>
-                <span className="block bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 bg-clip-text">
+                <span className="block text-emerald-400">
                   AI/ML Talent
                 </span>
                 <span className="block">From Africa</span>
@@ -159,12 +159,11 @@ export default function HomePage() {
               {/* Primary CTA - Employers */}
               <Link
                 href="/employers/hire"
-                className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-5 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 hover:scale-105 overflow-hidden"
+                className="group inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-5 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                <Building2 className="w-4 h-4 relative z-10" />
-                <span className="relative z-6">Hire AI/ML Talent</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
+                <Building2 className="w-4 h-4" />
+                <span>Hire AI/ML Talent</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
               
               {/* Secondary CTA - Job Seekers */}
@@ -243,7 +242,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+              <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">1</span>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
@@ -263,7 +262,7 @@ export default function HomePage() {
               transition={{ delay: 0.2 }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+              <div className="w-20 h-20 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">2</span>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
@@ -283,7 +282,7 @@ export default function HomePage() {
               transition={{ delay: 0.4 }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+              <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">3</span>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
@@ -371,7 +370,7 @@ export default function HomePage() {
                   whileHover={{ y: -8, transition: { duration: 0.2 } }}
                   className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
                 >
-                  <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl flex items-center justify-center mb-6">
+                  <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center mb-6">
                     <Icon className="w-7 h-7 text-blue-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
@@ -405,7 +404,7 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-blue-50 via-white to-emerald-50 rounded-3xl p-12 border-2 border-blue-100 shadow-xl"
+            className="bg-white rounded-3xl p-12 border-2 border-gray-200 shadow-xl"
           >
             <div className="space-y-8">
               <div className="text-center">
@@ -437,7 +436,7 @@ export default function HomePage() {
               <div className="pt-8 text-center">
                 <Link
                   href="/employers/hire"
-                  className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-5 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   Schedule a Call
                   <ArrowRight className="w-5 h-5" />
@@ -452,7 +451,7 @@ export default function HomePage() {
       </section>
 
       {/* Dual CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 relative overflow-hidden">
+      <section className="py-24 bg-gray-900 relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
