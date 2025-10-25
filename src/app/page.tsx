@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { api } from "~/trpc/react";
 import { RoleUpdateHandler } from "~/components/RoleUpdateHandler";
 import { 
@@ -19,7 +19,9 @@ import {
   Database,
   Sparkles,
   Zap,
-  Shield
+  Shield,
+  Play,
+  TrendingUp
 } from "lucide-react";
 
 interface Company {
@@ -60,6 +62,39 @@ const formatExperienceLevel = (level: string): string => {
   return level.split('_').map(word => 
     word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
   ).join(' ');
+};
+
+// Animated Counter Component
+const AnimatedCounter = ({ end, duration = 2, prefix = "", suffix = "" }: { 
+  end: number; 
+  duration?: number; 
+  prefix?: string; 
+  suffix?: string; 
+}) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      let startTime: number;
+      const animate = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / (duration * 1000), 1);
+        setCount(Math.floor(progress * end));
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      requestAnimationFrame(animate);
+    }
+  }, [isInView, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}{count}{suffix}
+    </span>
+  );
 };
 
 // Fallback jobs data
@@ -145,11 +180,11 @@ export default function HomePage() {
     <div className="bg-white">
       <RoleUpdateHandler />
       
-      {/* Hero Section - Andela Style with Background Image */}
+      {/* Enhanced Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
-        {/* Background Image with Dark Overlay */}
+        {/* Background Image with Enhanced Overlay */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/60 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-900/70 to-gray-900/85 z-10"></div>
           <img
             src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
             alt="AI/ML Technology"
@@ -157,56 +192,130 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-20 max-w-6xl mx-auto px-6 pt-8">
+        {/* Floating Elements */}
+        <div className="absolute inset-0 z-15">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            animate={{ 
+              y: [0, -20, 0],
+              rotate: [0, 5, 0]
+            }}
+            transition={{ 
+              duration: 6, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+            className="absolute top-20 right-20 w-16 h-16 bg-blue-500/20 rounded-full blur-xl"
+          />
+          <motion.div
+            animate={{ 
+              y: [0, 15, 0],
+              rotate: [0, -3, 0]
+            }}
+            transition={{ 
+              duration: 8, 
+              repeat: Infinity, 
+              ease: "easeInOut",
+              delay: 1
+            }}
+            className="absolute bottom-32 left-16 w-12 h-12 bg-emerald-500/20 rounded-full blur-lg"
+          />
+        </div>
+
+        <div className="relative z-20 max-w-7xl mx-auto px-6 pt-8">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="space-y-8"
           >
-            {/* Main Headline */}
-            <motion.h1
+            {/* Enhanced Main Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="space-y-4"
+            >
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.9] text-left">
+                <span className="block">Build better</span>
+                <span className="block bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                  AI/ML solutions
+                </span>
+                <span className="block">— faster</span>
+              </h1>
+              
+              {/* Trust Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-white/90 text-sm font-medium"
+              >
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                Trusted by 500+ AI/ML professionals
+              </motion.div>
+            </motion.div>
+
+            {/* Enhanced Subtitle */}
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-6xl font-bold text-white leading-tight text-left"
-            >
-              Build better AI/ML solutions — faster
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl md:text-2xl text-white/90 max-w-4xl leading-relaxed text-left"
+              className="text-xl md:text-2xl lg:text-3xl text-white/90 max-w-5xl leading-relaxed text-left font-light"
             >
-              There are more than 500 highly skilled AI/ML professionals in our talent pool. 
-              Most in largely untapped markets. Ready to be placed quickly and effectively in Canada.
+              There are more than{" "}
+              <span className="font-semibold text-emerald-400">500 highly skilled</span>{" "}
+              AI/ML professionals in our talent pool. Most in largely untapped markets. 
+              Ready to be placed{" "}
+              <span className="font-semibold text-blue-400">quickly and effectively</span>{" "}
+              in Canada.
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* Enhanced CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 items-start pt-8"
+              className="flex flex-col sm:flex-row gap-6 items-start pt-8"
             >
               <Link
                 href="/talent-pool"
-                className="group inline-flex items-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-5 rounded-full text-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 hover:scale-105 overflow-hidden"
               >
-                Hire AI/ML Talent
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                <span className="relative z-10">Hire AI/ML Talent</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
               
               <Link
                 href="/how-it-works"
-                className="inline-flex items-center gap-2 text-white hover:text-blue-300 transition-colors text-lg"
+                className="group inline-flex items-center gap-3 text-white hover:text-blue-300 transition-all duration-300 text-xl font-medium"
               >
-                What is AI/ML Talent Matching?
-                <ArrowRight className="w-4 h-4" />
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                  <Play className="w-5 h-5 ml-0.5" />
+                </div>
+                <span>See how it works</span>
               </Link>
+            </motion.div>
+
+            {/* Quick Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="flex flex-wrap gap-8 pt-8"
+            >
+              <div className="flex items-center gap-3 text-white/80">
+                <CheckCircle className="w-5 h-5 text-emerald-400" />
+                <span className="text-lg">Free to join</span>
+              </div>
+              <div className="flex items-center gap-3 text-white/80">
+                <Clock className="w-5 h-5 text-blue-400" />
+                <span className="text-lg">48-hour matching</span>
+              </div>
+              <div className="flex items-center gap-3 text-white/80">
+                <Shield className="w-5 h-5 text-emerald-400" />
+                <span className="text-lg">Visa sponsorship</span>
+              </div>
             </motion.div>
           </motion.div>
         </div>
@@ -223,31 +332,54 @@ export default function HomePage() {
           </motion.div>
         </div>
 
-        {/* Statistics Section - Integrated into Hero */}
+        {/* Enhanced Statistics Section */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
-          <div className="max-w-6xl mx-auto px-6 pb-16">
+          <div className="max-w-7xl mx-auto px-6 pb-20">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              transition={{ duration: 1, delay: 1.0 }}
               className="grid grid-cols-2 md:grid-cols-4 gap-8"
             >
-              <div className="text-center border-r border-white/20 pr-8">
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">500+</div>
-                <div className="text-white/80 font-medium">Top-rated, highly skilled AI/ML talent pool</div>
-              </div>
-              <div className="text-center border-r border-white/20 pr-8">
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">$50,000</div>
-                <div className="text-white/80 font-medium">Cost savings per talent hired through VizzarJobs</div>
-              </div>
-              <div className="text-center border-r border-white/20 pr-8">
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">75%</div>
-                <div className="text-white/80 font-medium">Faster time to hire</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">40%</div>
-                <div className="text-white/80 font-medium">Faster project delivery</div>
-              </div>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="text-center border-r border-white/20 pr-8 group"
+              >
+                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
+                  <AnimatedCounter end={500} suffix="+" />
+                </div>
+                <div className="text-white/80 font-medium text-lg">Top-rated, highly skilled AI/ML talent pool</div>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="text-center border-r border-white/20 pr-8 group"
+              >
+                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                  <AnimatedCounter end={50} prefix="$" suffix="k" />
+                </div>
+                <div className="text-white/80 font-medium text-lg">Cost savings per talent hired through VizzarJobs</div>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="text-center border-r border-white/20 pr-8 group"
+              >
+                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
+                  <AnimatedCounter end={75} suffix="%" />
+                </div>
+                <div className="text-white/80 font-medium text-lg">Faster time to hire</div>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="text-center group"
+              >
+                <div className="text-5xl md:text-6xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+                  <AnimatedCounter end={40} suffix="%" />
+                </div>
+                <div className="text-white/80 font-medium text-lg">Faster project delivery</div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
