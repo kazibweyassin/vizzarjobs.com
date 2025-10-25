@@ -226,10 +226,10 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               How VizzarJobs Works
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               From search to hire in 3 simple steps
             </p>
           </motion.div>
@@ -245,10 +245,10 @@ export default function HomePage() {
               <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">1</span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
                 Tell Us Your Needs
               </h3>
-              <p className="text-gray-600 text-center text-lg">
+              <p className="text-gray-600 text-center text-base">
                 Share your role requirements, tech stack, and timeline. 
                 We'll understand your exact hiring needs and budget.
               </p>
@@ -265,10 +265,10 @@ export default function HomePage() {
               <div className="w-20 h-20 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">2</span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
                 Meet Pre-Vetted Candidates
               </h3>
-              <p className="text-gray-600 text-center text-lg">
+              <p className="text-gray-600 text-center text-base">
                 Within 48 hours, we present 3-5 qualified candidates 
                 matched to your specific requirements with verified skills.
               </p>
@@ -285,10 +285,10 @@ export default function HomePage() {
               <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">3</span>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
                 Hire with Confidence
               </h3>
-              <p className="text-gray-600 text-center text-lg">
+              <p className="text-gray-600 text-center text-base">
                 Interview, select, and we handle all visa sponsorship paperwork. 
                 Your new team member starts in weeks, not months.
               </p>
@@ -299,10 +299,10 @@ export default function HomePage() {
           <div className="text-center mt-16">
             <Link
               href="/employers/hire"
-              className="inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              className="inline-flex items-center gap-3 bg-blue-600 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
             >
               Start Hiring Today
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -318,10 +318,10 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Why Choose VizzarJobs?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               We're not just another job board. We're your strategic partner for building world-class AI/ML teams.
             </p>
           </motion.div>
@@ -373,8 +373,8 @@ export default function HomePage() {
                   <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center mb-6">
                     <Icon className="w-7 h-7 text-blue-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed text-base">{feature.description}</p>
                 </motion.div>
               );
             })}
@@ -391,10 +391,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Transparent, Performance-Based Pricing
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600">
               No upfront fees. Only pay when you hire.
             </p>
           </motion.div>
@@ -436,10 +436,10 @@ export default function HomePage() {
               <div className="pt-8 text-center">
                 <Link
                   href="/employers/hire"
-                  className="inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center gap-3 bg-blue-600 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   Schedule a Call
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
                 <p className="text-gray-500 text-sm mt-4">
                   Free consultation • No commitment required
@@ -465,10 +465,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Ready to Get Started?
             </h2>
-            <p className="text-xl text-blue-100">
+            <p className="text-lg text-blue-100">
               Whether you're hiring or looking for opportunities, we're here to help.
             </p>
           </motion.div>
@@ -486,19 +486,19 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6">
                 <Building2 className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-3xl font-bold text-white mb-4">
+              <h3 className="text-2xl font-bold text-white mb-4">
                 For Employers
               </h3>
-              <p className="text-blue-100 text-lg mb-8 leading-relaxed">
+              <p className="text-blue-100 text-base mb-8 leading-relaxed">
                 Build your AI/ML team with world-class African talent. 
                 We handle everything from sourcing to visa sponsorship.
               </p>
               <Link
                 href="/employers/hire"
-                className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl hover:scale-105 w-full justify-center"
+                className="inline-flex items-center gap-3 bg-white text-blue-600 px-6 py-3 rounded-full text-base font-semibold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl hover:scale-105 w-full justify-center"
               >
                 Start Hiring
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
 
@@ -514,19 +514,19 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6">
                 <Users className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-3xl font-bold text-white mb-4">
+              <h3 className="text-2xl font-bold text-white mb-4">
                 For AI/ML Professionals
               </h3>
-              <p className="text-blue-100 text-lg mb-8 leading-relaxed">
+              <p className="text-blue-100 text-base mb-8 leading-relaxed">
                 Launch your career in Canada with visa-sponsored opportunities 
                 at leading tech companies and innovative startups.
               </p>
               <Link
                 href="/talent-pool/register"
-                className="inline-flex items-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl hover:scale-105 w-full justify-center"
+                className="inline-flex items-center gap-3 bg-emerald-600 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl hover:scale-105 w-full justify-center"
               >
                 Join Talent Pool
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
           </div>
