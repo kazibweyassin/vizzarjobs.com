@@ -193,7 +193,7 @@ export default function HomePage() {
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute inset-0 z-15">
+        <div className="absolute inset-0 z-5">
           <motion.div
             animate={{ 
               y: [0, -20, 0],
@@ -221,7 +221,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl mx-auto px-6 pt-8">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -321,7 +321,7 @@ export default function HomePage() {
         </div>
 
         {/* Logo in Bottom Left */}
-        <div className="absolute bottom-6 left-6 z-20">
+        <div className="absolute bottom-6 left-6 z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -333,7 +333,7 @@ export default function HomePage() {
         </div>
 
         {/* Enhanced Statistics Section */}
-        <div className="absolute bottom-0 left-0 right-0 z-20">
+        <div className="absolute bottom-0 left-0 right-0 z-10">
           <div className="max-w-7xl mx-auto px-6 pb-20">
             <motion.div
               initial={{ opacity: 0, y: 40 }}

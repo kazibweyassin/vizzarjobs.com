@@ -41,7 +41,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="bg-white/95 backdrop-blur-lg border-b border-gray-200/60 sticky top-0 z-50 shadow-lg shadow-black/5">
+    <nav className="bg-white/95 backdrop-blur-lg border-b border-gray-200/60 sticky top-0 z-[100] shadow-lg shadow-black/5">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -145,7 +145,7 @@ export function Navigation() {
 
                 {/* Profile Dropdown */}
                 {isProfileDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-200/60 py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-200/60 py-2 z-[110]">
                     <div className="px-4 py-3 border-b border-gray-100">
                       <p className="text-sm font-medium text-gray-900">
                         {session.user.name}
@@ -320,7 +320,7 @@ export function Navigation() {
       {/* Click outside to close dropdown */}
       {isProfileDropdownOpen && (
         <div 
-          className="fixed inset-0 z-40" 
+          className="fixed inset-0 z-[105]" 
           onClick={() => setIsProfileDropdownOpen(false)}
         />
       )}
