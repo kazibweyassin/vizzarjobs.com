@@ -242,7 +242,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+              <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">1</span>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -262,7 +262,7 @@ export default function HomePage() {
               transition={{ delay: 0.2 }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+              <div className="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">2</span>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -282,7 +282,7 @@ export default function HomePage() {
               transition={{ delay: 0.4 }}
               className="relative"
             >
-              <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
+              <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
                 <span className="text-white text-3xl font-bold">3</span>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -408,7 +408,7 @@ export default function HomePage() {
           >
             <div className="space-y-8">
               <div className="text-center">
-                <div className="text-6xl font-bold text-gray-900 mb-3">
+                <div className="text-4xl font-bold text-gray-900 mb-3">
                   15% of first year salary
                 </div>
                 <div className="text-xl text-gray-600">One-time placement fee</div>
