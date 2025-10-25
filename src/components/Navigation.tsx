@@ -41,7 +41,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="bg-white/95 backdrop-blur-lg border-b border-gray-200/60 sticky top-0 z-[100] shadow-lg shadow-black/5">
+    <nav className="backdrop-blur-lg border-b border-gray-200/60 sticky top-0 z-[100] shadow-lg shadow-black/5" style={{ backgroundColor: '#ECD5BC' }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -83,7 +83,7 @@ export function Navigation() {
                 {session.user.role === "JOB_SEEKER" && (
                   <Link
                     href="/jobs?location=Canada&category=AI-ML"
-                    className="inline-flex items-center bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 transition-all duration-200 text-sm shadow-sm hover:shadow-md"
+                    className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
                   >
                     <Briefcase className="w-4 h-4 mr-2" />
                     Browse Jobs
@@ -93,7 +93,7 @@ export function Navigation() {
                 {(session.user.role === "EMPLOYER" || session.user.role === "ADMIN") && (
                   <Link
                     href="/dashboard/employer"
-                    className="inline-flex items-center bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 transition-all duration-200 text-sm shadow-sm hover:shadow-md"
+                    className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
                   >
                     <Briefcase className="w-4 h-4 mr-2" />
                     Dashboard
@@ -108,7 +108,7 @@ export function Navigation() {
             ) : !session ? (
               <Link
                 href="/auth/signin"
-                className="inline-flex items-center bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 transition-all duration-200 text-sm shadow-sm hover:shadow-md"
+                className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
               >
                 <User className="w-4 h-4 mr-2" />
                 Sign In
@@ -145,7 +145,7 @@ export function Navigation() {
 
                 {/* Profile Dropdown */}
                 {isProfileDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-200/60 py-2 z-[110]">
+                  <div className="absolute right-0 mt-2 w-64 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-200/60 py-2 z-[110]" style={{ backgroundColor: '#ECD5BC' }}>
                     <div className="px-4 py-3 border-b border-gray-100">
                       <p className="text-sm font-medium text-gray-900">
                         {session.user.name}
@@ -220,7 +220,7 @@ export function Navigation() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200/60 py-4 bg-white/95 backdrop-blur-lg">
+          <div className="lg:hidden border-t border-gray-200/60 py-4 backdrop-blur-lg" style={{ backgroundColor: '#ECD5BC' }}>
             <div className="space-y-1">
               {navigation.map((item) => {
                 const Icon = item.icon;
@@ -305,7 +305,7 @@ export function Navigation() {
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="block w-full px-4 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-medium transition-all duration-200 text-center"
+                    className="block w-full px-6 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-semibold transition-all duration-200 text-center text-base"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Join Now
