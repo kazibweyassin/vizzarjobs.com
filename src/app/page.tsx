@@ -159,21 +159,21 @@ export default function HomePage() {
               {/* Primary CTA - Employers */}
               <Link
                 href="/employers/hire"
-                className="group inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-5 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="group inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
                 <Building2 className="w-4 h-4" />
                 <span>Hire AI/ML Talent</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
               
               {/* Secondary CTA - Job Seekers */}
               <Link
                 href="/talent-pool/register"
-                className="group inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300"
+                className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-white/20 transition-all duration-300"
               >
-                <Users className="w-6 h-6" />
+                <Users className="w-4 h-4" />
                 <span>Join Talent Pool</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </motion.div>
 
