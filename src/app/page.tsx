@@ -321,7 +321,7 @@ export default function HomePage() {
         </div>
 
         {/* Logo in Bottom Left */}
-        <div className="absolute bottom-6 left-6 z-10">
+        <div className="absolute bottom-24 left-6 z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -333,8 +333,8 @@ export default function HomePage() {
         </div>
 
         {/* Enhanced Statistics Section */}
-        <div className="absolute bottom-0 left-0 right-0 z-10">
-          <div className="max-w-7xl mx-auto px-6 pb-20">
+        <div className="absolute bottom-20 left-0 right-0 z-10">
+          <div className="max-w-7xl mx-auto px-6 pb-8">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
