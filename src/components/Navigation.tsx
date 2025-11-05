@@ -16,7 +16,8 @@ import {
   Target,
   BookOpen,
   Info,
-  Package
+  Package,
+  FileText
 } from "lucide-react";
 
 // Update this type to match the UserRole enum in the Prisma schema
@@ -29,6 +30,7 @@ export function Navigation() {
 
   const navigation = [
     { name: "Jobs", href: "/jobs", icon: Briefcase },
+    { name: "Resume Builder", href: "/tools/resume-builder", icon: FileText },
     { name: "Talent Pool", href: "/talent-pool", icon: Target },
     { name: "Career Assessment", href: "/career-assessment", icon: Brain },
     { name: "Insights", href: "/insights", icon: BookOpen },

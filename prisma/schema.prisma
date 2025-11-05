@@ -151,6 +151,7 @@ model User {
   matchingPreferences MatchingPreferences?
   sessions            Session[]
   subscriptions       Subscription[]
+  resumes             Resume[]
 
   @@index([email])
   @@index([aiMlFocus])
@@ -620,4 +621,48 @@ enum SkillLevel {
   SENIOR
   LEAD
   EXPERT
+}
+
+// ============================================
+// RESUME BUILDER SYSTEM
+// ============================================
+
+// Stores user-created resumes
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String   @default("My Resume")
+  data      Json // Resume data (all sections)
+  template  String   @default("modern") // Template name
+  atsScore  Float? // Last calculated ATS score
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  downloads ResumeDownload[]
+
+  @@index([userId])
+  @@map("resumes")
+}
+
+// Tracks paid PDF downloads
+model ResumeDownload {
+  id              String   @id @default(cuid())
+  resumeId        String
+  userId          String
+  amount          Float    @default(2.0) // Payment amount in USD
+  transactionId   String? // Payment provider transaction ID
+  paymentMethod   String? // Payment method used
+  paymentProvider String? // Payment provider (FLUTTERWAVE, PAYPAL, etc.)
+  status          String   @default("completed") // completed, pending, failed
+  downloadedAt    DateTime @default(now())
+
+  // Relations
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@index([resumeId])
+  @@index([userId])
+  @@index([transactionId])
+  @@map("resume_downloads")
 }

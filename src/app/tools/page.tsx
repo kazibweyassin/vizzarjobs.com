@@ -12,18 +12,20 @@ import {
   Link as LinkIcon,
   Zap,
   Star,
-  ArrowRight
+  ArrowRight,
+  DollarSign
 } from 'lucide-react';
 
 const tools = [
   {
-    title: 'Rich Text Editor',
-    description: 'Professional text editor with formatting, media, and HTML export capabilities',
-    href: '/tools/rich-text-editor',
+    title: 'ATS Resume Builder',
+    description: 'Create ATS-optimized resumes with real-time scoring. Free to build, $2 to download PDF.',
+    href: '/tools/resume-builder',
     icon: FileText,
-    features: ['Bold, Italic, Underline', 'Headings & Lists', 'Images & Links', 'HTML Export'],
-    color: 'blue',
-    popular: true
+    features: ['ATS Optimization', 'Real-time Scoring', 'Multiple Templates', 'PDF Export ($2)'],
+    color: 'green',
+    popular: true,
+    featured: true
   },
   {
     title: 'Resume Analyzer',
@@ -33,6 +35,15 @@ const tools = [
     features: ['ATS Compatibility', 'Skills Analysis', 'Keyword Optimization', 'Gap Analysis'],
     color: 'green',
     comingSoon: true
+  },
+  {
+    title: 'Rich Text Editor',
+    description: 'Professional text editor with formatting, media, and HTML export capabilities',
+    href: '/tools/rich-text-editor',
+    icon: FileText,
+    features: ['Bold, Italic, Underline', 'Headings & Lists', 'Images & Links', 'HTML Export'],
+    color: 'blue',
+    popular: false
   },
   {
     title: 'Job Description Generator',
@@ -110,7 +121,13 @@ export default function ToolsPage() {
                         <CardTitle className="text-xl group-hover:text-blue-700 transition-colors">
                           {tool.title}
                         </CardTitle>
-                        {tool.popular && (
+                        {tool.featured && (
+                          <Badge variant="secondary" className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs mt-1 border-0">
+                            <Star className="w-3 h-3 mr-1" />
+                            Featured
+                          </Badge>
+                        )}
+                        {tool.popular && !tool.featured && (
                           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs mt-1">
                             <Star className="w-3 h-3 mr-1" />
                             Popular
@@ -149,6 +166,15 @@ export default function ToolsPage() {
                         <div className="flex items-center justify-center py-3 text-gray-500">
                           <span className="text-sm">Coming Soon</span>
                         </div>
+                      ) : tool.featured ? (
+                        <Link href={tool.href}>
+                          <div className="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-colors group shadow-md">
+                            <span className="font-medium">Create Resume</span>
+                            <DollarSign className="w-4 h-4" />
+                            <span className="text-xs opacity-90">$2 PDF</span>
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </div>
+                        </Link>
                       ) : (
                         <Link href={tool.href}>
                           <div className="flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors group">
@@ -204,13 +230,17 @@ export default function ToolsPage() {
               <p className="text-sm text-gray-600">
                 Ready to enhance your professional toolkit? Start with our most popular tool.
               </p>
-              <Link href="/tools/rich-text-editor">
-                <div className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-center font-medium">
-                  Try Rich Text Editor
+              <Link href="/tools/resume-builder">
+                <div className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 text-center font-medium shadow-md">
+                  <div className="flex items-center justify-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Create Resume
+                  </div>
+                  <div className="text-xs mt-1 opacity-90">Free to build • $2 PDF download</div>
                 </div>
               </Link>
               <div className="text-xs text-gray-500 text-center">
-                No account required • Free to use
+                Sign in required • Payment for PDF
               </div>
             </CardContent>
           </Card>

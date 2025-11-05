@@ -22,7 +22,9 @@ import {
   Lightbulb,
   Settings,
   Download,
-  Play
+  Play,
+  FileText,
+  DollarSign
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Badge } from '~/components/ui/badge';
@@ -53,6 +55,26 @@ interface Feature {
 export default function ProductsPage() {
   const products: Product[] = [
     {
+      id: 'ats-resume-builder',
+      name: 'ATS Resume Builder',
+      tagline: 'Create ATS-Optimized Resumes',
+      description: 'Professional resume builder with real-time ATS scoring. Free to build, $2 per PDF download. Perfect for job seekers who want ATS-optimized resumes.',
+      features: [
+        'Real-time ATS compatibility scoring',
+        '4 professional templates',
+        'Free resume creation & editing',
+        '$2 per PDF download'
+      ],
+      icon: FileText,
+      color: 'from-green-600 to-emerald-600',
+      pricing: {
+        starter: 'Free',
+        professional: '$2/PDF',
+        enterprise: 'Bulk pricing'
+      },
+      isPopular: true
+    },
+    {
       id: 'vizzarmatch',
       name: 'VizzarMatch',
       tagline: 'AI-Powered Job Matching Engine',
@@ -70,7 +92,7 @@ export default function ProductsPage() {
         professional: '$29/month',
         enterprise: 'Custom'
       },
-      isPopular: true
+      isPopular: false
     },
     {
       id: 'vizzarinsights',
@@ -207,7 +229,16 @@ export default function ProductsPage() {
                       <CardDescription className="text-sm font-medium">{product.tagline}</CardDescription>
                     </div>
                     {product.isPopular && (
-                      <Badge className="bg-yellow-100 text-yellow-800 ml-auto">Popular</Badge>
+                      <Badge className={`ml-auto ${product.id === 'ats-resume-builder' ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0' : 'bg-yellow-100 text-yellow-800'}`}>
+                        {product.id === 'ats-resume-builder' ? (
+                          <>
+                            <Star className="w-3 h-3 mr-1" />
+                            Featured
+                          </>
+                        ) : (
+                          'Popular'
+                        )}
+                      </Badge>
                     )}
                   </div>
                   <p className="text-gray-600">{product.description}</p>
@@ -241,10 +272,22 @@ export default function ProductsPage() {
                       </div>
                     </div>
 
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
-                      Learn More
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    {product.id === 'ats-resume-builder' ? (
+                      <Link href="/tools/resume-builder" className="block">
+                        <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                          <FileText className="w-4 h-4 mr-2" />
+                          Create Resume
+                          <DollarSign className="w-3 h-3 ml-1" />
+                          <span className="text-xs ml-1 opacity-90">$2 PDF</span>
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
+                        Learn More
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
