@@ -28,6 +28,7 @@ export function Navigation() {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const navigation = [
+    { name: "Jobs", href: "/jobs", icon: Briefcase },
     { name: "Talent Pool", href: "/talent-pool", icon: Target },
     { name: "Career Assessment", href: "/career-assessment", icon: Brain },
     { name: "Insights", href: "/insights", icon: BookOpen },
@@ -41,7 +42,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="backdrop-blur-lg border-b border-gray-200/60 sticky top-0 z-[100] shadow-lg shadow-black/5" style={{ backgroundColor: '#ECD5BC' }}>
+    <nav className="backdrop-blur-lg border-b border-gray-200/60 sticky top-0 z-[100] shadow-lg shadow-black/5" style={{ backgroundColor: '#000000' }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -59,16 +60,14 @@ export function Navigation() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-0.5">
             {navigation.map((item) => {
-              const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-all duration-200"
+                  className="flex items-center px-2 py-2 text-sm font-medium text-white hover:text-blue-400 hover:bg-white/10 rounded-xl transition-all duration-200"
                 >
-                  <Icon className="w-4 h-4 mr-2" />
                   {item.name}
                 </Link>
               );
@@ -82,7 +81,7 @@ export function Navigation() {
               <>
                 {session.user.role === "JOB_SEEKER" && (
                   <Link
-                    href="/jobs?location=Canada&category=AI-ML"
+                    href="/jobs?location=Canada"
                     className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
                   >
                     <Briefcase className="w-4 h-4 mr-2" />
@@ -117,7 +116,7 @@ export function Navigation() {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="flex items-center gap-2 p-2 rounded-xl hover:bg-gray-50 transition-all duration-200"
+                  className="flex items-center gap-2 p-2 rounded-xl hover:bg-white/10 transition-all duration-200"
                 >
                   {session.user.image ? (
                     <img
@@ -133,14 +132,14 @@ export function Navigation() {
                     </div>
                   )}
                   <div className="text-left">
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-medium text-white">
                       {session.user.name}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-300">
                       {session.user.role === "EMPLOYER" || session.user.role === "ADMIN" ? "Employer" : "Job Seeker"}
                     </div>
                   </div>
-                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                  <ChevronDown className="w-4 h-4 text-white" />
                 </button>
 
                 {/* Profile Dropdown */}
@@ -206,7 +205,7 @@ export function Navigation() {
           <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-all duration-200"
+              className="p-2 rounded-xl text-white hover:bg-white/10 transition-all duration-200"
               aria-label="Toggle mobile menu"
             >
               {isMenuOpen ? (

@@ -229,14 +229,40 @@ export class RemoteOKImporter {
     
     let fixed = text;
     
-    // Fix common encoding issues
+    // First, try to decode if it's double-encoded UTF-8
+    try {
+      // Common double-encoding patterns
+      fixed = fixed.replace(/â€™/g, "'");
+      fixed = fixed.replace(/â€œ/g, '"');
+      fixed = fixed.replace(/â€/g, '"');
+      fixed = fixed.replace(/â€˜/g, "'");
+      fixed = fixed.replace(/â€"/g, '"');
+      fixed = fixed.replace(/â€"/g, '"');
+      fixed = fixed.replace(/â€"/g, '—');
+      fixed = fixed.replace(/â€"/g, '–');
+      fixed = fixed.replace(/â€"/g, '-');
+      fixed = fixed.replace(/â€¦/g, '...');
+      fixed = fixed.replace(/â€¢/g, '•');
+      fixed = fixed.replace(/â€"/g, '°');
+      fixed = fixed.replace(/â€"/g, '®');
+      fixed = fixed.replace(/â€"/g, '©');
+      fixed = fixed.replace(/â€"/g, '™');
+    } catch (e) {
+      // Continue with other fixes
+    }
+    
+    // Fix common encoding issues - more comprehensive patterns
     fixed = fixed
-      // Fix curly quotes and apostrophes
+      // Fix curly quotes and apostrophes (multiple encoding patterns)
       .replace(/â€™/g, "'")
       .replace(/â€œ/g, '"')
       .replace(/â€/g, '"')
       .replace(/â€˜/g, "'")
-      .replace(/â€/g, "'")
+      .replace(/â€"/g, '"')
+      .replace(/â€"/g, '"')
+      .replace(/â€"/g, '"')
+      .replace(/â€"/g, '"')
+      .replace(/â€"/g, '"')
       .replace(/â€"/g, '"')
       .replace(/â€"/g, '"')
       
@@ -244,12 +270,19 @@ export class RemoteOKImporter {
       .replace(/â€"/g, '—')
       .replace(/â€"/g, '–')
       .replace(/â€"/g, '-')
+      .replace(/â€"/g, '—')
+      .replace(/â€"/g, '–')
       
       // Fix ellipsis
+      .replace(/â€¦/g, '...')
       .replace(/â€¦/g, '...')
       
       // Fix other common encoding issues
       .replace(/â€¢/g, '•')
+      .replace(/â€"/g, '°')
+      .replace(/â€"/g, '®')
+      .replace(/â€"/g, '©')
+      .replace(/â€"/g, '™')
       .replace(/â€"/g, '°')
       .replace(/â€"/g, '®')
       .replace(/â€"/g, '©')
@@ -259,18 +292,33 @@ export class RemoteOKImporter {
       .replace(/â‚¬/g, '€')
       .replace(/Â£/g, '£')
       .replace(/Â¥/g, '¥')
+      .replace(/Â¢/g, '¢')
+      .replace(/Â¤/g, '¤')
       
-      // Fix other common issues
-      .replace(/Â /g, ' ') // Non-breaking space
+      // Fix spaces and whitespace issues
+      .replace(/Â /g, ' ')
+      .replace(/â€¨/g, '\n')
+      .replace(/â€©/g, '\n')
+      .replace(/â€¬/g, '')
+      .replace(/â€­/g, '')
+      .replace(/â€®/g, '')
+      .replace(/â€¯/g, '')
+      
+      // Unicode character fixes
       .replace(/\u00A0/g, ' ') // Non-breaking space
       .replace(/\u2013/g, '–') // En dash
       .replace(/\u2014/g, '—') // Em dash
       .replace(/\u2018/g, "'") // Left single quote
       .replace(/\u2019/g, "'") // Right single quote
+      .replace(/\u201A/g, ',') // Single low-9 quotation mark
+      .replace(/\u201B/g, "'") // Single high-reversed-9 quotation mark
       .replace(/\u201C/g, '"') // Left double quote
       .replace(/\u201D/g, '"') // Right double quote
+      .replace(/\u201E/g, '"') // Double low-9 quotation mark
+      .replace(/\u201F/g, '"') // Double high-reversed-9 quotation mark
       .replace(/\u2026/g, '...') // Ellipsis
       .replace(/\u2022/g, '•') // Bullet
+      .replace(/\u2027/g, '·') // Hyphenation point
       .replace(/\u00B0/g, '°') // Degree
       .replace(/\u00AE/g, '®') // Registered
       .replace(/\u00A9/g, '©') // Copyright
@@ -278,19 +326,37 @@ export class RemoteOKImporter {
       .replace(/\u20AC/g, '€') // Euro
       .replace(/\u00A3/g, '£') // Pound
       .replace(/\u00A5/g, '¥') // Yen
+      .replace(/\u00A2/g, '¢') // Cent
+      .replace(/\u00A4/g, '¤') // Currency
       
-      // Additional encoding issues
-      .replace(/â€¨/g, '\n')  // Line break character
-      .replace(/â€©/g, '\n')  // Another line break variant
-      .replace(/â€¬/g, '')    // Zero-width non-breaking space
-      .replace(/â€­/g, '')    // Soft hyphen
-      .replace(/â€®/g, '')    // Zero-width joiner
-      .replace(/â€¯/g, '')    // Zero-width non-joiner
-      
-      // Fix literal \n showing as text
+      // Fix literal escape sequences showing as text
       .replace(/\\n/g, '\n')
       .replace(/\\t/g, '\t')
-      .replace(/\\r/g, '\r');
+      .replace(/\\r/g, '\r')
+      .replace(/\\"/g, '"')
+      .replace(/\\'/g, "'")
+      
+      // Remove zero-width characters that can cause issues
+      .replace(/\u200B/g, '') // Zero-width space
+      .replace(/\u200C/g, '') // Zero-width non-joiner
+      .replace(/\u200D/g, '') // Zero-width joiner
+      .replace(/\uFEFF/g, '') // Zero-width no-break space
+      
+      // Clean up any remaining problematic sequences
+      .replace(/â€/g, '') // Remove any remaining malformed sequences
+      .replace(/â€/g, '')
+      .replace(/â€/g, '')
+      .replace(/â€/g, '')
+      .replace(/â€/g, '')
+      .replace(/â€/g, '');
+    
+    // Final pass: try to decode as UTF-8 if it looks like it might be double-encoded
+    try {
+      // If we still see encoding artifacts, try to fix them
+      fixed = fixed.replace(/â€/g, ''); // Remove any remaining encoding artifacts
+    } catch (e) {
+      // Continue with fixed text
+    }
     
     return fixed;
   }

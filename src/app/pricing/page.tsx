@@ -34,8 +34,8 @@ export default function PricingPage() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<any>(null);
   const [showPaymentMethods, setShowPaymentMethods] = useState(false);
 
-  // Fetch subscription plans
-  const { data: plans, isLoading: plansLoading } = api.subscriptions.getPlans.useQuery();
+  // Fetch subscription plans from API
+  const { data: apiPlans, isLoading: plansLoading } = api.subscriptions.getPlans.useQuery();
   
   // Fetch payment methods for Uganda
   const { data: paymentMethods } = api.subscriptions.getPaymentMethods.useQuery({ region: 'UG' });
@@ -77,14 +77,15 @@ export default function PricingPage() {
     }
   };
 
-  const plans = [
+  // Use API plans if available, otherwise fallback to hardcoded plans
+  const defaultPlans = [
     {
       id: "free",
       name: "Free",
       description: "Perfect for getting started",
       price: { monthly: 0, yearly: 0 },
       features: [
-        "Browse AI/ML jobs in Canada",
+        "Browse tech jobs in Canada",
         "Basic profile creation",
         "Apply to 5 jobs per month",
         "Email support"
@@ -100,11 +101,11 @@ export default function PricingPage() {
     {
       id: "premium",
       name: "Premium",
-      description: "For serious AI/ML professionals",
+      description: "For serious tech professionals",
       price: { monthly: 29, yearly: 290 },
       features: [
         "Unlimited job applications",
-        "Advanced AI/ML matching",
+        "Advanced tech job matching",
         "Priority in talent pool",
         "Direct employer access",
         "Portfolio showcase",
@@ -118,10 +119,10 @@ export default function PricingPage() {
     {
       id: "enterprise",
       name: "Enterprise",
-      description: "For companies hiring AI/ML talent",
+      description: "For companies hiring tech talent",
       price: { monthly: 199, yearly: 1990 },
       features: [
-        "Post unlimited AI/ML jobs",
+        "Post unlimited tech jobs",
         "Access to premium talent pool",
         "Advanced candidate filtering",
         "Direct candidate contact",
@@ -134,6 +135,9 @@ export default function PricingPage() {
       color: "purple"
     }
   ];
+
+  // Use API plans if available, otherwise use default plans
+  const plans = apiPlans || defaultPlans;
 
   return (
     <div className="min-h-screen bg-white">
@@ -154,7 +158,7 @@ export default function PricingPage() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
             >
               <Sparkles className="w-4 h-4" />
-              AI/ML Talent • Canada Focus
+              Tech Talent • Canada Focus
             </motion.div>
 
             {/* Main Headline */}
@@ -176,7 +180,7 @@ export default function PricingPage() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
             >
-              Choose the perfect plan for your AI/ML career in Canada.
+              Choose the perfect plan for your tech career in Canada.
               <br />
               No hidden fees, no surprises.
             </motion.p>
@@ -312,7 +316,7 @@ export default function PricingPage() {
               Everything You Need
           </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              All plans include access to Canada's premier AI/ML job market
+              All plans include access to Canada's premier tech job market
             </p>
           </motion.div>
 
@@ -320,8 +324,8 @@ export default function PricingPage() {
             {[
               {
                 icon: Brain,
-                title: "AI/ML Focus",
-                description: "Specialized matching for artificial intelligence and machine learning roles"
+                title: "Tech Specializations",
+                description: "Matching for all tech roles including software engineering, DevOps, data science, AI/ML, and more"
               },
               {
                 icon: CheckCircle,
@@ -331,7 +335,7 @@ export default function PricingPage() {
               {
                 icon: Star,
                 title: "Premium Companies",
-                description: "Access to Canada's most innovative AI/ML companies"
+                description: "Access to Canada's most innovative tech companies"
               },
               {
                 icon: Zap,
@@ -346,7 +350,7 @@ export default function PricingPage() {
               {
                 icon: Users,
                 title: "Expert Support",
-                description: "Dedicated support team with AI/ML industry expertise"
+                description: "Dedicated support team with tech industry expertise"
               }
             ].map((feature, index) => {
               const Icon = feature.icon;
@@ -385,7 +389,7 @@ export default function PricingPage() {
               Ready to Get Started?
             </h2>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Join thousands of AI/ML professionals who've found their dream jobs in Canada.
+              Join thousands of tech professionals who've found their dream jobs in Canada.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

@@ -97,21 +97,21 @@ export function PremiumHero() {
             <div className="w-6 h-6 bg-navy rounded-md flex items-center justify-center">
               <Sparkles className="w-3 h-3 text-white" />
             </div>
-            <span className="font-semibold">Canadian AI/ML Opportunities</span>
+            <span className="font-semibold">Canadian Tech Opportunities</span>
           </motion.div>
 
           <motion.h1
             variants={fadeUp}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight"
           >
-            <span className="block">Find Your AI/ML Dream Job</span>
+            <span className="block">Find Your Tech Dream Job</span>
             <span className="block text-navy">
               in Canada
             </span>
           </motion.h1>
 
           <motion.p variants={fadeUp} className="text-xl text-gray-600 leading-relaxed max-w-3xl">
-            Connect with <span className="text-navy font-medium">leading Canadian AI/ML companies</span> looking for 
+            Connect with <span className="text-navy font-medium">leading Canadian tech companies</span> looking for 
             skilled professionals across major cities including 
             <span className="text-navy font-medium"> Toronto, Vancouver, and Montreal</span>.
           </motion.p>
@@ -120,12 +120,12 @@ export function PremiumHero() {
           <motion.div variants={fadeUp} className="mt-10 flex flex-col gap-4">
             {/* Primary CTA */}
             <div className="flex flex-wrap gap-4">
-              <Link href="/jobs?location=Canada&category=AI-ML">
+              <Link href="/jobs?location=Canada">
                 <motion.div 
                   whileHover={{ scale: 1.02 }} 
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-md text-white font-medium bg-navy text-base transition-all"
                 >
-                  <Briefcase className="w-4 h-4" /> Browse AI/ML Jobs in Canada <ArrowRight className="w-4 h-4 ml-1" />
+                  <Briefcase className="w-4 h-4" /> Browse Tech Jobs in Canada <ArrowRight className="w-4 h-4 ml-1" />
                 </motion.div>
               </Link>
 

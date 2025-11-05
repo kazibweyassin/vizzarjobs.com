@@ -85,12 +85,18 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
   ];
   
   const specializedRoles = [
+    { value: "Frontend", label: "Frontend Developer" },
+    { value: "Backend", label: "Backend Developer" },
+    { value: "Full Stack", label: "Full Stack Developer" },
     { value: "DevOps", label: "DevOps Engineer" },
-    { value: "AI", label: "AI Engineer" },
-    { value: "Machine Learning", label: "ML Engineer" },
-    { value: "Data Science", label: "Data Scientist" },
     { value: "Cloud", label: "Cloud Engineer" },
-    { value: "Security", label: "Security Engineer" }
+    { value: "Security", label: "Security Engineer" },
+    { value: "Mobile", label: "Mobile Developer" },
+    { value: "QA", label: "QA/Testing Engineer" },
+    { value: "Data Science", label: "Data Scientist" },
+    { value: "Machine Learning", label: "ML Engineer" },
+    { value: "AI", label: "AI Engineer" },
+    { value: "Blockchain", label: "Blockchain Developer" }
   ];
 
   const displayedTechStacks = showAllTechStacks 

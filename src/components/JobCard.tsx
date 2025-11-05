@@ -204,7 +204,7 @@ export function JobCard({ job }: JobCardProps) {
             </Badge>
           </div>
 
-          {/* AI/ML Tech Stack */}
+          {/* Tech Stack */}
           {job.techStack && job.techStack.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {job.techStack.slice(0, 4).map((tech, index) => {

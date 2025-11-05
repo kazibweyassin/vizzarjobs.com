@@ -79,7 +79,7 @@ export default function ResourcesPage() {
     {
       id: '3',
       title: 'AI Interview Preparation Course',
-      description: 'Prepare for AI/ML engineering interviews with mock questions, coding challenges, and expert tips.',
+      description: 'Prepare for tech engineering interviews with mock questions, coding challenges, and expert tips.',
       type: 'course',
       category: 'Interview Prep',
       readTime: '2 hours',
@@ -136,7 +136,7 @@ export default function ResourcesPage() {
     {
       id: '2',
       title: 'AI/ML Engineer Track',
-      description: 'Master machine learning and artificial intelligence with hands-on projects.',
+      description: 'Master machine learning and artificial intelligence with hands-on projects. (One of many tech specializations)',
       duration: '8 months',
       modules: 32,
       difficulty: 'advanced',

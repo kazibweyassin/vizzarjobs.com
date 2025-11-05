@@ -329,7 +329,7 @@ export const candidatePoolRouter = createTRPCRouter({
           'Needs Visa Sponsorship',
           'Job Alerts',
           'Status',
-          'AI/ML Focus',
+          'Tech Specialization',
           'Skill Level',
           'Certifications',
           'GitHub URL',

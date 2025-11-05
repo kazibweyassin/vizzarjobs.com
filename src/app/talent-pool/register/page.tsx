@@ -35,10 +35,8 @@ const formSchema = z.object({
   needsVisaSponsorship: z.boolean().default(true), // Default true for Canada focus
   cvFilePath: z.string().optional(),
   jobAlerts: z.boolean().default(true),
-  // AI/ML specific fields
-  aiMlFocus: z.nativeEnum(AIMLFocus, {
-    errorMap: () => ({ message: "AI/ML focus area is required" }),
-  }),
+  // Tech specialization fields (optional)
+  aiMlFocus: z.nativeEnum(AIMLFocus).optional(),
   skillLevel: z.nativeEnum(SkillLevel, {
     errorMap: () => ({ message: "Skill level is required" }),
   }),
@@ -60,8 +58,8 @@ const steps = [
   },
   {
     id: 2,
-    title: "AI/ML Focus",
-    description: "Your AI/ML specialization",
+    title: "Tech Specialization",
+    description: "Your tech specialization (optional)",
     icon: Target,
   },
   {
@@ -114,7 +112,7 @@ export default function MultiStepCandidateRegistration() {
       needsVisaSponsorship: true, // Default true for Canada
       cvFilePath: '',
       jobAlerts: true,
-      // AI/ML specific defaults
+      // Tech specialization defaults
       aiMlFocus: AIMLFocus.MACHINE_LEARNING,
       skillLevel: SkillLevel.MID,
       certifications: '',
@@ -152,7 +150,7 @@ export default function MultiStepCandidateRegistration() {
         ...data,
         skills: data.skills.split(',').map(s => s.trim()).filter(Boolean),
         preferredDestination: data.preferredDestination?.split(',').map(s => s.trim()).filter(Boolean) || ['Canada'],
-        // AI/ML specific fields
+        // Tech specialization fields
         certifications: data.certifications?.split(',').map(s => s.trim()).filter(Boolean) || [],
         projects: data.projects?.split(',').map(s => s.trim()).filter(Boolean) || [],
         publications: data.publications?.split(',').map(s => s.trim()).filter(Boolean) || [],
@@ -234,13 +232,13 @@ export default function MultiStepCandidateRegistration() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium">
               <Sparkles className="w-4 h-4" />
-              AI/ML Talent Pool Registration
+              Tech Talent Pool Registration
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
               Join Canada's Elite
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Connect with AI/ML opportunities in Canada and let employers find you
+              Connect with tech opportunities in Canada and let employers find you
             </p>
           </motion.div>
         </div>
@@ -327,15 +325,15 @@ export default function MultiStepCandidateRegistration() {
                 </div>
               )}
 
-              {/* Step 2: AI/ML Focus */}
+              {/* Step 2: Tech Specialization */}
               {currentStep === 2 && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <Label htmlFor="aiMlFocus">AI/ML Focus Area</Label>
+                      <Label htmlFor="aiMlFocus">Tech Specialization (Optional)</Label>
                       <Select onValueChange={(value) => setValue('aiMlFocus', value as AIMLFocus)} defaultValue={watch('aiMlFocus')}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select your AI/ML focus" />
+                          <SelectValue placeholder="Select your tech specialization" />
                         </SelectTrigger>
                         <SelectContent>
                           {Object.values(AIMLFocus).map((focus) => (
@@ -405,12 +403,12 @@ export default function MultiStepCandidateRegistration() {
               {currentStep === 4 && (
                 <div className="space-y-6">
                   <div>
-                    <Label htmlFor="skills">AI/ML Skills (Comma-separated)</Label>
+                    <Label htmlFor="skills">Technical Skills (Comma-separated)</Label>
                     <Textarea id="skills" {...register('skills')} placeholder="e.g., Python, TensorFlow, PyTorch, Scikit-learn, AWS, Docker" rows={3} />
                     {errors.skills && <p className="text-red-500 text-sm mt-1">{errors.skills.message}</p>}
                   </div>
                   <div>
-                    <Label htmlFor="certifications">AI/ML Certifications (Comma-separated)</Label>
+                    <Label htmlFor="certifications">Technical Certifications (Comma-separated)</Label>
                     <Input id="certifications" {...register('certifications')} placeholder="e.g., AWS Machine Learning, Google ML Engineer" />
                     {errors.certifications && <p className="text-red-500 text-sm mt-1">{errors.certifications.message}</p>}
                   </div>
@@ -427,7 +425,7 @@ export default function MultiStepCandidateRegistration() {
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="projects">AI/ML Projects (Comma-separated)</Label>
+                    <Label htmlFor="projects">Technical Projects (Comma-separated)</Label>
                     <Textarea id="projects" {...register('projects')} placeholder="e.g., Image Classification Model, NLP Chatbot, Recommendation System" rows={3} />
                     {errors.projects && <p className="text-red-500 text-sm mt-1">{errors.projects.message}</p>}
                   </div>
@@ -459,7 +457,7 @@ export default function MultiStepCandidateRegistration() {
                         onCheckedChange={(checked) => setValue('jobAlerts', checked as boolean)}
                       />
                       <Label htmlFor="jobAlerts" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Send me AI/ML job alerts for Canada
+                        Send me tech job alerts for Canada
                       </Label>
                     </div>
                   </div>
@@ -482,11 +480,11 @@ export default function MultiStepCandidateRegistration() {
                   </div>
                   
                   <div className="bg-opal-1 p-4 rounded-lg">
-                    <h3 className="font-semibold text-kale mb-2">Review Your AI/ML Profile</h3>
+                    <h3 className="font-semibold text-kale mb-2">Review Your Tech Profile</h3>
                     <div className="text-sm text-grey-green space-y-1">
                       <p><strong>Name:</strong> {watch('fullName')}</p>
                       <p><strong>Email:</strong> {watch('email')}</p>
-                      <p><strong>AI/ML Focus:</strong> {watch('aiMlFocus')?.replace(/_/g, ' ')}</p>
+                      {watch('aiMlFocus') && <p><strong>Tech Specialization:</strong> {watch('aiMlFocus')?.replace(/_/g, ' ')}</p>}
                       <p><strong>Skill Level:</strong> {watch('skillLevel')}</p>
                       <p><strong>Profession:</strong> {watch('profession')}</p>
                       <p><strong>Experience:</strong> {watch('yearsOfExperience')} years</p>

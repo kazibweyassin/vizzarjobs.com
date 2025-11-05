@@ -155,11 +155,13 @@ export class RapidAPIImporter {
    */
   parseJob(rapidJob: RapidAPIJob): ParsedJob {
     const cleanDescription = this.cleanJobDescription(rapidJob.description);
+    const cleanedLocation = this.cleanLocation(rapidJob.location);
+    const country = this.extractCountry(cleanedLocation);
     
     return {
       title: rapidJob.title || 'Untitled Position',
       company: rapidJob.company_name || 'Unknown Company',
-      location: rapidJob.location || 'Remote',
+      location: cleanedLocation || 'Remote',
       description: cleanDescription,
       salaryMin: undefined, // ArbeitNow doesn't provide salary info
       salaryMax: undefined,
@@ -168,12 +170,78 @@ export class RapidAPIImporter {
       remote: rapidJob.remote || false,
       visaSponsorship: this.checkVisaSponsorship(rapidJob),
       applicationUrl: rapidJob.url || '#',
-      country: this.extractCountry(rapidJob.location),
+      country: country,
       companyUrl: undefined,
       requirements: this.extractRequirements(rapidJob),
       skills: this.extractSkills(rapidJob),
       techStack: this.extractTechStack(rapidJob)
     };
+  }
+  
+  /**
+   * Clean location string to fix incorrect city-country pairs
+   */
+  private cleanLocation(location?: string): string | undefined {
+    if (!location) return undefined;
+    
+    const locationLower = location.toLowerCase();
+    
+    // Known city-country mappings
+    const cityCountryMap: Record<string, string> = {
+      'hamburg': 'Germany',
+      'berlin': 'Germany',
+      'munich': 'Germany',
+      'cologne': 'Germany',
+      'frankfurt': 'Germany',
+      'stuttgart': 'Germany',
+      'düsseldorf': 'Germany',
+      'dortmund': 'Germany',
+      'essen': 'Germany',
+      'leipzig': 'Germany',
+      'toronto': 'Canada',
+      'vancouver': 'Canada',
+      'montreal': 'Canada',
+      'calgary': 'Canada',
+      'ottawa': 'Canada',
+      'edmonton': 'Canada',
+      'winnipeg': 'Canada',
+      'quebec': 'Canada',
+    };
+    
+    // Check if location contains a known city with wrong country
+    for (const [city, correctCountry] of Object.entries(cityCountryMap)) {
+      if (locationLower.includes(city)) {
+        // Check if the location mentions a country that doesn't match the city
+        const locationParts = location.split(',').map(p => p.trim());
+        const hasWrongCountry = locationParts.some(part => {
+          const partLower = part.toLowerCase();
+          // If it mentions Canada but city is German, or vice versa
+          if (correctCountry === 'Germany' && partLower.includes('canada')) {
+            return true;
+          }
+          if (correctCountry === 'Canada' && partLower.includes('germany')) {
+            return true;
+          }
+          return false;
+        });
+        
+        if (hasWrongCountry) {
+          // Fix the location by replacing wrong country with correct one
+          let fixedLocation = location;
+          if (correctCountry === 'Germany') {
+            fixedLocation = fixedLocation.replace(/,\s*canada/gi, ', Germany');
+            fixedLocation = fixedLocation.replace(/canada/gi, 'Germany');
+          } else if (correctCountry === 'Canada') {
+            fixedLocation = fixedLocation.replace(/,\s*germany/gi, ', Canada');
+            fixedLocation = fixedLocation.replace(/germany/gi, 'Canada');
+          }
+          console.warn(`Fixed location: "${location}" -> "${fixedLocation}"`);
+          return fixedLocation;
+        }
+      }
+    }
+    
+    return location;
   }
 
   /**
@@ -488,6 +556,64 @@ export class RapidAPIImporter {
   private extractCountry(location?: string): string | undefined {
     if (!location) return undefined;
     
+    const locationLower = location.toLowerCase();
+    
+    // Known city-country mappings to prevent incorrect assignments
+    const cityCountryMap: Record<string, string> = {
+      'hamburg': 'Germany',
+      'berlin': 'Germany',
+      'munich': 'Germany',
+      'cologne': 'Germany',
+      'frankfurt': 'Germany',
+      'stuttgart': 'Germany',
+      'düsseldorf': 'Germany',
+      'dortmund': 'Germany',
+      'essen': 'Germany',
+      'leipzig': 'Germany',
+      'toronto': 'Canada',
+      'vancouver': 'Canada',
+      'montreal': 'Canada',
+      'calgary': 'Canada',
+      'ottawa': 'Canada',
+      'edmonton': 'Canada',
+      'winnipeg': 'Canada',
+      'quebec': 'Canada',
+      'london': 'United Kingdom', // Could be UK or Canada (Ontario), but UK is more common
+      'paris': 'France',
+      'amsterdam': 'Netherlands',
+      'stockholm': 'Sweden',
+      'oslo': 'Norway',
+      'copenhagen': 'Denmark',
+      'zurich': 'Switzerland',
+      'tokyo': 'Japan',
+      'seoul': 'South Korea',
+      'mumbai': 'India',
+      'bangalore': 'India',
+      'delhi': 'India',
+      'sydney': 'Australia',
+      'melbourne': 'Australia',
+      'new york': 'United States',
+      'san francisco': 'United States',
+      'los angeles': 'United States',
+      'chicago': 'United States',
+      'boston': 'United States',
+      'seattle': 'United States',
+    };
+    
+    // Check if location contains a known city
+    for (const [city, country] of Object.entries(cityCountryMap)) {
+      if (locationLower.includes(city)) {
+        // If the location string also mentions a country, validate it matches
+        const mentionedCountry = this.findCountryInLocation(locationLower);
+        if (mentionedCountry && mentionedCountry !== country) {
+          // City-country mismatch - use the city's correct country
+          console.warn(`Location mismatch: ${location} - City ${city} should be in ${country}, but found ${mentionedCountry}. Using ${country}.`);
+          return country;
+        }
+        return country;
+      }
+    }
+    
     // Common country patterns
     const countries = [
       'United States', 'USA', 'US',
@@ -521,9 +647,38 @@ export class RapidAPIImporter {
       'French Guiana', 'GF'
     ];
     
-    for (const country of countries) {
-      if (location.toLowerCase().includes(country.toLowerCase())) {
-        return country;
+    return this.findCountryInLocation(locationLower);
+  }
+  
+  /**
+   * Find country name in location string
+   */
+  private findCountryInLocation(locationLower: string): string | undefined {
+    const countries = [
+      { patterns: ['united states', 'usa', ' us'], country: 'United States' },
+      { patterns: ['united kingdom', ' uk', 'england', 'scotland', 'wales'], country: 'United Kingdom' },
+      { patterns: ['canada', ' ca'], country: 'Canada' },
+      { patterns: ['australia', ' au'], country: 'Australia' },
+      { patterns: ['germany', ' de', 'germany'], country: 'Germany' },
+      { patterns: ['france', ' fr'], country: 'France' },
+      { patterns: ['netherlands', ' nl', 'holland'], country: 'Netherlands' },
+      { patterns: ['sweden', ' se'], country: 'Sweden' },
+      { patterns: ['norway', ' no'], country: 'Norway' },
+      { patterns: ['denmark', ' dk'], country: 'Denmark' },
+      { patterns: ['switzerland', ' ch'], country: 'Switzerland' },
+      { patterns: ['singapore', ' sg'], country: 'Singapore' },
+      { patterns: ['japan', ' jp'], country: 'Japan' },
+      { patterns: ['south korea', ' kr', 'korea'], country: 'South Korea' },
+      { patterns: ['india', ' in'], country: 'India' },
+      { patterns: ['brazil', ' br'], country: 'Brazil' },
+      { patterns: ['mexico', ' mx'], country: 'Mexico' },
+    ];
+    
+    for (const { patterns, country } of countries) {
+      for (const pattern of patterns) {
+        if (locationLower.includes(pattern)) {
+          return country;
+        }
       }
     }
     

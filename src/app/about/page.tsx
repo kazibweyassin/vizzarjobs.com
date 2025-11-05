@@ -118,8 +118,8 @@ export default function AboutUsPage() {
   const values = [
     {
       icon: Globe,
-      title: "AI/ML Excellence",
-      description: "We specialize in connecting top AI/ML talent with leading Canadian companies, focusing on cutting-edge technology roles.",
+      title: "Tech Excellence",
+      description: "We specialize in connecting top tech talent with leading Canadian companies across all technology specializations.",
       color: "bg-blue-50"
     },
     {
@@ -131,13 +131,13 @@ export default function AboutUsPage() {
     {
       icon: Heart,
       title: "Talent Success",
-      description: "We're committed to helping AI/ML professionals build successful careers in Canada's thriving tech ecosystem.",
+      description: "We're committed to helping tech professionals build successful careers in Canada's thriving tech ecosystem.",
       color: "bg-amber-50"
     },
     {
       icon: Zap,
       title: "Innovation First",
-      description: "We maintain high standards in showcasing only the most innovative AI/ML opportunities and companies.",
+      description: "We maintain high standards in showcasing only the most innovative tech opportunities and companies.",
       color: "bg-green-50"
     }
   ];
@@ -212,7 +212,7 @@ export default function AboutUsPage() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-600 bg-slate-800 text-slate-300 text-sm font-medium mb-8"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Connecting AI/ML talent to Canada</span>
+              <span>Connecting tech talent to Canada</span>
               <ChevronRight className="w-4 h-4" />
             </motion.div>
             
@@ -231,7 +231,7 @@ export default function AboutUsPage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Empowering AI/ML professionals with premium opportunities in Canada through visa sponsorship
+              Empowering tech professionals with premium opportunities in Canada through visa sponsorship
             </motion.p>
 
             <motion.div
@@ -272,12 +272,12 @@ export default function AboutUsPage() {
               { 
                 title: "Our Mission", 
                 icon: Target, 
-                desc: "To connect exceptional AI/ML talent with leading Canadian companies, enabling professionals to build successful careers in Canada's thriving tech ecosystem through visa sponsorship." 
+                desc: "To connect exceptional tech talent with leading Canadian companies, enabling professionals to build successful careers in Canada's thriving tech ecosystem through visa sponsorship." 
               },
               { 
                 title: "Our Vision", 
                 icon: Globe, 
-                desc: "To become the premier platform for AI/ML talent placement in Canada, fostering innovation and excellence in artificial intelligence and machine learning careers." 
+                desc: "To become the premier platform for tech talent placement in Canada, fostering innovation and excellence across all technology specializations." 
               }
             ].map((item, index) => {
               const Icon = item.icon;

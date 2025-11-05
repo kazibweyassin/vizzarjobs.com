@@ -337,7 +337,7 @@ export default function InsightsPage() {
                 <h4 className="font-semibold text-gray-900">Rising Trends</h4>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <span className="text-sm font-medium">AI/ML Engineering</span>
+                    <span className="text-sm font-medium">AI/ML Engineering</span> {/* Keep as one category among many */}
                     <Badge className="bg-green-100 text-green-800">+28%</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">

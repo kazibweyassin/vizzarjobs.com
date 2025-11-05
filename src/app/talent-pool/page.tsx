@@ -28,8 +28,8 @@ export default function TalentPoolLandingPage() {
   const features = [
     {
       icon: Brain,
-      title: "AI/ML Excellence",
-      description: "Connect with Canada's leading AI/ML companies and cutting-edge research teams",
+      title: "Tech Excellence",
+      description: "Connect with Canada's leading tech companies and innovative startups across all specializations",
       color: "bg-blue-50"
     },
     {
@@ -73,7 +73,7 @@ export default function TalentPoolLandingPage() {
     {
       icon: Star,
       title: "Premium Companies",
-      description: "Access to Canada's most innovative AI/ML companies"
+      description: "Access to Canada's most innovative tech companies"
     },
     {
       icon: TrendingUp,
@@ -88,7 +88,7 @@ export default function TalentPoolLandingPage() {
   ];
 
   const stats = [
-    { number: "500+", label: "AI/ML Professionals", icon: Users },
+    { number: "500+", label: "Tech Professionals", icon: Users },
     { number: "50+", label: "Canadian Companies", icon: Briefcase },
     { number: "95%", label: "Success Rate", icon: CheckCircle },
     { number: "Canada", label: "Primary Focus", icon: Globe }
@@ -113,7 +113,7 @@ export default function TalentPoolLandingPage() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
             >
               <Sparkles className="w-4 h-4" />
-              AI/ML Talent Pool • Canada Focus
+              Tech Talent Pool • Canada Focus
             </motion.div>
 
             {/* Main Headline */}
@@ -125,7 +125,7 @@ export default function TalentPoolLandingPage() {
             >
               Join Canada's
               <br />
-              <span className="text-blue-600">Elite AI/ML Talent</span>
+              <span className="text-blue-600">Elite Tech Talent</span>
             </motion.h1>
 
             {/* Subtitle */}
@@ -135,9 +135,9 @@ export default function TalentPoolLandingPage() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
             >
-              Connect with Canada's most innovative AI/ML companies. 
+              Connect with Canada's most innovative tech companies. 
               <br />
-              Where exceptional talent meets exceptional opportunities.
+              Where exceptional talent meets exceptional opportunities across all tech specializations.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -156,10 +156,10 @@ export default function TalentPoolLandingPage() {
               </Link>
               
               <Link
-                href="/jobs?location=Canada&category=AI-ML"
+                href="/jobs?location=Canada"
                 className="inline-flex items-center gap-3 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 transition-all duration-300"
               >
-                Browse AI/ML Jobs
+                Browse Tech Jobs
               </Link>
             </motion.div>
           </motion.div>
@@ -206,7 +206,7 @@ export default function TalentPoolLandingPage() {
               Why Join Our Talent Pool?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We connect exceptional AI/ML professionals with Canada's most innovative companies
+              We connect exceptional tech professionals with Canada's most innovative companies
             </p>
           </motion.div>
 
@@ -250,7 +250,7 @@ export default function TalentPoolLandingPage() {
               What You Get
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Exclusive benefits for our AI/ML talent pool members
+              Exclusive benefits for our tech talent pool members
             </p>
           </motion.div>
 
@@ -294,7 +294,7 @@ export default function TalentPoolLandingPage() {
               Ready to Join?
             </h2>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Join Canada's most exclusive AI/ML talent pool and connect with innovative companies.
+              Join Canada's most exclusive tech talent pool and connect with innovative companies.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

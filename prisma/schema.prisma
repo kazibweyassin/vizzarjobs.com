@@ -33,8 +33,8 @@ model Job {
   title           String
   description     String?
   companyId       String
-  location        String?          // City in Canada
-  skills          String[]         @default([]) // AI/ML specific skills
+  location        String? // City in Canada
+  skills          String[]         @default([]) // Tech-specific skills
   remote          Boolean          @default(false)
   visaSponsorship Boolean          @default(true) // Always true for Canada focus
   featured        Boolean          @default(false)
@@ -42,20 +42,23 @@ model Job {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   country         String           @default("Canada") // Fixed to Canada
-  techStack       String[]         @default([]) // AI/ML tech stack
+  techStack       String[]         @default([]) // Tech stack
   requirements    String[]         @default([])
   applicationUrl  String?
   jobType         JobType?
   salaryMax       Int?
   salaryMin       Int?
   experienceLevel ExperienceLevel?
-  // AI/ML specific fields
-  aiMlFocus       AIMLFocus        @default(MACHINE_LEARNING)
-  skillLevel      SkillLevel       @default(MID)
-  certifications  String[]         @default([]) // AI/ML certifications
-  projects        String[]         @default([]) // Required project types
-  applications    Application[]
-  company         Company          @relation(fields: [companyId], references: [id], map: "companyRelation")
+  embedding       JobEmbedding?
+  jobMatches      JobMatch[]
+
+  // Tech-specific fields (AI/ML focus kept for backward compatibility)
+  aiMlFocus      AIMLFocus     @default(MACHINE_LEARNING)
+  skillLevel     SkillLevel    @default(MID)
+  certifications String[]      @default([]) // Tech certifications
+  projects       String[]      @default([]) // Required project types
+  applications   Application[]
+  company        Company       @relation(fields: [companyId], references: [id], map: "companyRelation")
 
   @@index([companyId])
   @@index([aiMlFocus])
@@ -106,46 +109,48 @@ model Session {
 }
 
 model User {
-  id                   String               @id @default(cuid())
+  id                   String             @id @default(cuid())
   name                 String?
-  email                String?              @unique
+  email                String?            @unique
   emailVerified        DateTime?
   image                String?
-  role                 UserRole             @default(USER)
+  role                 UserRole           @default(USER)
   bio                  String?
   location             String?
   resume               String?
   website              String?
   githubUrl            String?
   linkedinUrl          String?
-  skills               String[]             // AI/ML focused skills
-  verificationStatus   VerificationStatus   @default(PENDING)
-  verified             Boolean              @default(false)
-  premium              Boolean              @default(false)
+  skills               String[] // Tech-focused skills
+  verificationStatus   VerificationStatus @default(PENDING)
+  verified             Boolean            @default(false)
+  premium              Boolean            @default(false)
   premiumTier          String?
-  reputation           Int                  @default(0)
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
-  profileComplete      Boolean              @default(false)
-  failedLoginAttempts  Int                  @default(0)
+  reputation           Int                @default(0)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  profileComplete      Boolean            @default(false)
+  failedLoginAttempts  Int                @default(0)
   lockedUntil          DateTime?
   password             String?
   passwordResetExpires DateTime?
   passwordResetToken   String?
-  // AI/ML specific fields
-  aiMlFocus            AIMLFocus?           // Primary AI/ML focus area
-  skillLevel           SkillLevel?          // Skill level assessment
-  certifications       String[]             @default([]) // AI/ML certifications
-  portfolioUrl         String?              // AI/ML portfolio
-  projects             String[]             @default([]) // AI/ML projects
-  publications         String[]             @default([]) // Research publications
-  accounts             Account[]
-  applications         Application[]
-  employee             Employee?
-  jobSeekerProfile     JobSeekerProfile?
-  matchingPreferences  MatchingPreferences?
-  sessions             Session[]
-  subscriptions        Subscription[]
+  cvUploads            CVUpload[]
+
+  // Tech-specific fields
+  aiMlFocus           AIMLFocus? // Primary tech specialization (kept for backward compatibility)
+  skillLevel          SkillLevel? // Skill level assessment
+  certifications      String[]             @default([]) // Tech certifications
+  portfolioUrl        String? // Tech portfolio
+  projects            String[]             @default([]) // Tech projects
+  publications        String[]             @default([]) // Research publications
+  accounts            Account[]
+  applications        Application[]
+  employee            Employee?
+  jobSeekerProfile    JobSeekerProfile?
+  matchingPreferences MatchingPreferences?
+  sessions            Session[]
+  subscriptions       Subscription[]
 
   @@index([email])
   @@index([aiMlFocus])
@@ -222,26 +227,26 @@ model Lead {
 }
 
 model MatchingPreferences {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  jobRoles              String[]             // AI/ML specific roles
-  skills                String[]             // AI/ML skills
-  industries            String[]             @default(["Technology", "AI/ML", "Data Science"])
-  locations             String[]             @default(["Canada"]) // Focus on Canada
-  remotePreference      Boolean  @default(false)
+  id                    String      @id @default(cuid())
+  userId                String      @unique
+  jobRoles              String[] // Tech roles
+  skills                String[] // Tech skills
+  industries            String[]    @default(["Technology", "Software", "IT"])
+  locations             String[]    @default(["Canada"]) // Focus on Canada
+  remotePreference      Boolean     @default(false)
   salaryMin             Int?
   salaryMax             Int?
   experienceLevels      String[]
   employmentTypes       String[]
-  visaSponsorshipNeeded Boolean  @default(true) // Always true for Canada
-  relocationWillingness Boolean  @default(true)
-  // AI/ML specific preferences
-  aiMlFocus             AIMLFocus[]          @default([]) // Preferred AI/ML focus areas
-  skillLevel            SkillLevel?         // Preferred skill level
-  certifications        String[]            @default([]) // Preferred certifications
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  visaSponsorshipNeeded Boolean     @default(true) // Always true for Canada
+  relocationWillingness Boolean     @default(true)
+  // Tech-specific preferences
+  aiMlFocus             AIMLFocus[] @default([]) // Preferred tech specializations (kept for backward compatibility)
+  skillLevel            SkillLevel? // Preferred skill level
+  certifications        String[]    @default([]) // Preferred certifications
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  user                  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([aiMlFocus])
@@ -272,19 +277,19 @@ model Employee {
 }
 
 model JobSeekerProfile {
-  id                      String    @id @default(cuid())
-  userId                  String    @unique
-  title                   String
-  bio                     String?   @db.Text
-  phoneNumber             String?
-  currentJobTitle         String?
-  
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  title           String
+  bio             String? @db.Text
+  phoneNumber     String?
+  currentJobTitle String?
+
   // Skills and experience
-  skills                  String?   @db.Text
-  technicalSkills         String[]
-  languages               String[]
-  yearsOfExperience       String?
-  
+  skills            String?  @db.Text
+  technicalSkills   String[]
+  languages         String[]
+  yearsOfExperience String?
+
   // Career preferences
   preferredJobTypes       String[]
   locationPreferences     String[]
@@ -295,24 +300,24 @@ model JobSeekerProfile {
   remotePreference        String?
   visaSponsorshipRequired Boolean   @default(false)
   availabilityDate        DateTime?
-  
+
   // Education and experience
   education               Json[]
   workExperience          Json[]
   certifications          Json[]
   projectsAndPublications Json[]
-  
+
   // Online presence
-  linkedInProfile         String?
-  portfolioUrl            String?
-  githubUrl               String?
-  twitterUrl              String?
-  personalWebsite         String?
-  
+  linkedInProfile String?
+  portfolioUrl    String?
+  githubUrl       String?
+  twitterUrl      String?
+  personalWebsite String?
+
   // System fields
-  lastUpdated             DateTime  @default(now())
-  createdAt               DateTime  @default(now())
-  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastUpdated DateTime @default(now())
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -438,39 +443,39 @@ enum PaymentProvider {
 }
 
 model CandidatePool {
-  id                    String            @id @default(cuid())
-  fullName              String
-  email                 String            @unique
-  phoneNumber           String?
-  country               String
-  profession            String            // AI/ML focused profession
-  skills                String[]          @default([]) // AI/ML specific skills
-  yearsOfExperience     Int
-  educationLevel        EducationLevel
-  preferredDestination  String[]          @default(["Canada"]) // Default to Canada
-  needsVisaSponsorship  Boolean           @default(true) // Default true for Canada
-  cvFilePath            String?
-  cvPublicId            String?  // Cloudinary public ID
-  cvSecureUrl           String?  // Cloudinary secure URL
-  jobAlerts             Boolean           @default(true)
-  status                CandidateStatus   @default(ACTIVE)
-  notes                 String?
-  contactedAt           DateTime?
-  contactedBy           String?
-  // AI/ML specific fields
-  aiMlFocus             AIMLFocus        @default(MACHINE_LEARNING)
-  skillLevel            SkillLevel        @default(MID)
-  certifications        String[]         @default([]) // AI/ML certifications
-  githubUrl              String?          // GitHub portfolio
-  portfolioUrl           String?          // Personal portfolio
-  projects               String[]         @default([]) // AI/ML projects
-  publications           String[]         @default([]) // Research publications
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
+  id                   String          @id @default(cuid())
+  fullName             String
+  email                String          @unique
+  phoneNumber          String?
+  country              String
+  profession           String // Tech-focused profession
+  skills               String[]        @default([]) // Tech-specific skills
+  yearsOfExperience    Int
+  educationLevel       EducationLevel
+  preferredDestination String[]        @default(["Canada"]) // Default to Canada
+  needsVisaSponsorship Boolean         @default(true) // Default true for Canada
+  cvFilePath           String?
+  cvPublicId           String? // Cloudinary public ID
+  cvSecureUrl          String? // Cloudinary secure URL
+  jobAlerts            Boolean         @default(true)
+  status               CandidateStatus @default(ACTIVE)
+  notes                String?
+  contactedAt          DateTime?
+  contactedBy          String?
+  // Tech-specific fields
+  aiMlFocus            AIMLFocus       @default(MACHINE_LEARNING) // Tech specialization (kept for backward compatibility)
+  skillLevel           SkillLevel      @default(MID)
+  certifications       String[]        @default([]) // Tech certifications
+  githubUrl            String? // GitHub portfolio
+  portfolioUrl         String? // Personal portfolio
+  projects             String[]        @default([]) // Tech projects
+  publications         String[]        @default([]) // Research publications
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
 
-  @@map("candidate_pool")
   @@index([aiMlFocus])
   @@index([skillLevel])
+  @@map("candidate_pool")
 }
 
 enum CandidateStatus {
@@ -501,6 +506,112 @@ enum AIMLFocus {
   AI_PRODUCT_MANAGEMENT
   ROBOTICS
   AUTONOMOUS_SYSTEMS
+}
+
+// ============================================
+// AI JOB MATCHING SYSTEM
+// ============================================
+
+// Stores uploaded CV files and processing status
+model CVUpload {
+  id       String @id @default(cuid())
+  userId   String // Who uploaded it
+  fileName String // Original filename
+  fileUrl  String // Storage URL (Cloudinary/S3)
+  fileSize Int // File size in bytes
+  mimeType String // PDF, DOC, etc.
+
+  // Processing status
+  status          CVProcessStatus @default(PENDING)
+  processingError String? // Error message if failed
+
+  // Extracted data
+  extractedText   String?  @db.Text // Full CV text
+  extractedSkills String[] @default([]) // AI-extracted skills
+
+  // Timestamps
+  uploadedAt  DateTime  @default(now())
+  processedAt DateTime? // When AI processing completed
+
+  // Relations
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillEmbeddings SkillEmbedding[]
+  jobMatches      JobMatch[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("cv_uploads")
+}
+
+// Stores vector embeddings for skills extracted from CVs
+model SkillEmbedding {
+  id         String   @id @default(cuid())
+  cvUploadId String // Which CV this skill came from
+  skillText  String // e.g., "React", "Machine Learning"
+  embedding  String // JSON string of vector [0.1, 0.2, ...]
+  confidence Float    @default(1.0) // AI confidence (0-1)
+  createdAt  DateTime @default(now())
+
+  cvUpload CVUpload @relation(fields: [cvUploadId], references: [id], onDelete: Cascade)
+
+  @@index([cvUploadId])
+  @@map("skill_embeddings")
+}
+
+// Pre-computed embeddings for jobs (for fast matching)
+model JobEmbedding {
+  id               String @id @default(cuid())
+  jobId            String @unique // Links to Job model
+  descriptionEmbed String // Embedding of job description
+  skillsEmbed      String // Embedding of required skills
+  combinedEmbed    String // Combined embedding for overall match
+
+  lastUpdated DateTime @default(now())
+
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@map("job_embeddings")
+}
+
+// Stores match results between CVs and jobs
+model JobMatch {
+  id         String @id @default(cuid())
+  cvUploadId String // Which CV
+  jobId      String // Which job
+
+  // Match scoring
+  matchScore      Float // 0-100 percentage
+  skillsScore     Float // How well skills match
+  experienceScore Float // How well experience matches
+
+  // AI explanation
+  matchReason   String   @db.Text // Why this job matches
+  missingSkills String[] @default([]) // What skills are missing
+
+  // Status
+  viewed  Boolean @default(false) // Has user seen this match?
+  applied Boolean @default(false) // Has user applied?
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  cvUpload CVUpload @relation(fields: [cvUploadId], references: [id], onDelete: Cascade)
+  job      Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([cvUploadId, jobId]) // One match per CV-Job pair
+  @@index([cvUploadId])
+  @@index([jobId])
+  @@index([matchScore])
+  @@map("job_matches")
+}
+
+// Processing status enum
+enum CVProcessStatus {
+  PENDING // Just uploaded, not processed yet
+  PROCESSING // AI is extracting skills
+  COMPLETED // Successfully processed
+  FAILED // Processing failed
 }
 
 enum SkillLevel {

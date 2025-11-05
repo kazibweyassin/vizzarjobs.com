@@ -117,13 +117,13 @@ export default function SignInPage() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            AI/ML Talent • Canada Focus
+            Tech Talent • Canada Focus
             </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Welcome Back
           </h1>
           <p className="text-gray-600">
-            Sign in to access your AI/ML opportunities in Canada
+            Sign in to access your tech opportunities in Canada
           </p>
         </motion.div>
 
@@ -212,8 +212,10 @@ export default function SignInPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center">
                     Choose your sign-in method
                   </h3>
-                  {providers && Object.values(providers).map((provider) => {
-                    const Icon = providerIcons[provider.id as keyof typeof providerIcons];
+                  {providers && Object.values(providers)
+                    .filter(provider => provider.id !== "credentials" && providerIcons[provider.id as keyof typeof providerIcons]) // Filter out credentials and providers without icons
+                    .map((provider) => {
+                    const Icon = providerIcons[provider.id as keyof typeof providerIcons]!;
                     return (
                       <Button
                         key={provider.name}
