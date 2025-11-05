@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "VizzarJobs | Premium Visa-Sponsored Tech Opportunities",
   description: "Exclusive visa-sponsored tech positions for elite African professionals. Join our curated talent network for global career advancement.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  verification: {
+    google: "OpKfLTWY7tDBSSHFZ5_-fsJdtX5UO8Z3cGZgDabHsAE",
+  },
 };
 
 const inter = Inter({
