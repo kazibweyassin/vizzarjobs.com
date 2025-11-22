@@ -107,13 +107,21 @@ export function Navigation() {
             {status === "loading" ? (
               <div className="w-8 h-8 bg-gray-200 rounded-xl animate-pulse"></div>
             ) : !session ? (
-              <Link
-                href="/auth/signin"
-                className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
-              >
-                <User className="w-4 h-4 mr-2" />
-                Sign In
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/auth/signin"
+                  className="inline-flex items-center text-white px-4 py-2 rounded-xl font-medium hover:text-blue-400 transition-all duration-200 text-base"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="inline-flex items-center bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Sign Up
+                </Link>
+              </div>
             ) : (
               <div className="relative">
                 <button

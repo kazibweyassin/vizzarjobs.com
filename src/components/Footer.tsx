@@ -159,11 +159,11 @@ export function Footer() {
         
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href="tel:+234800123456" className="text-gray-300 hover:text-blue-400">+27 68 664 3827</a>
+                <a href="tel:+256704833021" className="text-gray-300 hover:text-blue-400">+256 704 833 021</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href="mailto:info@vizzarjobs.com" className="text-gray-300 hover:text-blue-400">info@vizzarjobs.com</a>
+                <a href="mailto:Get in Touch-kazibweusama@gmail.com" className="text-gray-300 hover:text-blue-400">opportunities-kazibweusama@gmail.com</a>
               </li>
             </ul>
           </div>

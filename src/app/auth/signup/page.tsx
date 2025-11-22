@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { signIn, getProviders } from "next-auth/react";
 import { 
   ArrowLeft,
   Users,
@@ -11,7 +12,10 @@ import {
   Lock,
   Eye,
   EyeOff,
-  User
+  User,
+  Chrome,
+  Github,
+  MessageCircle
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -19,10 +23,27 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { api } from "~/trpc/react";
 
+interface Provider {
+  id: string;
+  name: string;
+  type: string;
+  signinUrl: string;
+  callbackUrl: string;
+}
+
+const providerIcons = {
+  google: Chrome,
+  github: Github,
+  discord: MessageCircle,
+};
+
 export default function SignUpPage() {
   const [selectedRole, setSelectedRole] = useState<"JOB_SEEKER" | "EMPLOYER" | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [providers, setProviders] = useState<Record<string, Provider> | null>(null);
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [authMode, setAuthMode] = useState<"oauth" | "password">("oauth");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,6 +52,33 @@ export default function SignUpPage() {
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    };
+    fetchProviders();
+  }, []);
+
+  const handleOAuthSignUp = async (providerId: string) => {
+    if (!selectedRole) {
+      setError("Please select your role first");
+      return;
+    }
+    setIsLoading(providerId);
+    try {
+      await signIn(providerId, { 
+        callbackUrl: "/",
+        role: selectedRole 
+      });
+    } catch (error) {
+      console.error("Sign up error:", error);
+      setError("An error occurred during sign up");
+    } finally {
+      setIsLoading(null);
+    }
+  };
 
   const createUserMutation = api.users.createWithPassword.useMutation({
     onSuccess: () => {
@@ -91,7 +139,7 @@ export default function SignUpPage() {
       <div 
         className="min-h-screen flex items-center justify-center px-4 py-8 relative"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2084&q=80')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat"
@@ -133,7 +181,7 @@ export default function SignUpPage() {
     <div 
       className="min-h-screen flex items-center justify-center px-4 py-8 relative"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2084&q=80')",
+        backgroundImage: "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat"
@@ -168,43 +216,121 @@ export default function SignUpPage() {
           </CardHeader>
 
           <CardContent className="px-8 pb-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {error && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                  {error}
-                </div>
-              )}
-
-              {/* Role Selection */}
-              <div className="space-y-3">
-                <Label className="text-base font-medium">I am a...</Label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole("JOB_SEEKER")}
-                    className={`p-4 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
-                      selectedRole === "JOB_SEEKER"
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
-                        : "border-slate-200 hover:border-slate-300 text-slate-600"
-                    }`}
-                  >
-                    <Users className="w-5 h-5" />
-                    <span className="font-medium">Job Seeker</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole("EMPLOYER")}
-                    className={`p-4 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
-                      selectedRole === "EMPLOYER"
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
-                        : "border-slate-200 hover:border-slate-300 text-slate-600"
-                    }`}
-                  >
-                    <Building2 className="w-5 h-5" />
-                    <span className="font-medium">Employer</span>
-                  </button>
-                </div>
+            {/* Role Selection - Always visible */}
+            <div className="space-y-3 mb-6">
+              <Label className="text-base font-medium">I am a...</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSelectedRole("JOB_SEEKER")}
+                  className={`p-4 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
+                    selectedRole === "JOB_SEEKER"
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-slate-200 hover:border-slate-300 text-slate-600"
+                  }`}
+                >
+                  <Users className="w-5 h-5" />
+                  <span className="font-medium">Job Seeker</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedRole("EMPLOYER")}
+                  className={`p-4 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
+                    selectedRole === "EMPLOYER"
+                      ? "border-blue-500 bg-blue-50 text-blue-700"
+                      : "border-slate-200 hover:border-slate-300 text-slate-600"
+                  }`}
+                >
+                  <Building2 className="w-5 h-5" />
+                  <span className="font-medium">Employer</span>
+                </button>
               </div>
+            </div>
+
+            {/* Auth Mode Toggle */}
+            <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
+              <button
+                type="button"
+                onClick={() => setAuthMode("oauth")}
+                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                  authMode === "oauth"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                Quick Sign Up
+              </button>
+              <button
+                type="button"
+                onClick={() => setAuthMode("password")}
+                className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                  authMode === "password"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                Email & Password
+              </button>
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm mb-6">
+                {error}
+              </div>
+            )}
+
+            {authMode === "oauth" ? (
+              <div className="space-y-4">
+                <p className="text-sm text-slate-600 text-center mb-4">
+                  Sign up quickly with your social account
+                </p>
+                {providers && Object.values(providers)
+                  .filter(provider => provider.id !== "credentials" && providerIcons[provider.id as keyof typeof providerIcons])
+                  .map((provider) => {
+                    const Icon = providerIcons[provider.id as keyof typeof providerIcons]!;
+                    return (
+                      <Button
+                        key={provider.name}
+                        type="button"
+                        onClick={() => handleOAuthSignUp(provider.id)}
+                        disabled={isLoading === provider.id || !selectedRole}
+                        className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-medium transition-all duration-200"
+                      >
+                        {isLoading === provider.id ? (
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <Icon className="w-5 h-5 mr-3" />
+                            Continue with {provider.name}
+                          </>
+                        )}
+                      </Button>
+                    );
+                  })}
+                {!selectedRole && (
+                  <p className="text-xs text-amber-600 text-center mt-2">
+                    Please select your role above to continue
+                  </p>
+                )}
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-200"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-4 bg-white text-slate-500">Or</span>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => setAuthMode("password")}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Use Email & Password Instead
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
 
               {/* Name Field */}
               <div className="space-y-2">
@@ -326,7 +452,8 @@ export default function SignUpPage() {
                   </Link>
                 </p>
               </div>
-            </form>
+              </form>
+            )}
           </CardContent>
         </Card>
       </div>

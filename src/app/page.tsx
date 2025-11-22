@@ -5,6 +5,9 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { api } from "~/trpc/react";
 import { RoleUpdateHandler } from "~/components/RoleUpdateHandler";
+import { cleanJobs } from "~/lib/utils";
+
+
 import { 
   ArrowRight, 
   MapPin, 
@@ -26,7 +29,8 @@ import {
   Award,
   Target,
   Briefcase,
-  Search
+  Search,
+  User
 } from "lucide-react";
 
 // Animated Counter Component
@@ -69,9 +73,9 @@ function FeaturedJobsSection() {
     location: "Canada",
   });
 
-  // Safely extract jobs array with multiple fallbacks
-  const jobs = jobsData && Array.isArray(jobsData.jobs)
-    ? jobsData.jobs.filter((job: any) => job && job.company)
+  // Clean and validate imported jobs
+  const jobs = jobsData && Array.isArray(jobsData.jobs) 
+    ? cleanJobs(jobsData.jobs)
     : [];
 
   if (isLoading || !jobsData) {
@@ -341,6 +345,16 @@ export default function HomePage() {
               >
                 <Users className="w-4 h-4" />
                 <span>Join Talent Pool</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+              
+              {/* Primary Sign Up CTA */}
+              <Link
+                href="/auth/signup"
+                className="group inline-flex items-center gap-2 bg-white text-emerald-600 px-6 py-3 rounded-full text-base font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              >
+                <User className="w-4 h-4" />
+                <span>Sign Up Free</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </motion.div>
