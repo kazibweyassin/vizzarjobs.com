@@ -27,8 +27,8 @@ export function JobList({
   
   const [filters, setFilters] = useState<JobFiltersState>({
     search: "",
-    location: "Canada", // Default to Canada
-    visaSponsorship: true, // Default to visa sponsorship for Canada
+    location: "",
+    visaSponsorship: undefined,
     jobType: undefined,
     experienceLevel: undefined,
     techStack: [],
@@ -52,7 +52,7 @@ export function JobList({
     search: filters.search || undefined,
     location: filters.location || undefined,
     techStack: filters.techStack.length > 0 ? filters.techStack : undefined,
-    techSpecialization: filters.techSpecialization?.length > 0 ? filters.techSpecialization : undefined,
+    techSpecialization: (filters.techSpecialization && filters.techSpecialization.length > 0) ? filters.techSpecialization : undefined,
     salaryMin: filters.salaryMin || undefined,
     salaryMax: filters.salaryMax || undefined,
     postedWithin: filters.postedWithin !== 'any' ? filters.postedWithin : undefined,
@@ -181,13 +181,13 @@ export function JobList({
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
               <div>
                 <h1 className="text-4xl font-bold text-blue-600">
-                  Tech Jobs in Canada
+                  Professional Jobs in East Africa
                 </h1>
                 {!isLoading && (
                   <div className="flex items-center mt-3 gap-2">
                     <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">
                       <Briefcase className="w-4 h-4" />
-                      {jobs.length} tech jobs in Canada
+                      {jobs.length} professional opportunities
                     </span>
                     {filters.search && (
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">
@@ -199,11 +199,11 @@ export function JobList({
                         </button>
                       </span>
                     )}
-                    {filters.location && filters.location !== "Canada" && (
+                    {filters.location && (
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">
                         <MapPin className="w-4 h-4" />
                         {filters.location}
-                        <button onClick={() => setFilters({...filters, location: "Canada"})} className="text-gray-500 hover:text-gray-800 transition-colors">
+                        <button onClick={() => setFilters({...filters, location: ""})} className="text-gray-500 hover:text-gray-800 transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                           </svg>
@@ -261,15 +261,15 @@ export function JobList({
                   <Search className="w-10 h-10 text-gray-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  No jobs found in Canada
+                  No jobs found matching your criteria
                 </h3>
                 <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                  We're focused on Canadian job opportunities. Try adjusting your filters or search terms to find more jobs that match your criteria.
+                  Try adjusting your filters or search terms to find jobs that match your preferences.
                 </p>
                 <button
                   onClick={() => setFilters({
                     search: "",
-                    location: "Canada",
+                    location: "",
                     visaSponsorship: undefined,
                     jobType: undefined,
                     experienceLevel: undefined,

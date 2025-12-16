@@ -201,12 +201,6 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                 <Users className="w-4 h-4" />
                 {formatExperienceLevel(job.experienceLevel)}
               </div>
-              {job.visaSponsorship && (
-                <div className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg font-medium">
-                  <Users className="w-4 h-4" />
-                  Visa Sponsorship
-                </div>
-              )}
             </div>
 
             {/* Salary */}
@@ -228,14 +222,14 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
 
             {/* Premium Content Preview */}
             {job.premium && !hasPremiumAccess && (
-              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
-                <div className="flex items-center gap-3 text-sm text-yellow-800 mb-2">
-                  <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200 rounded-xl p-4">
+                <div className="flex items-center gap-3 text-sm text-emerald-800 mb-2">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
                     <Lock className="w-4 h-4" />
                   </div>
                   <span className="font-semibold">Premium Job - Subscribe to view full details</span>
                 </div>
-                <p className="text-xs text-yellow-700 leading-relaxed">
+                <p className="text-xs text-emerald-700 leading-relaxed">
                   This job includes additional benefits, detailed requirements, and direct employer contact.
                 </p>
               </div>

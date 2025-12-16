@@ -51,13 +51,13 @@ export default function EmployersHirePage() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Hire World-Class Tech Talent
-              <span className="block text-emerald-400">From Africa</span>
+              Find Top Talent in
+              <span className="block text-emerald-400">East Africa</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed">
-              Access pre-vetted software engineers, developers, and tech professionals 
-              from Nigeria, Kenya, Uganda, and South Africa at <span className="font-semibold text-emerald-400">40% lower cost</span>.
+              Connect with skilled professionals across Technology, Sales, Marketing, Finance, and more 
+              from Uganda, Kenya, Rwanda, and Tanzania. <span className="font-semibold text-emerald-400">Quality talent, competitive rates.</span>
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -86,15 +86,15 @@ export default function EmployersHirePage() {
             <div className="mt-12 flex flex-wrap justify-center gap-8 text-white/80">
               <div className="flex items-center gap-3">
                 <Shield className="w-5 h-5 text-emerald-400" />
-                <span>Full visa sponsorship</span>
+                <span>Verified professionals</span>
               </div>
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-emerald-400" />
-                <span>48-hour candidate matching</span>
+                <span>Quick candidate matching</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-emerald-400" />
-                <span>Top 5% talent only</span>
+                <span>Quality talent pool</span>
               </div>
             </div>
           </motion.div>
@@ -123,18 +123,18 @@ export default function EmployersHirePage() {
             {[
               {
                 icon: Globe,
-                title: "Africa's Top Tech Talent",
-                description: "Access highly skilled software engineers, developers, and tech professionals from Nigeria, Kenya, Uganda, and South Africa at 40% lower cost than North American hires."
+                title: "East Africa's Top Talent",
+                description: "Access skilled professionals across Technology, Sales, Marketing, Finance, and more from Uganda, Kenya, Rwanda, and Tanzania."
               },
               {
                 icon: CheckCircle,
-                title: "Full Visa Sponsorship",
-                description: "We handle all Canadian work permit applications, immigration paperwork, and relocation logistics from start to finish."
+                title: "Verified Professionals",
+                description: "All candidates are verified with background checks, skills assessments, and professional references to ensure quality."
               },
               {
                 icon: Zap,
-                title: "48-Hour Candidate Matching",
-                description: "Our curated talent pool means you meet qualified candidates within 2 days, not 2 months of searching."
+                title: "Quick Candidate Matching",
+                description: "Our curated talent pool means you meet qualified candidates quickly, saving you time in your hiring process."
               },
               {
                 icon: Shield,
@@ -211,7 +211,7 @@ export default function EmployersHirePage() {
               {
                 number: "3",
                 title: "Hire with Confidence",
-                description: "Interview, select, and we handle all visa sponsorship paperwork. Your new team member starts in weeks, not months."
+                description: "Interview, select, and onboard your new team member. We support you through the entire hiring process."
               }
             ].map((step, index) => (
               <motion.div
@@ -263,12 +263,12 @@ export default function EmployersHirePage() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">What's Included:</h3>
                 <div className="grid md:grid-cols-2 gap-5">
                   {[
-                    "Full visa sponsorship & immigration support",
                     "Comprehensive background verification",
-                    "Technical skills assessments",
-                    "30-day replacement guarantee",
-                    "Relocation & onboarding support",
-                    "90-day dedicated account management"
+                    "Skills assessments & screening",
+                    "Candidate matching & shortlisting",
+                    "Interview coordination support",
+                    "Onboarding assistance",
+                    "Dedicated account management"
                   ].map((item, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" />

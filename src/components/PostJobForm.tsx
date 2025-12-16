@@ -298,7 +298,7 @@ export function PostJobForm() {
                      </div>
                   ) : (
                     <div className="w-full">
-                      <div className="border border-yellow-200 bg-yellow-50 rounded-lg p-3 text-sm text-yellow-800">
+                      <div className="border border-blue-200 bg-blue-50 rounded-lg p-3 text-sm text-blue-800">
                         You need to create a company profile before posting jobs.
                         <Link href="/employer-onboarding" className="ml-2 text-blue-600 underline">
                           Create company profile

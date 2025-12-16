@@ -316,7 +316,7 @@ export default function PricingPage() {
               Everything You Need
           </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              All plans include access to Canada's premier tech job market
+              All plans include access to East Africa's premier job market
             </p>
           </motion.div>
 
@@ -329,13 +329,13 @@ export default function PricingPage() {
               },
               {
                 icon: CheckCircle,
-                title: "Canada Visa Support",
-                description: "Guidance and support for Canadian work visa applications"
+                title: "Career Support",
+                description: "Guidance and support for your career development and job search"
               },
               {
                 icon: Star,
                 title: "Premium Companies",
-                description: "Access to Canada's most innovative tech companies"
+                description: "Access to East Africa's most innovative tech companies"
               },
               {
                 icon: Zap,

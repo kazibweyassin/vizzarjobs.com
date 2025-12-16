@@ -11,19 +11,17 @@ import {
   ArrowLeft,
   Users,
   Building2,
-  Briefcase,
   Mail,
   Lock,
   Eye,
   EyeOff,
   Sparkles,
-  Brain,
   CheckCircle
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Separator } from "~/components/ui/separator";
 
 interface Provider {
   id: string;
@@ -59,6 +57,7 @@ export default function SignInPage() {
   }, []);
 
   const handleOAuthSignIn = async (providerId: string) => {
+    if (!selectedRole) return;
     setIsLoading(providerId);
     try {
       await signIn(providerId, { 
@@ -74,6 +73,7 @@ export default function SignInPage() {
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedRole) return;
     setIsLoading("credentials");
     try {
       await signIn("credentials", {
@@ -90,233 +90,222 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-6">
-      <div className="max-w-md w-full">
+    <div className="flex min-h-full flex-col justify-center bg-gray-900 px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-gray-300 mb-8 transition-colors group"
         >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
-        </motion.div>
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm">Back to home</span>
+        </Link>
 
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-center mb-8"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-6">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 text-indigo-400 rounded-full text-sm font-medium mb-6 border border-indigo-500/20">
             <Sparkles className="w-4 h-4" />
-            Tech Talent • Canada Focus
-            </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome Back
-          </h1>
-          <p className="text-gray-600">
-            Sign in to access your tech opportunities in Canada
+            <span>Welcome back</span>
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight text-white">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-sm text-gray-400">
+            Access your VizzarJobs account
           </p>
-        </motion.div>
+        </div>
 
         {/* Role Selection */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-8"
-        >
-          <div className="grid grid-cols-2 gap-4">
+        <div className="mb-6">
+          <Label className="block text-sm font-medium text-gray-100 mb-3">
+            I am a...
+          </Label>
+          <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setSelectedRole("JOB_SEEKER")}
-              className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
+              className={`p-4 rounded-lg border-2 transition-all ${
                 selectedRole === "JOB_SEEKER"
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
+                  ? "border-indigo-500 bg-indigo-500/10"
+                  : "border-white/10 bg-white/5 hover:border-white/20"
               }`}
             >
               <div className="flex flex-col items-center gap-2">
-                <Users className={`w-6 h-6 ${selectedRole === "JOB_SEEKER" ? "text-blue-600" : "text-gray-400"}`} />
-                <span className={`font-medium ${selectedRole === "JOB_SEEKER" ? "text-blue-600" : "text-gray-600"}`}>
+                <Users className={`w-5 h-5 ${selectedRole === "JOB_SEEKER" ? "text-indigo-400" : "text-gray-400"}`} />
+                <span className={`text-sm font-medium ${selectedRole === "JOB_SEEKER" ? "text-indigo-400" : "text-gray-400"}`}>
                   Job Seeker
                 </span>
               </div>
             </button>
             <button
               onClick={() => setSelectedRole("EMPLOYER")}
-              className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
+              className={`p-4 rounded-lg border-2 transition-all ${
                 selectedRole === "EMPLOYER"
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
+                  ? "border-emerald-500 bg-emerald-500/10"
+                  : "border-white/10 bg-white/5 hover:border-white/20"
               }`}
             >
               <div className="flex flex-col items-center gap-2">
-                <Building2 className={`w-6 h-6 ${selectedRole === "EMPLOYER" ? "text-blue-600" : "text-gray-400"}`} />
-                <span className={`font-medium ${selectedRole === "EMPLOYER" ? "text-blue-600" : "text-gray-600"}`}>
+                <Building2 className={`w-5 h-5 ${selectedRole === "EMPLOYER" ? "text-emerald-400" : "text-gray-400"}`} />
+                <span className={`text-sm font-medium ${selectedRole === "EMPLOYER" ? "text-emerald-400" : "text-gray-400"}`}>
                   Employer
                 </span>
               </div>
             </button>
           </div>
-        </motion.div>
+        </div>
 
-            {/* Auth Mode Toggle */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-8"
-        >
-          <div className="flex bg-gray-100 rounded-2xl p-1">
-              <button
-                onClick={() => setAuthMode("oauth")}
-              className={`flex-1 py-2 px-4 rounded-xl font-medium transition-all duration-200 ${
-                  authMode === "oauth"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-gray-600"
-                }`}
-              >
-              Quick Sign In
-              </button>
-              <button
-                onClick={() => setAuthMode("password")}
-              className={`flex-1 py-2 px-4 rounded-xl font-medium transition-all duration-200 ${
-                  authMode === "password"
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-gray-600"
-                }`}
-              >
-                Email & Password
-              </button>
-            </div>
-        </motion.div>
+        {/* Auth Mode Toggle */}
+        <div className="mb-6 flex gap-2 p-1 bg-white/5 rounded-lg border border-white/10">
+          <button
+            onClick={() => setAuthMode("oauth")}
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
+              authMode === "oauth"
+                ? "bg-indigo-500 text-white"
+                : "text-gray-400 hover:text-white"
+            }`}
+          >
+            Quick Sign In
+          </button>
+          <button
+            onClick={() => setAuthMode("password")}
+            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
+              authMode === "password"
+                ? "bg-indigo-500 text-white"
+                : "text-gray-400 hover:text-white"
+            }`}
+          >
+            Email & Password
+          </button>
+        </div>
 
         {/* Auth Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <Card className="border-0 shadow-lg">
-            <CardContent className="p-8">
-              {authMode === "oauth" ? (
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center">
-                    Choose your sign-in method
-                  </h3>
-                  {providers && Object.values(providers)
-                    .filter(provider => provider.id !== "credentials" && providerIcons[provider.id as keyof typeof providerIcons]) // Filter out credentials and providers without icons
-                    .map((provider) => {
-                    const Icon = providerIcons[provider.id as keyof typeof providerIcons]!;
-                    return (
-                      <Button
-                        key={provider.name}
-                        onClick={() => handleOAuthSignIn(provider.id)}
-                        disabled={isLoading === provider.id || !selectedRole}
-                        className="w-full h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-medium transition-all duration-200"
-                      >
-                        {isLoading === provider.id ? (
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                          <>
-                            <Icon className="w-5 h-5 mr-3" />
-                            Continue with {provider.name}
-                          </>
-                        )}
-                      </Button>
-                    );
-                  })}
-            </div>
-              ) : (
-                <form onSubmit={handleCredentialsSignIn} className="space-y-6">
-                  <div>
-                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                      Email Address
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={credentials.email}
-                      onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-                      placeholder="Enter your email"
-                      className="mt-2 h-12 rounded-xl"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                      Password
-                    </Label>
-                    <div className="relative mt-2">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      value={credentials.password}
-                      onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-                        placeholder="Enter your password"
-                        className="h-12 rounded-xl pr-12"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
-                <Button
-                  type="submit"
-                  disabled={isLoading === "credentials" || !selectedRole}
-                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-all duration-200"
-                >
-                  {isLoading === "credentials" ? (
+        {authMode === "oauth" ? (
+          <div className="space-y-4">
+            {providers && Object.values(providers)
+              .filter(provider => provider.id !== "credentials" && providerIcons[provider.id as keyof typeof providerIcons])
+              .map((provider) => {
+                const Icon = providerIcons[provider.id as keyof typeof providerIcons]!;
+                return (
+                  <Button
+                    key={provider.name}
+                    type="button"
+                    onClick={() => handleOAuthSignIn(provider.id)}
+                    disabled={isLoading === provider.id || !selectedRole}
+                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 disabled:opacity-50"
+                  >
+                    {isLoading === provider.id ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    "Sign In"
-                  )}
-                </Button>
-              </form>
-            )}
+                    ) : (
+                      <>
+                        <Icon className="w-5 h-5 mr-2" />
+                        Continue with {provider.name}
+                      </>
+                    )}
+                  </Button>
+                );
+              })}
+            
+            <div className="relative my-6">
+              <Separator className="bg-white/10" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="px-4 bg-gray-900 text-gray-400 text-sm">Or</span>
+              </div>
+            </div>
+            
+            <Button
+              type="button"
+              onClick={() => setAuthMode("password")}
+              variant="outline"
+              className="w-full border-white/10 text-gray-300 hover:bg-white/5"
+            >
+              Use Email & Password Instead
+            </Button>
+          </div>
+        ) : (
+          <form onSubmit={handleCredentialsSignIn} className="space-y-6">
+            <div>
+              <Label htmlFor="email" className="block text-sm font-medium text-gray-100">
+                Email address
+              </Label>
+              <div className="mt-2 relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={credentials.email}
+                  onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+                  placeholder="you@example.com"
+                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+            </div>
 
-              {!selectedRole && (
-                <div className="mt-6 p-4 bg-blue-50 rounded-xl">
-                  <div className="flex items-center gap-2 text-blue-600 text-sm">
-                    <CheckCircle className="w-4 h-4" />
-                    Please select your role above to continue
-                  </div>
+            <div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="block text-sm font-medium text-gray-100">
+                  Password
+                </Label>
+                <Link href="/auth/forgot-password" className="text-sm font-semibold text-indigo-400 hover:text-indigo-300">
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="mt-2 relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={credentials.password}
+                  onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                  placeholder="Enter your password"
+                  className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {!selectedRole && (
+              <div className="p-3 rounded-md bg-indigo-500/10 border border-indigo-500/20">
+                <div className="flex items-center gap-2 text-indigo-400 text-sm">
+                  <CheckCircle className="w-4 h-4" />
+                  Please select your role above to continue
+                </div>
               </div>
             )}
-            </CardContent>
-          </Card>
-        </motion.div>
+
+            <div>
+              <Button
+                type="submit"
+                disabled={isLoading === "credentials" || !selectedRole}
+                className="flex w-full justify-center bg-indigo-500 hover:bg-indigo-400 text-white disabled:opacity-50"
+              >
+                {isLoading === "credentials" ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Signing in...
+                  </>
+                ) : (
+                  "Sign in"
+                )}
+              </Button>
+            </div>
+          </form>
+        )}
 
         {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-8"
-        >
-          <p className="text-gray-600">
-                Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700 font-medium">
-              Sign up
-                </Link>
-              </p>
-          <Link href="/auth/forgot-password" className="text-gray-500 hover:text-gray-700 text-sm mt-2 inline-block">
-            Forgot your password?
-                </Link>
-        </motion.div>
+        <p className="mt-10 text-center text-sm text-gray-400">
+          Not a member?{" "}
+          <Link href="/auth/signup" className="font-semibold text-indigo-400 hover:text-indigo-300">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );

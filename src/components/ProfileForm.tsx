@@ -158,7 +158,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                     <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs">
                       Post Jobs
                     </Badge>
-                    <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 text-xs">
+                    <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200 text-xs">
                       Hire
                     </Badge>
                   </div>
@@ -207,7 +207,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
               className={`${
                 user.profileComplete 
                   ? "bg-green-50 text-green-700 border-green-200" 
-                  : "bg-yellow-50 text-yellow-700 border-yellow-200"
+                  : "bg-emerald-50 text-emerald-700 border-emerald-200"
               }`}
             >
               {user.profileComplete ? "Profile Complete" : "Profile Incomplete"}

@@ -143,7 +143,7 @@ export function getStatusColor(status: ApplicationStatus): string {
     case 'rejected':
       return 'bg-red-100 text-red-800';
     case 'declined':
-      return 'bg-yellow-100 text-yellow-800';
+      return 'bg-emerald-100 text-emerald-800';
     case 'withdrawn':
       return 'bg-gray-100 text-gray-800';
     default:

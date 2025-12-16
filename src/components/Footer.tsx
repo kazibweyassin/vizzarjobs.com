@@ -39,7 +39,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-gray-300 mb-6 max-w-sm">
-              Connecting tech talent with Canadian opportunities. Find your dream job with visa sponsorship.
+              East Africa's professional job platform. Connecting talented professionals with quality opportunities across Uganda, Kenya, Rwanda, and Tanzania.
             </p>
             <div className="flex items-center gap-4">
               <a 
@@ -154,7 +154,7 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">1 Dock Road, V&A Waterfront, Cape Town, 8001, South Africa</span>
+                <span className="text-gray-300">Kampala, Uganda</span>
               </li>
         
               <li className="flex items-center gap-3">
@@ -163,7 +163,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href="mailto:Get in Touch-kazibweusama@gmail.com" className="text-gray-300 hover:text-blue-400">opportunities-kazibweusama@gmail.com</a>
+                <a href="mailto:opportunities-kazibweusama@gmail.com" className="text-gray-300 hover:text-blue-400">opportunities-kazibweusama@gmail.com</a>
               </li>
             </ul>
           </div>

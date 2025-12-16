@@ -47,7 +47,7 @@ export default function FAQPage() {
     { id: "general", name: "General" },
     { id: "jobseekers", name: "For Job Seekers" },
     { id: "employers", name: "For Employers" },
-    { id: "visa", name: "Visa Sponsorship" },
+    { id: "career", name: "Career & Jobs" },
     { id: "billing", name: "Billing & Pricing" },
   ];
 
@@ -57,27 +57,27 @@ export default function FAQPage() {
       {
         id: "what-is-vizzarjobs",
         question: "What is VizzarJobs?",
-        answer: "VizzarJobs is a specialized job platform that connects African professionals with global employers offering visa sponsorship. We focus on tech and professional roles that provide relocation opportunities to countries like the US, UK, Canada, Germany, and more."
+        answer: "VizzarJobs is East Africa's leading professional job platform connecting talented professionals with quality opportunities across Technology, Sales, Marketing, Finance, Customer Success, and more. We serve job seekers and employers in Uganda, Kenya, Rwanda, Tanzania, and across East Africa."
       },
       {
         id: "how-does-it-work",
         question: "How does VizzarJobs work?",
-        answer: "For job seekers, create a profile, browse visa-sponsored positions, and apply directly through our platform. For employers, post job listings specifically targeting candidates open to relocation, review applications, and connect with qualified talent."
+        answer: "For job seekers, create a free profile, browse job opportunities, and apply directly through our platform. For employers, post job listings, review applications, and connect with qualified talent from across East Africa. It's simple, fast, and free to get started."
       },
       {
         id: "what-countries",
-        question: "What countries do you cover?",
-        answer: "We primarily feature opportunities in the United States, United Kingdom, Canada, Germany, Netherlands, Australia, and other tech hubs that offer visa sponsorship programs for skilled professionals."
+        question: "What countries/regions do you cover?",
+        answer: "We primarily serve East Africa including Uganda, Kenya, Rwanda, and Tanzania. We also feature remote opportunities that allow professionals to work from anywhere, as well as international positions when available."
       },
       {
         id: "who-can-use",
         question: "Who can use VizzarJobs?",
-        answer: "Our platform is designed for skilled professionals from Africa seeking international opportunities, as well as companies around the world looking to hire African talent and willing to sponsor work visas."
+        answer: "Our platform is designed for skilled professionals across East Africa (Uganda, Kenya, Rwanda, Tanzania) seeking quality job opportunities, as well as companies looking to hire talented professionals from the region."
       },
       {
         id: "is-it-legitimate",
         question: "Is VizzarJobs legitimate?",
-        answer: "Yes, VizzarJobs is a legitimate job platform. We verify all employers before they can post jobs, and we ensure that all listed positions genuinely offer visa sponsorship. Our mission is to connect African talent with genuine global opportunities."
+        answer: "Yes, VizzarJobs is a legitimate job platform. We verify all employers before they can post jobs, and we ensure that all listed positions are genuine opportunities. Our mission is to connect East African talent with quality career opportunities."
       }
     ],
     jobseekers: [
@@ -134,31 +134,31 @@ export default function FAQPage() {
         answer: "Yes, with an Employer subscription, you can proactively search our talent pool based on skills, experience level, education, and other criteria. You can invite promising candidates to apply to your open positions."
       }
     ],
-    visa: [
+    career: [
       {
-        id: "visa-types",
-        question: "What types of visas do employers on VizzarJobs sponsor?",
-        answer: "This varies by country and employer. Common visa types include H-1B (USA), Tier 2 Skilled Worker (UK), Express Entry (Canada), EU Blue Card (Germany/EU), and TSS 482 (Australia). Each job listing specifies the type of visa sponsorship offered."
+        id: "job-types",
+        question: "What types of jobs are available on VizzarJobs?",
+        answer: "We feature opportunities across multiple industries including Technology, Sales, Marketing, Finance, Customer Success, Product Management, Design, Operations, and more. Jobs range from entry-level to senior positions across East Africa."
       },
       {
-        id: "sponsorship-guarantee",
-        question: "Does applying through VizzarJobs guarantee visa sponsorship?",
-        answer: "While all jobs on our platform offer sponsorship, final visa approval depends on meeting the specific country's immigration requirements and the employer's hiring decision. We ensure all listings are from employers genuinely willing to sponsor visas."
+        id: "remote-jobs",
+        question: "Are there remote work opportunities?",
+        answer: "Yes! Many employers offer remote or hybrid work options. You can filter jobs by location type (Remote, Hybrid, On-site) when searching. Remote opportunities allow you to work from anywhere in East Africa or beyond."
       },
       {
-        id: "visa-costs",
-        question: "Who covers visa application costs?",
-        answer: "This varies by employer. Some companies cover all visa-related expenses, while others may share costs or require the employee to cover certain fees. This information is typically discussed during the interview process."
+        id: "application-process",
+        question: "How does the application process work?",
+        answer: "Simply browse jobs, click 'Apply', and submit your application. Employers will review your profile and CV. If selected, they'll contact you directly through the platform or via email/phone to schedule interviews."
       },
       {
-        id: "visa-requirements-country",
-        question: "What are the visa requirements for different countries?",
-        answer: "Requirements vary significantly by country. Generally, you'll need relevant qualifications, work experience, and sometimes language proficiency. Some countries have minimum salary thresholds or specific education requirements. We provide country-specific guides in our resources section."
+        id: "profile-tips",
+        question: "How can I improve my profile to get more job matches?",
+        answer: "Complete your profile with a professional photo, detailed work experience, skills, education, and upload an updated CV. The more complete your profile, the better your chances of matching with relevant opportunities."
       },
       {
-        id: "relocation-assistance",
-        question: "Do employers provide relocation assistance?",
-        answer: "Many do, but this varies by company. Some offer comprehensive relocation packages including flights, temporary accommodation, and settling-in services. Others may provide a fixed relocation allowance. This information is usually included in the job description or discussed during interviews."
+        id: "salary-information",
+        question: "Do job listings include salary information?",
+        answer: "Many job postings include salary ranges. When available, you'll see this information in the job description. For positions without listed salaries, this is typically discussed during the interview process."
       }
     ],
     billing: [

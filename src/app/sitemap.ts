@@ -25,31 +25,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/companies`,
       lastModified: new Date(),
       changeFrequency: 'daily',
-      priority: 0.8,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/faq`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/privacy-policy`,
@@ -64,54 +58,51 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/how-it-works`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/resources`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/insights`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/talent-pool`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/talent-pool/register`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/post-job`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/tools`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/why-us`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.8,
     },
   ];
+
+  // Job categories for East Africa
+  const categories = [
+    'Technology',
+    'Healthcare',
+    'Finance',
+    'Education',
+    'Sales & Marketing',
+    'Engineering',
+    'Hospitality',
+    'Construction',
+  ];
+
+  const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
+    url: `${baseUrl}/jobs?category=${encodeURIComponent(category)}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 0.8,
+  }));
+
+  // East African locations
+  const locations = [
+    'Uganda',
+    'Kenya',
+    'Rwanda',
+    'Tanzania',
+    'Kampala',
+    'Nairobi',
+    'Kigali',
+    'Dar es Salaam',
+    'Remote',
+  ];
+
+  const locationPages: MetadataRoute.Sitemap = locations.map((location) => ({
+    url: `${baseUrl}/jobs?location=${encodeURIComponent(location)}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 0.8,
+  }));
 
   try {
     // Fetch all published jobs
@@ -160,11 +151,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     // Combine all pages
-    return [...staticPages, ...jobPages, ...companyPages];
+    return [...staticPages, ...categoryPages, ...locationPages, ...jobPages, ...companyPages];
   } catch (error) {
     console.error('Error generating sitemap:', error);
     // Return static pages even if database query fails
-    return staticPages;
+    return [...staticPages, ...categoryPages, ...locationPages];
   }
 }
 

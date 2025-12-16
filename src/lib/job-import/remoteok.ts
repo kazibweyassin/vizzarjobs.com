@@ -288,6 +288,9 @@ export class RemoteOKImporter {
     
     let cleaned = description;
     
+    // Fix malformed HTML tags and separators first
+    cleaned = this.fixMalformedSeparators(cleaned);
+    
     // Remove RemoteOK promotional content first
     cleaned = this.removeRemoteOKPromotionalContent(cleaned);
     
@@ -338,6 +341,76 @@ export class RemoteOKImporter {
     cleaned = this.finalCleanup(cleaned);
     
     return cleaned;
+  }
+  
+  /**
+   * Fix malformed HTML separators and artifacts from bad imports
+   */
+  private fixMalformedSeparators(text: string): string {
+    let fixed = text;
+    
+    // Fix malformed HTML tag patterns like 'r />>' or 'l>>i>>'
+    fixed = fixed
+      // Remove broken HTML tag patterns and replace with proper line breaks
+      .replace(/r\s*\/>>+/gi, '\n\n')
+      .replace(/l>>+/gi, '')
+      .replace(/i>>+/gi, '')
+      .replace(/>>+/g, '')
+      .replace(/r\s*\/>/gi, '\n')
+      
+      // Remove HTML style attributes appearing as text
+      .replace(/style="[^"]*"/gi, '')
+      .replace(/style='[^']*'/gi, '')
+      .replace(/style=[^\s>]*/gi, '')
+      
+      // Fix broken list markers and separators
+      .replace(/ly\s+with/gi, 'closely with')
+      .replace(/([a-z])l>>/gi, '$1')
+      .replace(/>>([a-z])/gi, '$1')
+      
+      // Remove font-size and other inline style text
+      .replace(/style="font-size:[^"]*"/gi, '')
+      .replace(/font-size:\s*\d+pt/gi, '')
+      
+      // Remove standalone > characters that aren't part of HTML tags
+      .replace(/([a-z])>([A-Z])/g, '$1 $2')
+      .replace(/([a-z])>([a-z])/g, '$1 $2')
+      .replace(/>([A-Z][a-z])/g, ' $1')
+      
+      // Fix words concatenated without spaces (camelCase to spaced)
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/\.([A-Z])/g, '. $1')
+      
+      // Fix encoding issues with special characters
+      .replace(/Ã¡/g, 'á')
+      .replace(/Ã©/g, 'é')
+      .replace(/Ã­/g, 'í')
+      .replace(/Ã³/g, 'ó')
+      .replace(/Ãº/g, 'ú')
+      .replace(/Ã±/g, 'ñ')
+      .replace(/Ã /g, 'à')
+      .replace(/Ã¨/g, 'è')
+      .replace(/Ã¬/g, 'ì')
+      .replace(/Ã²/g, 'ò')
+      .replace(/Ã¹/g, 'ù')
+      .replace(/Ã¢/g, 'â')
+      .replace(/Ãª/g, 'ê')
+      .replace(/Ã®/g, 'î')
+      .replace(/Ã´/g, 'ô')
+      .replace(/Ã»/g, 'û')
+      
+      // Remove broken br/r tags
+      .replace(/\br\s*\/>/gi, '<br>')
+      .replace(/\br\s*>/gi, '<br>')
+      
+      // Clean up multiple consecutive separators
+      .replace(/[>]{3,}/g, '')
+      .replace(/[/]{3,}/g, '')
+      
+      // Remove HTML entities that appear as text
+      .replace(/&[a-z]+;(?=[A-Z])/g, ' ');
+    
+    return fixed;
   }
   
   private removeRemoteOKPromotionalContent(text: string): string {

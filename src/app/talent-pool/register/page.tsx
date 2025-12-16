@@ -447,7 +447,7 @@ export default function MultiStepCandidateRegistration() {
                         onCheckedChange={(checked) => setValue('needsVisaSponsorship', checked as boolean)}
                       />
                       <Label htmlFor="needsVisaSponsorship" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        I need visa sponsorship for Canada
+                        I'm open to opportunities that may require relocation
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -457,7 +457,7 @@ export default function MultiStepCandidateRegistration() {
                         onCheckedChange={(checked) => setValue('jobAlerts', checked as boolean)}
                       />
                       <Label htmlFor="jobAlerts" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Send me tech job alerts for Canada
+                        Send me job alerts for matching opportunities
                       </Label>
                     </div>
                   </div>

@@ -15,6 +15,7 @@ import {
   Code,
   Check,
   ChevronDown,
+  ChevronUp,
   DollarSign,
   Calendar,
   Crown
@@ -46,24 +47,26 @@ interface JobFiltersProps {
 
 export function JobFilters({ filters, onFiltersChange, className }: JobFiltersProps) {
   const [showAllTechStacks, setShowAllTechStacks] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   
   // Get available tech stacks and locations from the API
   const { data: techStacks = [] } = api.jobs.getTechStacks.useQuery();
   const { data: locations = [] } = api.jobs.getLocations.useQuery();
   
-  // Canadian locations to prioritize
-  const canadianCities = [
-    "Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton",
-    "Ottawa", "Quebec City", "Winnipeg", "Halifax", "Victoria"
+  // East African locations to prioritize
+  const eastAfricanLocations = [
+    "Uganda", "Kenya", "Rwanda", "Tanzania", 
+    "Kampala", "Nairobi", "Kigali", "Dar es Salaam",
+    "Entebbe", "Mombasa", "Arusha", "Dodoma"
   ];
   
-  // Filter and prioritize Canadian locations
-  const sortedLocations = [...locations].sort((a, b) => {
-    const aIsCanadian = a.includes("Canada") || canadianCities.some(city => a.includes(city));
-    const bIsCanadian = b.includes("Canada") || canadianCities.some(city => b.includes(city));
+  // Filter and prioritize East African locations
+  const sortedLocations = [...locations].filter(loc => loc !== null).sort((a, b) => {
+    const aIsEastAfrican = eastAfricanLocations.some(loc => a.includes(loc));
+    const bIsEastAfrican = eastAfricanLocations.some(loc => b.includes(loc));
     
-    if (aIsCanadian && !bIsCanadian) return -1;
-    if (!aIsCanadian && bIsCanadian) return 1;
+    if (aIsEastAfrican && !bIsEastAfrican) return -1;
+    if (!aIsEastAfrican && bIsEastAfrican) return 1;
     return a.localeCompare(b);
   });
 
@@ -110,7 +113,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
   const clearFilters = () => {
     onFiltersChange({
       search: "",
-      location: "Canada", // Default back to Canada when clearing filters
+      location: "",
       visaSponsorship: undefined,
       jobType: undefined,
       experienceLevel: undefined,
@@ -199,7 +202,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               className="w-full pl-4 pr-10 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white text-gray-800 shadow-sm"
             >
               <option value="">Any location</option>
-              {locations.map((location) => (
+              {sortedLocations.map((location) => (
                 <option key={location} value={location}>
                   {location}
                 </option>
@@ -211,53 +214,75 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           </div>
         </div>
 
-        {/* Visa Sponsorship - Modern Toggle */}
-        <div className="space-y-2.5">
-          <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <Award className="w-4 h-4 text-blue-600" />
-            Visa Sponsorship
-          </label>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              onClick={() => updateFilters({ visaSponsorship: undefined })}
-              className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
-                filters.visaSponsorship === undefined
-                  ? "bg-blue-600 text-white font-medium shadow-sm"
-                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
-              }`}
-            >
-              {filters.visaSponsorship === undefined && <Check className="w-4 h-4 inline mr-1.5" />}
-              All Jobs
-            </button>
-            <button
-              onClick={() => updateFilters({ visaSponsorship: true })}
-              className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
-                filters.visaSponsorship === true
-                  ? "bg-green-600 text-white font-medium shadow-sm"
-                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-green-300 hover:bg-gray-100"
-              }`}
-            >
-              {filters.visaSponsorship === true && <Check className="w-4 h-4 inline mr-1.5" />}
-              Sponsored
-            </button>
-            <button
-              onClick={() => updateFilters({ visaSponsorship: false })}
-              className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
-                filters.visaSponsorship === false
-                  ? "bg-gray-800 text-white font-medium shadow-sm"
-                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-400 hover:bg-gray-100"
-              }`}
-            >
-              {filters.visaSponsorship === false && <Check className="w-4 h-4 inline mr-1.5" />}
-              Not Offered
-            </button>
-          </div>
+        {/* Advanced Filters - Collapsible */}
+        <div className="border-t border-gray-200 pt-6">
+          <button
+            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+            className="w-full flex items-center justify-between text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors"
+          >
+            <span className="flex items-center gap-2">
+              <Filter className="w-4 h-4" />
+              Advanced Filters
+            </span>
+            {showAdvancedFilters ? (
+              <ChevronUp className="w-4 h-4" />
+            ) : (
+              <ChevronDown className="w-4 h-4" />
+            )}
+          </button>
+          
+          {showAdvancedFilters && (
+            <div className="mt-4 space-y-6">
+              {/* Visa Sponsorship - Modern Toggle */}
+              <div className="space-y-2.5">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-gray-500" />
+                  Visa Sponsorship
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    onClick={() => updateFilters({ visaSponsorship: undefined })}
+                    className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
+                      filters.visaSponsorship === undefined
+                        ? "bg-blue-600 text-white font-medium shadow-sm"
+                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+                    }`}
+                  >
+                    {filters.visaSponsorship === undefined && <Check className="w-4 h-4 inline mr-1.5" />}
+                    All Jobs
+                  </button>
+                  <button
+                    onClick={() => updateFilters({ visaSponsorship: true })}
+                    className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
+                      filters.visaSponsorship === true
+                        ? "bg-green-600 text-white font-medium shadow-sm"
+                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-green-300 hover:bg-gray-100"
+                    }`}
+                  >
+                    {filters.visaSponsorship === true && <Check className="w-4 h-4 inline mr-1.5" />}
+                    Sponsored
+                  </button>
+                  <button
+                    onClick={() => updateFilters({ visaSponsorship: false })}
+                    className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
+                      filters.visaSponsorship === false
+                        ? "bg-gray-800 text-white font-medium shadow-sm"
+                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-400 hover:bg-gray-100"
+                    }`}
+                  >
+                    {filters.visaSponsorship === false && <Check className="w-4 h-4 inline mr-1.5" />}
+                    Not Offered
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Premium Jobs Filter */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <Crown className="w-4 h-4 text-yellow-600" />
+            <Crown className="w-4 h-4 text-emerald-600" />
             Premium Jobs
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -275,8 +300,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               onClick={() => updateFilters({ premiumOnly: true })}
               className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
                 filters.premiumOnly === true
-                  ? "bg-yellow-500 text-white font-medium shadow-sm"
-                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-yellow-300 hover:bg-gray-100"
+                  ? "bg-emerald-500 text-white font-medium shadow-sm"
+                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-emerald-300 hover:bg-gray-100"
               }`}
             >
               {filters.premiumOnly === true && <Check className="w-4 h-4 inline mr-1.5" />}
@@ -381,7 +406,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
             ))}
           </div>
           <div className="text-xs text-navy/70 mt-2">
-            Focus on in-demand tech specializations across Canada
+            Focus on in-demand tech specializations
           </div>
         </div>
 

@@ -12,12 +12,9 @@ import {
   Settings,
   LogOut,
   Briefcase,
-  Brain,
-  Target,
-  BookOpen,
+  Building2,
   Info,
-  Package,
-  FileText
+  Plus
 } from "lucide-react";
 
 // Update this type to match the UserRole enum in the Prisma schema
@@ -29,14 +26,10 @@ export function Navigation() {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const navigation = [
-    { name: "Jobs", href: "/jobs", icon: Briefcase },
-    { name: "Resume Builder", href: "/tools/resume-builder", icon: FileText },
-    { name: "Talent Pool", href: "/talent-pool", icon: Target },
-    { name: "Career Assessment", href: "/career-assessment", icon: Brain },
-    { name: "Insights", href: "/insights", icon: BookOpen },
-    { name: "Resources", href: "/resources", icon: Info },
-    { name: "Products", href: "/products", icon: Package },
-    { name: "About Us", href: "/about", icon: Info },
+    { name: "Browse Jobs", href: "/jobs", icon: Briefcase },
+    { name: "Companies", href: "/companies", icon: Building2 },
+    { name: "Post a Job", href: "/post-job", icon: Plus },
+    { name: "About", href: "/about", icon: Info },
   ];
 
   const handleSignOut = async () => {
@@ -83,8 +76,8 @@ export function Navigation() {
               <>
                 {session.user.role === "JOB_SEEKER" && (
                   <Link
-                    href="/jobs?location=Canada"
-                    className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
+                    href="/jobs"
+                    className="inline-flex items-center bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-700 transition-all duration-200 text-base shadow-sm hover:shadow-md"
                   >
                     <Briefcase className="w-4 h-4 mr-2" />
                     Browse Jobs

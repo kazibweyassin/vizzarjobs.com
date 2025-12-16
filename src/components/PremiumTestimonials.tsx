@@ -62,7 +62,7 @@ export function PremiumTestimonials() {
               }}
               viewport={{ once: true }}
             >
-              <div className="flex items-center mb-6 text-amber-400">
+              <div className="flex items-center mb-6 text-emerald-400">
                 <Star className="w-4 h-4 fill-current" />
                 <Star className="w-4 h-4 fill-current" />
                 <Star className="w-4 h-4 fill-current" />

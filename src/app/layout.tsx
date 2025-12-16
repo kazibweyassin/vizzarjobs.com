@@ -16,12 +16,35 @@ import { ProfileCompletionProvider } from "~/components/ProfileCompletionProvide
 import { ProfileCompletionReminder } from "~/components/ProfileCompletionReminder";
 
 export const metadata: Metadata = {
-  title: "VizzarJobs | Premium Visa-Sponsored Tech Opportunities",
-  description: "Exclusive visa-sponsored tech positions for elite African professionals. Join our curated talent network for global career advancement.",
+  title: "VizzarJobs | East Africa's Leading Professional Job Platform",
+  description: "Find professional opportunities in Uganda, Kenya, Rwanda & East Africa. Browse jobs in Tech, Sales, Marketing, Finance, Customer Success & more. Your career starts here.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   verification: {
     google: "OpKfLTWY7tDBSSHFZ5_-fsJdtX5UO8Z3cGZgDabHsAE",
   },
+  openGraph: {
+    title: "VizzarJobs | East Africa's Leading Professional Job Platform",
+    description: "Find professional opportunities in Uganda, Kenya, Rwanda & East Africa. Browse jobs in Tech, Sales, Marketing, Finance & more.",
+    url: "https://vizzarjobs.com",
+    siteName: "VizzarJobs",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "VizzarJobs - East Africa's Leading Professional Job Platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VizzarJobs | East Africa's Leading Professional Job Platform",
+    description: "Find professional opportunities in Uganda, Kenya, Rwanda & East Africa. Browse jobs in Tech, Sales, Marketing, Finance & more.",
+    images: ["/images/og-image.jpg"],
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://vizzarjobs.com"),
 };
 
 const inter = Inter({

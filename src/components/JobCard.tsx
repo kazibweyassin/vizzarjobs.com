@@ -137,7 +137,7 @@ export function JobCard({ job }: JobCardProps) {
       case "FULL_TIME":
         return "bg-blue-100 text-blue-800 hover:bg-blue-200";
       case "CONTRACT":
-        return "bg-orange-100 text-orange-800 hover:bg-orange-200";
+        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
       case "INTERNSHIP":
         return "bg-green-100 text-green-800 hover:bg-green-200";
       default:
@@ -171,12 +171,6 @@ export function JobCard({ job }: JobCardProps) {
               )}
             </div>
           </div>
-          {job.visaSponsorship && (
-            <Badge className="bg-blue-600 text-white border-0 font-medium">
-              <Award className="w-3 h-3 mr-1" />
-              Canada Visa Sponsored
-            </Badge>
-          )}
         </div>
       </CardHeader>
 

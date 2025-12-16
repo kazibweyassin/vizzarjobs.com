@@ -914,12 +914,12 @@ export function JobSeekerProfileForm({ companies = [], user }: JobSeekerProfileF
                 <label className="text-sm font-medium">Certifications</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {formData.certifications.map((cert, index) => (
-                    <Badge key={index} className="bg-purple-100 text-purple-800 px-2 py-1">
+                    <Badge key={index} className="bg-blue-100 text-blue-800 px-2 py-1">
                       {cert}
                       <button 
                         type="button" 
                         onClick={() => removeArrayItem('certifications', index)}
-                        className="ml-2 text-purple-600 hover:text-purple-800"
+                        className="ml-2 text-blue-600 hover:text-blue-800"
                       >
                         ×
                       </button>
