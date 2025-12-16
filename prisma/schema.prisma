@@ -33,15 +33,15 @@ model Job {
   title           String
   description     String?
   companyId       String
-  location        String? // City in Canada
+  location        String? // City in East Africa
   skills          String[]         @default([]) // Tech-specific skills
   remote          Boolean          @default(false)
-  visaSponsorship Boolean          @default(true) // Always true for Canada focus
+  visaSponsorship Boolean          @default(false) // Default false for East Africa focus
   featured        Boolean          @default(false)
   premium         Boolean          @default(false)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  country         String           @default("Canada") // Fixed to Canada
+  country         String           @default("Uganda") // Default to Uganda
   techStack       String[]         @default([]) // Tech stack
   requirements    String[]         @default([])
   applicationUrl  String?
@@ -233,13 +233,13 @@ model MatchingPreferences {
   jobRoles              String[] // Tech roles
   skills                String[] // Tech skills
   industries            String[]    @default(["Technology", "Software", "IT"])
-  locations             String[]    @default(["Canada"]) // Focus on Canada
+  locations             String[]    @default(["East Africa"]) // Focus on East Africa
   remotePreference      Boolean     @default(false)
   salaryMin             Int?
   salaryMax             Int?
   experienceLevels      String[]
   employmentTypes       String[]
-  visaSponsorshipNeeded Boolean     @default(true) // Always true for Canada
+  visaSponsorshipNeeded Boolean     @default(false) // Default false for East Africa
   relocationWillingness Boolean     @default(true)
   // Tech-specific preferences
   aiMlFocus             AIMLFocus[] @default([]) // Preferred tech specializations (kept for backward compatibility)
@@ -453,8 +453,8 @@ model CandidatePool {
   skills               String[]        @default([]) // Tech-specific skills
   yearsOfExperience    Int
   educationLevel       EducationLevel
-  preferredDestination String[]        @default(["Canada"]) // Default to Canada
-  needsVisaSponsorship Boolean         @default(true) // Default true for Canada
+  preferredDestination String[]        @default(["East Africa"]) // Default to East Africa
+  needsVisaSponsorship Boolean         @default(false) // Default false for East Africa
   cvFilePath           String?
   cvPublicId           String? // Cloudinary public ID
   cvSecureUrl          String? // Cloudinary secure URL

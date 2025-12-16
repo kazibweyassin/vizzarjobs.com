@@ -1106,7 +1106,7 @@ export default function HowItWorksPage() {
                   ? "Which countries do you have job opportunities in?"
                   : "What costs are involved in hiring through VizzarJobs?",
                 answer: activeTab === "jobseekers" 
-                  ? "We feature opportunities primarily in the US, UK, Canada, Germany, Netherlands, Australia, and other tech hubs that offer visa sponsorship."
+                  ? "We feature opportunities primarily across East Africa including Uganda, Kenya, Rwanda, Tanzania, and other regional markets."
                   : "We have transparent pricing based on the number of roles you post. There are no hidden fees, and we don't charge placement fees like traditional recruiting agencies."
               }
             ].map((faq, index) => (

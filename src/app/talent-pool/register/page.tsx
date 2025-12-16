@@ -32,7 +32,7 @@ const formSchema = z.object({
     errorMap: () => ({ message: "Education level is required" }),
   }),
   preferredDestination: z.string().optional(),
-  needsVisaSponsorship: z.boolean().default(true), // Default true for Canada focus
+  needsVisaSponsorship: z.boolean().default(false), // Default false for East Africa focus
   cvFilePath: z.string().optional(),
   jobAlerts: z.boolean().default(true),
   // Tech specialization fields (optional)
@@ -108,8 +108,8 @@ export default function MultiStepCandidateRegistration() {
       skills: '',
       yearsOfExperience: 0,
       educationLevel: EducationLevel.BACHELOR,
-      preferredDestination: 'Canada', // Default to Canada
-      needsVisaSponsorship: true, // Default true for Canada
+      preferredDestination: 'East Africa', // Default to East Africa
+      needsVisaSponsorship: false, // Default false for East Africa
       cvFilePath: '',
       jobAlerts: true,
       // Tech specialization defaults
@@ -149,7 +149,7 @@ export default function MultiStepCandidateRegistration() {
       await createCandidate.mutateAsync({
         ...data,
         skills: data.skills.split(',').map(s => s.trim()).filter(Boolean),
-        preferredDestination: data.preferredDestination?.split(',').map(s => s.trim()).filter(Boolean) || ['Canada'],
+        preferredDestination: data.preferredDestination?.split(',').map(s => s.trim()).filter(Boolean) || ['East Africa'],
         // Tech specialization fields
         certifications: data.certifications?.split(',').map(s => s.trim()).filter(Boolean) || [],
         projects: data.projects?.split(',').map(s => s.trim()).filter(Boolean) || [],
@@ -235,10 +235,10 @@ export default function MultiStepCandidateRegistration() {
               Tech Talent Pool Registration
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Join Canada's Elite
+              Join East Africa's Talent Pool
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Connect with tech opportunities in Canada and let employers find you
+              Connect with opportunities across East Africa and let employers find you
             </p>
           </motion.div>
         </div>
@@ -436,7 +436,7 @@ export default function MultiStepCandidateRegistration() {
                   </div>
                   <div>
                     <Label htmlFor="preferredDestination">Preferred Destination</Label>
-                    <Input id="preferredDestination" {...register('preferredDestination')} placeholder="Canada" defaultValue="Canada" />
+                    <Input id="preferredDestination" {...register('preferredDestination')} placeholder="East Africa" defaultValue="East Africa" />
                     {errors.preferredDestination && <p className="text-red-500 text-sm mt-1">{errors.preferredDestination.message}</p>}
                   </div>
                   <div className="space-y-3">
@@ -490,7 +490,7 @@ export default function MultiStepCandidateRegistration() {
                       <p><strong>Experience:</strong> {watch('yearsOfExperience')} years</p>
                       <p><strong>Skills:</strong> {watch('skills')}</p>
                       <p><strong>Certifications:</strong> {watch('certifications') || 'None'}</p>
-                      <p><strong>Destination:</strong> {watch('preferredDestination') || 'Canada'}</p>
+                      <p><strong>Destination:</strong> {watch('preferredDestination') || 'East Africa'}</p>
                       <p><strong>Visa Sponsorship:</strong> {watch('needsVisaSponsorship') ? 'Yes' : 'No'}</p>
                     </div>
                   </div>

@@ -15,8 +15,8 @@ export const candidatePoolRouter = createTRPCRouter({
         skills: z.array(z.string()).default([]),
         yearsOfExperience: z.number().min(0, "Years of experience must be 0 or more"),
         educationLevel: z.nativeEnum(EducationLevel),
-        preferredDestination: z.array(z.string()).default(["Canada"]),
-        needsVisaSponsorship: z.boolean().default(true),
+        preferredDestination: z.array(z.string()).default(["East Africa"]),
+        needsVisaSponsorship: z.boolean().default(false),
         cvFilePath: z.string().optional(),
         jobAlerts: z.boolean().default(true),
         // AI/ML specific fields

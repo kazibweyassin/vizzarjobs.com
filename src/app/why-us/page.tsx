@@ -67,7 +67,7 @@ export default function WhyUsPage() {
       name: "David Ochieng",
       role: "Senior Software Engineer",
       company: "TechGlobal Inc.",
-      location: "From Kenya to Canada",
+      location: "From Kenya to Uganda",
       quote: "VizzarJobs changed my life. Within 3 weeks of applying, I had multiple interviews and secured a role that increased my salary by 3x. The visa process was smooth with their guidance."
     },
     {

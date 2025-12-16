@@ -69,7 +69,7 @@ const demoJobs = [
     title: "Data Scientist",
     description: "Work with large datasets to extract insights and build models.",
     companyId: "placeholder", // Will be replaced with actual company ID
-    location: "Toronto, Canada",
+    location: "Kampala, Uganda",
     visaSponsorship: true,
     salaryMin: 95000,
     salaryMax: 140000,

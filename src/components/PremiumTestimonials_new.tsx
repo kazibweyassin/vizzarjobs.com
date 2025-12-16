@@ -7,27 +7,27 @@ import { Star, Quote } from 'lucide-react';
 export function PremiumTestimonials() {
   const testimonials = [
     {
-      content: "VizzarJobs helped me find the perfect tech position in Toronto within weeks of completing my profile. The Canadian focus really makes a difference.",
+      content: "VizzarJobs helped me find the perfect position in Kampala within weeks of completing my profile. The East Africa focus really makes a difference.",
       author: "Emily Chen",
       title: "Full Stack Developer",
-      company: "Shopify",
-      location: "Toronto",
+      company: "Tech Company",
+      location: "Kampala",
       avatar: "https://randomuser.me/api/portraits/women/32.jpg"
     },
     {
-      content: "As a tech professional new to Canada, this platform was invaluable. Found a great position in Vancouver that matched my experience and skill set.",
+      content: "As a professional in East Africa, this platform was invaluable. Found a great position in Nairobi that matched my experience and skill set.",
       author: "Michael Singh",
       title: "Data Scientist",
-      company: "Visier",
-      location: "Vancouver",
+      company: "Tech Company",
+      location: "Nairobi",
       avatar: "https://randomuser.me/api/portraits/men/45.jpg"
     },
     {
-      content: "The curated job listings for Canadian companies saved me so much time in my job search. I was able to find a role that aligned perfectly with my career goals.",
+      content: "The curated job listings for East African companies saved me so much time in my job search. I was able to find a role that aligned perfectly with my career goals.",
       author: "Sarah Tremblay",
       title: "UX Designer",
-      company: "Hootsuite",
-      location: "Montreal",
+      company: "Tech Company",
+      location: "Kigali",
       avatar: "https://randomuser.me/api/portraits/women/68.jpg"
     }
   ];
@@ -38,7 +38,7 @@ export function PremiumTestimonials() {
         <div className="text-center mb-16">
           <h2 className="text-base font-medium text-navy">Testimonials</h2>
           <p className="mt-2 text-3xl font-medium tracking-tight text-gray-900">
-            Helping professionals find their dream jobs across Canada
+            Helping professionals find their dream jobs across East Africa
           </p>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
             Hear from professionals who found their ideal positions through our platform
@@ -86,7 +86,7 @@ export function PremiumTestimonials() {
                 <div>
                   <h4 className="text-sm font-medium text-gray-900">{testimonial.author}</h4>
                   <p className="text-sm text-gray-600">{testimonial.title} at {testimonial.company}</p>
-                  <p className="text-sm text-navy">{testimonial.location}, Canada</p>
+                  <p className="text-sm text-navy">{testimonial.location}, East Africa</p>
                 </div>
               </div>
             </motion.div>

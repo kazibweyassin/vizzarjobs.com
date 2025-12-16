@@ -198,14 +198,14 @@ export class RapidAPIImporter {
       'dortmund': 'Germany',
       'essen': 'Germany',
       'leipzig': 'Germany',
-      'toronto': 'Canada',
-      'vancouver': 'Canada',
-      'montreal': 'Canada',
-      'calgary': 'Canada',
-      'ottawa': 'Canada',
-      'edmonton': 'Canada',
-      'winnipeg': 'Canada',
-      'quebec': 'Canada',
+      'kampala': 'Uganda',
+      'nairobi': 'Kenya',
+      'kigali': 'Rwanda',
+      'dar es salaam': 'Tanzania',
+      'dodoma': 'Tanzania',
+      'arusha': 'Tanzania',
+      'mombasa': 'Kenya',
+      'kisumu': 'Kenya',
     };
     
     // Check if location contains a known city with wrong country
@@ -215,11 +215,11 @@ export class RapidAPIImporter {
         const locationParts = location.split(',').map(p => p.trim());
         const hasWrongCountry = locationParts.some(part => {
           const partLower = part.toLowerCase();
-          // If it mentions Canada but city is German, or vice versa
-          if (correctCountry === 'Germany' && partLower.includes('canada')) {
+          // If it mentions wrong country for the city
+          if (correctCountry === 'Germany' && (partLower.includes('canada') || partLower.includes('uganda') || partLower.includes('kenya'))) {
             return true;
           }
-          if (correctCountry === 'Canada' && partLower.includes('germany')) {
+          if ((correctCountry === 'Uganda' || correctCountry === 'Kenya' || correctCountry === 'Rwanda' || correctCountry === 'Tanzania') && partLower.includes('germany')) {
             return true;
           }
           return false;
@@ -229,11 +229,11 @@ export class RapidAPIImporter {
           // Fix the location by replacing wrong country with correct one
           let fixedLocation = location;
           if (correctCountry === 'Germany') {
-            fixedLocation = fixedLocation.replace(/,\s*canada/gi, ', Germany');
-            fixedLocation = fixedLocation.replace(/canada/gi, 'Germany');
-          } else if (correctCountry === 'Canada') {
-            fixedLocation = fixedLocation.replace(/,\s*germany/gi, ', Canada');
-            fixedLocation = fixedLocation.replace(/germany/gi, 'Canada');
+            fixedLocation = fixedLocation.replace(/,\s*(canada|uganda|kenya|rwanda|tanzania)/gi, ', Germany');
+            fixedLocation = fixedLocation.replace(/(canada|uganda|kenya|rwanda|tanzania)/gi, 'Germany');
+          } else if (['Uganda', 'Kenya', 'Rwanda', 'Tanzania'].includes(correctCountry)) {
+            fixedLocation = fixedLocation.replace(/,\s*germany/gi, `, ${correctCountry}`);
+            fixedLocation = fixedLocation.replace(/germany/gi, correctCountry);
           }
           console.warn(`Fixed location: "${location}" -> "${fixedLocation}"`);
           return fixedLocation;
@@ -570,15 +570,15 @@ export class RapidAPIImporter {
       'dortmund': 'Germany',
       'essen': 'Germany',
       'leipzig': 'Germany',
-      'toronto': 'Canada',
-      'vancouver': 'Canada',
-      'montreal': 'Canada',
-      'calgary': 'Canada',
-      'ottawa': 'Canada',
-      'edmonton': 'Canada',
-      'winnipeg': 'Canada',
-      'quebec': 'Canada',
-      'london': 'United Kingdom', // Could be UK or Canada (Ontario), but UK is more common
+      'kampala': 'Uganda',
+      'nairobi': 'Kenya',
+      'kigali': 'Rwanda',
+      'dar es salaam': 'Tanzania',
+      'dodoma': 'Tanzania',
+      'arusha': 'Tanzania',
+      'mombasa': 'Kenya',
+      'kisumu': 'Kenya',
+      'london': 'United Kingdom',
       'paris': 'France',
       'amsterdam': 'Netherlands',
       'stockholm': 'Sweden',
@@ -618,7 +618,7 @@ export class RapidAPIImporter {
     const countries = [
       'United States', 'USA', 'US',
       'United Kingdom', 'UK', 'England', 'Scotland', 'Wales',
-      'Canada', 'CA',
+      'Uganda', 'UG', 'Kenya', 'KE', 'Rwanda', 'RW', 'Tanzania', 'TZ',
       'Australia', 'AU',
       'Germany', 'DE',
       'France', 'FR',
@@ -657,7 +657,10 @@ export class RapidAPIImporter {
     const countries = [
       { patterns: ['united states', 'usa', ' us'], country: 'United States' },
       { patterns: ['united kingdom', ' uk', 'england', 'scotland', 'wales'], country: 'United Kingdom' },
-      { patterns: ['canada', ' ca'], country: 'Canada' },
+      { patterns: ['uganda', ' ug'], country: 'Uganda' },
+      { patterns: ['kenya', ' ke'], country: 'Kenya' },
+      { patterns: ['rwanda', ' rw'], country: 'Rwanda' },
+      { patterns: ['tanzania', ' tz'], country: 'Tanzania' },
       { patterns: ['australia', ' au'], country: 'Australia' },
       { patterns: ['germany', ' de', 'germany'], country: 'Germany' },
       { patterns: ['france', ' fr'], country: 'France' },

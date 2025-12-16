@@ -91,7 +91,10 @@ export default function MatchingPreferencesPage() {
   const locationOptions = [
     { label: "United States", value: "united-states" },
     { label: "United Kingdom", value: "united-kingdom" },
-    { label: "Canada", value: "canada" },
+    { label: "Uganda", value: "uganda" },
+    { label: "Kenya", value: "kenya" },
+    { label: "Rwanda", value: "rwanda" },
+    { label: "Tanzania", value: "tanzania" },
     { label: "Germany", value: "germany" },
     { label: "Australia", value: "australia" },
     { label: "Netherlands", value: "netherlands" },

@@ -23,7 +23,8 @@ import {
   ExternalLink,
   Sparkles,
   Brain,
-  CheckCircle
+  CheckCircle,
+  Shield
 } from "lucide-react";
 import Link from "next/link";
 
@@ -85,7 +86,7 @@ export default function PricingPage() {
       description: "Perfect for getting started",
       price: { monthly: 0, yearly: 0 },
       features: [
-        "Browse tech jobs in Canada",
+        "Browse jobs in East Africa",
         "Basic profile creation",
         "Apply to 5 jobs per month",
         "Email support"
@@ -110,7 +111,7 @@ export default function PricingPage() {
         "Direct employer access",
         "Portfolio showcase",
         "Priority support",
-        "Canada visa guidance"
+        "Career guidance"
       ],
       limitations: [],
       popular: true,
@@ -128,7 +129,7 @@ export default function PricingPage() {
         "Direct candidate contact",
         "Custom job matching",
         "Dedicated account manager",
-        "Canada immigration support"
+        "Career support"
       ],
       limitations: [],
       popular: false,
@@ -158,7 +159,7 @@ export default function PricingPage() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-medium"
             >
               <Sparkles className="w-4 h-4" />
-              Tech Talent • Canada Focus
+              Professional Jobs • East Africa
             </motion.div>
 
             {/* Main Headline */}
@@ -180,7 +181,7 @@ export default function PricingPage() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
             >
-              Choose the perfect plan for your tech career in Canada.
+              Choose the perfect plan for your career in East Africa.
               <br />
               No hidden fees, no surprises.
             </motion.p>
@@ -389,7 +390,7 @@ export default function PricingPage() {
               Ready to Get Started?
             </h2>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Join thousands of tech professionals who've found their dream jobs in Canada.
+              Join thousands of professionals who've found their dream jobs across East Africa.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

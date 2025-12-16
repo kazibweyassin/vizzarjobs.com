@@ -230,7 +230,7 @@ export class RemoteOKImporter {
     if (location.toLowerCase().trim() === 'remote') {
       // Look for country mentions in description
       const countries = [
-        'United States', 'USA', 'US', 'Canada', 'UK', 'United Kingdom',
+        'United States', 'USA', 'US', 'UK', 'United Kingdom', 'Uganda', 'Kenya', 'Rwanda', 'Tanzania',
         'Germany', 'France', 'Spain', 'Italy', 'Netherlands', 'Sweden',
         'Australia', 'New Zealand', 'India', 'Brazil', 'Mexico', 'Japan',
         'Singapore', 'Hong Kong', 'Portugal', 'Poland', 'Czech Republic'

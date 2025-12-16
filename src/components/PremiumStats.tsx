@@ -10,11 +10,11 @@ export function PremiumStats() {
       name: "Active Professionals",
       value: "10,000+",
       icon: <Users className="w-5 h-5 text-navy" />,
-      description: "Canadian job seekers"
+      description: "Job seekers"
     },
     {
       id: 2,
-      name: "Canadian Companies",
+      name: "Companies",
       value: "500+",
       icon: <Globe className="w-5 h-5 text-navy" />,
       description: "Hiring on our platform"
@@ -42,11 +42,11 @@ export function PremiumStats() {
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               <span className="text-navy">
-                Canadian Job Market
+                East Africa Job Market
               </span>
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600">
-              Connecting qualified professionals with leading employers across Canada
+              Connecting qualified professionals with leading employers across East Africa
             </p>
           </div>
           <dl className="mt-16 grid grid-cols-1 gap-6 text-center sm:grid-cols-2 lg:grid-cols-4">

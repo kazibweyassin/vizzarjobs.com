@@ -16,18 +16,18 @@ import {
 export function PremiumFeatures() {
   const features = [
     {
-      name: 'Quality Canadian Jobs',
-      description: 'Curated positions from top employers across major Canadian cities.',
+      name: 'Quality Jobs',
+      description: 'Curated positions from top employers across major East African cities.',
       icon: BadgeCheck,
     },
     {
-      name: 'Leading Tech Companies',
-      description: 'Opportunities with Canada\'s most innovative tech companies.',
+      name: 'Leading Companies',
+      description: 'Opportunities with East Africa\'s most innovative companies.',
       icon: Globe,
     },
     {
       name: 'Exclusive Employer Network',
-      description: 'Direct access to positions from premium Canadian companies.',
+      description: 'Direct access to positions from premium companies.',
       icon: Briefcase,
     },
     {
@@ -37,12 +37,12 @@ export function PremiumFeatures() {
     },
     {
       name: 'Verified Profile System',
-      description: 'Complete your profile to stand out to Canadian employers.',
+      description: 'Complete your profile to stand out to employers.',
       icon: Shield,
     },
     {
-      name: 'Career Growth in Canada',
-      description: 'Join a network of professionals thriving in the Canadian tech scene.',
+      name: 'Career Growth',
+      description: 'Join a network of professionals thriving in East Africa.',
       icon: Award,
     },
   ];
@@ -51,12 +51,12 @@ export function PremiumFeatures() {
     <div className="py-24 sm:py-32 bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base font-medium text-navy">Canadian Advantage</h2>
+          <h2 className="text-base font-medium text-navy">East Africa Advantage</h2>
           <p className="mt-3 text-3xl font-medium tracking-tight text-gray-900 sm:text-4xl">
-            Everything you need for your Canadian career
+            Everything you need for your career
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            VizzarJobs provides a focused platform connecting qualified professionals with top Canadian employers.
+            VizzarJobs provides a focused platform connecting qualified professionals with top employers across East Africa.
           </p>
         </div>
       </div>
@@ -111,15 +111,15 @@ export function PremiumFeatures() {
                     <div className="h-10 w-10 rounded-md bg-navy/10 flex items-center justify-center">
                       <Shield className="h-5 w-5 text-navy" />
                     </div>
-                    <h3 className="text-xl font-medium text-gray-900">Canadian Job Platform</h3>
+                    <h3 className="text-xl font-medium text-gray-900">East Africa Job Platform</h3>
                   </div>
                   <p className="text-gray-600 mb-8">
-                    VizzarJobs is more than a job board. We're a curated community connecting qualified professionals with top employers across Canada.
+                    VizzarJobs is more than a job board. We're a curated community connecting qualified professionals with top employers across East Africa.
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-navy mt-0.5 flex-shrink-0" />
-                      <p className="text-gray-600">Positions in major Canadian tech hubs</p>
+                      <p className="text-gray-600">Positions in major East African cities</p>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-navy mt-0.5 flex-shrink-0" />
@@ -144,7 +144,7 @@ export function PremiumFeatures() {
                     </div>
                   </div>
                   <p className="mt-4 text-gray-600">
-                    "VizzarJobs helped me find the perfect position at a top Canadian tech company. The process was quick and efficient."
+                    "VizzarJobs helped me find the perfect position at a top company. The process was quick and efficient."
                   </p>
                 </div>
               </div>

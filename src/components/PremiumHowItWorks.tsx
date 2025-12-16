@@ -50,7 +50,7 @@ export function PremiumHowItWorks() {
           <div 
             className="absolute inset-0 bg-no-repeat bg-center bg-contain xl:bg-cover"
             style={{ 
-              backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/3/38/Canada_blank_map.svg')",
+              backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/East_Africa_regions_map.svg/1200px-East_Africa_regions_map.svg.png')",
               opacity: 0.15
             }}
           />
@@ -65,7 +65,7 @@ export function PremiumHowItWorks() {
               How VizzarJobs Works
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600 mx-auto xl:mx-0 max-w-2xl">
-              Our streamlined process connects qualified professionals with top employers across Canada's thriving tech hubs.
+              Our streamlined process connects qualified professionals with top employers across East Africa's thriving job market.
             </p>
           </div>
           

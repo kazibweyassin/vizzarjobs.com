@@ -33,14 +33,14 @@ export function PremiumHero() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) {
-      // For empty search, navigate to jobs with Canada filter pre-selected
-      router.push("/jobs?location=Canada");
+      // For empty search, navigate to jobs with East Africa filter pre-selected
+      router.push("/jobs?location=East Africa");
       return;
     }
     const encodedQuery = encodeURIComponent(searchQuery.trim());
     jobEvents.search(searchQuery.trim(), 0);
-    // Add Canada as default location for all searches
-    router.push(`/jobs?search=${encodedQuery}&location=Canada`);
+    // Add East Africa as default location for all searches
+    router.push(`/jobs?search=${encodedQuery}&location=East Africa`);
   };
 
   // motion variants
@@ -97,7 +97,7 @@ export function PremiumHero() {
             <div className="w-6 h-6 bg-navy rounded-md flex items-center justify-center">
               <Sparkles className="w-3 h-3 text-white" />
             </div>
-            <span className="font-semibold">Canadian Tech Opportunities</span>
+            <span className="font-semibold">East Africa Job Opportunities</span>
           </motion.div>
 
           <motion.h1
@@ -106,26 +106,26 @@ export function PremiumHero() {
           >
             <span className="block">Find Your Tech Dream Job</span>
             <span className="block text-navy">
-              in Canada
+              in East Africa
             </span>
           </motion.h1>
 
           <motion.p variants={fadeUp} className="text-xl text-gray-600 leading-relaxed max-w-3xl">
-            Connect with <span className="text-navy font-medium">leading Canadian tech companies</span> looking for 
+            Connect with <span className="text-navy font-medium">leading companies</span> looking for 
             skilled professionals across major cities including 
-            <span className="text-navy font-medium"> Toronto, Vancouver, and Montreal</span>.
+            <span className="text-navy font-medium"> Kampala, Nairobi, and Kigali</span>.
           </motion.p>
 
           {/* CTAs - Andela-inspired clean design */}
           <motion.div variants={fadeUp} className="mt-10 flex flex-col gap-4">
             {/* Primary CTA */}
             <div className="flex flex-wrap gap-4">
-              <Link href="/jobs?location=Canada">
+              <Link href="/jobs?location=East Africa">
                 <motion.div 
                   whileHover={{ scale: 1.02 }} 
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-md text-white font-medium bg-navy text-base transition-all"
                 >
-                  <Briefcase className="w-4 h-4" /> Browse Tech Jobs in Canada <ArrowRight className="w-4 h-4 ml-1" />
+                  <Briefcase className="w-4 h-4" /> Browse Jobs in East Africa <ArrowRight className="w-4 h-4 ml-1" />
                 </motion.div>
               </Link>
 
@@ -158,7 +158,7 @@ export function PremiumHero() {
           {/* credibility row */}
           <motion.div variants={fadeUp} className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-8 text-gray-600">
             <div className="flex items-center gap-2"><User className="w-5 h-5 text-navy" /><span>1000+ Jobs</span></div>
-            <div className="flex items-center gap-2"><Globe className="w-5 h-5 text-navy" /><span>Across Canada</span></div>
+            <div className="flex items-center gap-2"><Globe className="w-5 h-5 text-navy" /><span>Across East Africa</span></div>
             <div className="flex items-center gap-2"><Award className="w-5 h-5 text-navy" /><span>Top Employers</span></div>
             <div className="flex items-center gap-2"><Shield className="w-5 h-5 text-navy" /><span>Verified Listings</span></div>
           </motion.div>
