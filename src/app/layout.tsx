@@ -16,15 +16,16 @@ import { ProfileCompletionProvider } from "~/components/ProfileCompletionProvide
 import { ProfileCompletionReminder } from "~/components/ProfileCompletionReminder";
 
 export const metadata: Metadata = {
-  title: "VizzarJobs | East Africa's Leading Professional Job Platform",
-  description: "Find professional opportunities in Uganda, Kenya, Rwanda & East Africa. Browse jobs in Tech, Sales, Marketing, Finance, Customer Success & more. Your career starts here.",
+  title: "VizzarJobs | Visa-Sponsored Jobs for East African Professionals",
+  description: "Find verified visa-sponsored jobs in UAE, UK, Canada, Germany & the Netherlands — plus local roles in Uganda, Kenya & Rwanda. Free for job seekers.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   verification: {
     google: "OpKfLTWY7tDBSSHFZ5_-fsJdtX5UO8Z3cGZgDabHsAE",
   },
+  keywords: ["visa sponsored jobs Uganda", "visa sponsored jobs Kenya", "jobs in UAE for Ugandans", "work permit jobs East Africa", "international jobs Uganda", "visa sponsorship jobs Africa"],
   openGraph: {
-    title: "VizzarJobs | East Africa's Leading Professional Job Platform",
-    description: "Find professional opportunities in Uganda, Kenya, Rwanda & East Africa. Browse jobs in Tech, Sales, Marketing, Finance & more.",
+    title: "VizzarJobs | Visa-Sponsored Jobs for East African Professionals",
+    description: "Verified employers who will sponsor your visa. UAE, UK, Canada, Germany, Netherlands — and local East African roles. Free for job seekers.",
     url: "https://vizzarjobs.com",
     siteName: "VizzarJobs",
     locale: "en_US",
@@ -34,14 +35,14 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "VizzarJobs - East Africa's Leading Professional Job Platform",
+        alt: "VizzarJobs - Visa-Sponsored Jobs for East African Professionals",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VizzarJobs | East Africa's Leading Professional Job Platform",
-    description: "Find professional opportunities in Uganda, Kenya, Rwanda & East Africa. Browse jobs in Tech, Sales, Marketing, Finance & more.",
+    title: "VizzarJobs | Visa-Sponsored Jobs for East African Professionals",
+    description: "Verified employers who will sponsor your visa. UAE, UK, Canada, Germany, Netherlands — and local East African roles.",
     images: ["/images/og-image.jpg"],
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://vizzarjobs.com"),
@@ -60,7 +61,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <body className="min-h-screen bg-gradient-to-br from-white via-opal-2 to-opal-1">
+      <body className="min-h-screen bg-white">
         <div className="fixed inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-[0.02] pointer-events-none" />
         <SessionProvider session={session}>
           <TRPCReactProvider>

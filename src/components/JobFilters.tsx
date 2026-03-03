@@ -9,7 +9,7 @@ import {
   MapPin, 
   Filter, 
   X, 
-  Award,
+  Plane,
   Briefcase,
   TrendingUp,
   Code,
@@ -26,17 +26,18 @@ export interface JobFiltersState {
   search: string;
   location: string;
   visaSponsorship: boolean | undefined;
+  visaDestination?: string; // UAE, UK, Canada, Germany, Netherlands
   jobType: JobType | undefined;
   experienceLevel: ExperienceLevel | undefined;
   techStack: string[];
-  techSpecialization?: string[]; // Specialized tech roles (DevOps, AI, ML)
+  techSpecialization?: string[];
   salaryMin?: number;
   salaryMax?: number;
   postedWithin?: 'day' | 'week' | 'month' | 'any';
   premiumOnly?: boolean;
-  gtsEligible?: boolean; // Global Talent Stream eligible positions
-  complianceManaged?: boolean; // Jobs with compliance automation
-  categoryA?: boolean; // Category A GTS-eligible employers
+  gtsEligible?: boolean;
+  complianceManaged?: boolean;
+  categoryA?: boolean;
 }
 
 interface JobFiltersProps {
@@ -115,10 +116,11 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
       search: "",
       location: "",
       visaSponsorship: undefined,
+      visaDestination: undefined,
       jobType: undefined,
       experienceLevel: undefined,
       techStack: [],
-      techSpecialization: ['DevOps', 'AI', 'Machine Learning'], // Keep specializations focused
+      techSpecialization: [],
       salaryMin: undefined,
       salaryMax: undefined,
       postedWithin: 'any',
@@ -164,6 +166,73 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
       </CardHeader>
 
       <CardContent className="space-y-7 py-6">
+
+        {/* ─── VISA SPONSORSHIP: #1 filter, always visible ─── */}
+        <div className="space-y-3 bg-[#0F2C4C]/5 border border-[#0F2C4C]/15 rounded-xl p-4">
+          <label className="text-sm font-bold text-[#0F2C4C] flex items-center gap-2">
+            <Plane className="w-4 h-4 text-amber-500" />
+            Visa Sponsorship
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => updateFilters({ visaSponsorship: undefined, visaDestination: undefined })}
+              className={`px-3 py-2.5 text-sm rounded-lg transition-all font-medium ${
+                filters.visaSponsorship === undefined
+                  ? "bg-[#0F2C4C] text-white shadow-sm"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-[#0F2C4C]/40"
+              }`}
+            >
+              All Jobs
+            </button>
+            <button
+              onClick={() => updateFilters({ visaSponsorship: true })}
+              className={`px-3 py-2.5 text-sm rounded-lg transition-all font-medium ${
+                filters.visaSponsorship === true
+                  ? "bg-amber-500 text-[#0F2C4C] shadow-sm"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-amber-400"
+              }`}
+            >
+              {filters.visaSponsorship === true && <Check className="w-3.5 h-3.5 inline mr-1" />}
+              Visa Sponsored
+            </button>
+          </div>
+
+          {/* Destination filter — only shown when visaSponsorship is true */}
+          {filters.visaSponsorship === true && (
+            <div className="space-y-2 pt-1">
+              <p className="text-xs font-semibold text-[#0F2C4C]/60 uppercase tracking-wider">
+                Destination country
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "🇦🇪 UAE", value: "UAE" },
+                  { label: "🇬🇧 UK", value: "United Kingdom" },
+                  { label: "🇨🇦 Canada", value: "Canada" },
+                  { label: "🇩🇪 Germany", value: "Germany" },
+                  { label: "🇳🇱 Netherlands", value: "Netherlands" },
+                ].map(({ label, value }) => (
+                  <button
+                    key={value}
+                    onClick={() =>
+                      updateFilters({
+                        visaDestination:
+                          filters.visaDestination === value ? undefined : value,
+                      })
+                    }
+                    className={`px-3 py-1.5 text-xs rounded-lg transition-all font-medium ${
+                      filters.visaDestination === value
+                        ? "bg-amber-500 text-[#0F2C4C] shadow-sm"
+                        : "bg-white text-gray-700 border border-gray-200 hover:border-amber-400"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Search */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
@@ -189,7 +258,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           </div>
         </div>
 
-        {/* Location - Dropdown with modern UI */}
+        {/* Location */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-blue-600" />
@@ -233,48 +302,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           
           {showAdvancedFilters && (
             <div className="mt-4 space-y-6">
-              {/* Visa Sponsorship - Modern Toggle */}
-              <div className="space-y-2.5">
-                <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <Award className="w-4 h-4 text-gray-500" />
-                  Visa Sponsorship
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    onClick={() => updateFilters({ visaSponsorship: undefined })}
-                    className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
-                      filters.visaSponsorship === undefined
-                        ? "bg-blue-600 text-white font-medium shadow-sm"
-                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
-                    }`}
-                  >
-                    {filters.visaSponsorship === undefined && <Check className="w-4 h-4 inline mr-1.5" />}
-                    All Jobs
-                  </button>
-                  <button
-                    onClick={() => updateFilters({ visaSponsorship: true })}
-                    className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
-                      filters.visaSponsorship === true
-                        ? "bg-green-600 text-white font-medium shadow-sm"
-                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-green-300 hover:bg-gray-100"
-                    }`}
-                  >
-                    {filters.visaSponsorship === true && <Check className="w-4 h-4 inline mr-1.5" />}
-                    Sponsored
-                  </button>
-                  <button
-                    onClick={() => updateFilters({ visaSponsorship: false })}
-                    className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
-                      filters.visaSponsorship === false
-                        ? "bg-gray-800 text-white font-medium shadow-sm"
-                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-400 hover:bg-gray-100"
-                    }`}
-                  >
-                    {filters.visaSponsorship === false && <Check className="w-4 h-4 inline mr-1.5" />}
-                    Not Offered
-                  </button>
-                </div>
-              </div>
+              {/* Salary Range (advanced) */}
+              <p className="text-xs text-gray-500">Use the filters above for visa and location. Advanced options below.</p>
             </div>
           )}
         </div>

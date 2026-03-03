@@ -7,27 +7,17 @@ import { api } from "~/trpc/react";
 import { RoleUpdateHandler } from "~/components/RoleUpdateHandler";
 import { cleanJobs } from "~/lib/utils";
 
-
 import { 
   ArrowRight, 
   MapPin, 
   DollarSign, 
-  Clock, 
   Users, 
   Building2,
   CheckCircle,
-  Star,
-  Brain,
-  Code,
-  Database,
-  Sparkles,
   Zap,
   Shield,
-  Play,
-  TrendingUp,
   Globe,
   Award,
-  Target,
   Briefcase,
   Search,
   User,
@@ -38,7 +28,10 @@ import {
   Target as Bullseye,
   Package,
   Palette,
-  Settings
+  Settings,
+  Plane,
+  FileText,
+  Star
 } from "lucide-react";
 
 // Animated Counter Component
@@ -111,21 +104,29 @@ function FeaturedJobsSection() {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gray-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Latest Professional Opportunities
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Fresh job openings across Uganda, Kenya, Rwanda & East Africa
-          </p>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#0F2C4C]">
+              Latest opportunities
+            </h2>
+            <p className="text-gray-500 mt-1 text-sm">
+              Visa-sponsored roles highlighted — apply before they fill up
+            </p>
+          </div>
+          <Link
+            href="/jobs?visaSponsorship=true"
+            className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold text-sm group"
+          >
+            Browse visa-sponsored jobs
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </motion.div>
 
         {Array.isArray(jobs) && jobs.length > 0 ? (
@@ -138,20 +139,27 @@ function FeaturedJobsSection() {
                 viewport={{ once: true }}
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
               >
-                <div className="flex items-start justify-between mb-4">
+                {/* Visa sponsorship badge — top of card */}
+                {job.visaSponsorship && (
+                  <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full mb-3">
+                    <Plane className="w-3 h-3" />
+                    Visa Sponsored
+                  </div>
+                )}
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                    <h3 className="text-base font-bold text-[#0F2C4C] mb-1 line-clamp-2">
                       {job?.title ?? 'Job Title'}
                     </h3>
-                    <div className="flex items-center gap-2 text-gray-600 mb-2">
-                      <Building2 className="w-4 h-4" />
+                    <div className="flex items-center gap-2 text-gray-500 mb-1">
+                      <Building2 className="w-3.5 h-3.5" />
                       <span className="text-sm">{job.company?.name ?? 'Company'}</span>
                     </div>
                     {job.location && (
-                      <div className="flex items-center gap-2 text-gray-600 mb-2">
-                        <MapPin className="w-4 h-4" />
+                      <div className="flex items-center gap-2 text-gray-500">
+                        <MapPin className="w-3.5 h-3.5" />
                         <span className="text-sm">{job.location}</span>
                       </div>
                     )}
@@ -160,12 +168,12 @@ function FeaturedJobsSection() {
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   {job.remote && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                       Remote
                     </span>
                   )}
                   {job.featured && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#0F2C4C]/10 text-[#0F2C4C]">
                       Featured
                     </span>
                   )}
@@ -173,16 +181,16 @@ function FeaturedJobsSection() {
 
                 {job.salaryMin && job.salaryMax && (
                   <div className="flex items-center gap-2 text-gray-700 mb-4">
-                    <DollarSign className="w-4 h-4" />
-                    <span className="text-sm font-medium">
-                      ${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}
+                    <DollarSign className="w-3.5 h-3.5" />
+                    <span className="text-sm font-semibold">
+                      ${job.salaryMin.toLocaleString()} – ${job.salaryMax.toLocaleString()}
                     </span>
                   </div>
                 )}
 
                 <Link
                   href={`/jobs/${job?.id ?? '#'}`}
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm group"
+                  className="inline-flex items-center gap-1.5 text-[#0F2C4C] hover:text-amber-600 font-semibold text-sm group transition-colors"
                 >
                   View Details
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -212,7 +220,7 @@ function FeaturedJobsSection() {
         >
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-2 bg-[#0F2C4C] text-white px-7 py-3 rounded-lg font-semibold hover:bg-[#1a3d63] transition-all shadow-sm"
           >
             <Search className="w-5 h-5" />
             Browse All Jobs
@@ -228,688 +236,431 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       <RoleUpdateHandler />
-      
-      {/* Enhanced Hero Section */}
-      <section className="relative py-24 flex items-start bg-gray-800 overflow-hidden">
-        {/* Background Image with Enhanced Overlay */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gray-900/65 z-10"></div>
-          <img
-            src="https://images.unsplash.com/photo-1580894896813-652ff5aa8146?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170"
-            alt="Technology"
-            className="w-full h-full object-cover"
-          />
-        </div>
 
-        {/* Floating Elements */}
-        <div className="absolute inset-0 z-5">
-          <motion.div
-            animate={{ 
-              y: [0, -20, 0],
-              rotate: [0, 5, 0]
-            }}
-            transition={{ 
-              duration: 6, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-            className="absolute top-20 right-20 w-16 h-16 bg-blue-500/20 rounded-full blur-xl"
-          />
-          <motion.div
-            animate={{ 
-              y: [0, 15, 0],
-              rotate: [0, -3, 0]
-            }}
-            transition={{ 
-              duration: 8, 
-              repeat: Infinity, 
-              ease: "easeInOut",
-              delay: 1
-            }}
-            className="absolute bottom-32 left-16 w-12 h-12 bg-emerald-500/20 rounded-full blur-lg"
-          />
-        </div>
+      {/* ─── HERO: Problem-first, visa-specific, ONE primary CTA ─── */}
+      <section className="relative overflow-hidden bg-[#0F2C4C]">
+        {/* Diagonal amber accent stripe — brand signature element */}
+        <div
+          className="absolute inset-y-0 right-0 w-1/2 hidden lg:block"
+          style={{
+            background: "linear-gradient(135deg, transparent 30%, rgba(245,158,11,0.08) 100%)",
+          }}
+        />
+        {/* Subtle grid texture */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 40px),repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 1px,transparent 40px)",
+          }}
+        />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-12">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="space-y-8"
-          >
-            {/* Enhanced Main Headline */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="space-y-4"
-            >
-              {/* Trust Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-sm border border-emerald-500/30 rounded-full px-4 py-2"
-              >
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-300 text-sm font-medium">
-                  🇺🇬 🇰🇪 🇷🇼 🇹🇿 East Africa's #1 Professional Job Platform
-                </span>
-              </motion.div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-28 lg:py-32">
+          <div className="max-w-3xl">
+            {/* Destination pill — specific, not decorative */}
+            <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/40 rounded-full px-4 py-1.5 mb-8">
+              <Plane className="w-4 h-4 text-amber-400" />
+              <span className="text-amber-300 text-sm font-semibold tracking-wide">
+                UAE · UK · Canada · Germany · Netherlands
+              </span>
+            </div>
 
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-left">
-                <span className="block">Find Your Dream Job in</span>
-                <span className="block text-emerald-400">
-                  Uganda & East Africa
-                </span>
-              </h1>
-              
-              <p className="text-lg md:text-xl text-white/90 max-w-4xl leading-relaxed text-left">
-                Browse thousands of professional opportunities in Tech, Sales, Marketing, Finance, Customer Success, and more.
-                <span className="block text-emerald-400 font-semibold mt-3">
-                  From local roles in Kampala & Nairobi to remote positions and international opportunities across Africa and beyond.
-                </span>
-              </p>
-            </motion.div>
+            {/* H1 — specific outcome, specific audience */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
+              East African professionals
+              <span className="block text-amber-400 mt-1">
+                get hired abroad — with visa sponsorship.
+              </span>
+            </h1>
 
-            {/* Enhanced CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-6 items-start pt-6"
-            >
-              {/* Primary CTA - Browse Jobs */}
+            {/* Subheadline — names the problem then the solution */}
+            <p className="text-lg md:text-xl text-white/75 leading-relaxed max-w-2xl mb-10">
+              Most job boards don't filter by visa sponsorship. VizzarJobs does.
+              Browse roles at verified international employers who will sponsor your work
+              visa — and local East African jobs while you wait.
+            </p>
+
+            {/* ONE primary CTA + secondary text link */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12">
               <Link
-                href="/jobs"
-                className="group inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                href="/jobs?visaSponsorship=true"
+                className="inline-flex items-center gap-2.5 bg-amber-500 hover:bg-amber-400 text-[#0F2C4C] font-bold px-8 py-4 rounded-lg text-base transition-all duration-200 shadow-lg hover:shadow-amber-500/30 hover:shadow-xl"
               >
                 <Search className="w-5 h-5" />
-                <span>Find a Job</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                Browse Visa-Sponsored Jobs
+                <ArrowRight className="w-5 h-5" />
               </Link>
-              
-              {/* Secondary CTA - Employers */}
-              <Link
-                href="/post-job"
-                className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-white/20 transition-all duration-300"
-              >
-                <Building2 className="w-5 h-5" />
-                <span>Post a Job</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-              
-              {/* Primary Sign Up CTA */}
               <Link
                 href="/auth/signup"
-                className="group inline-flex items-center gap-2 bg-white text-emerald-600 px-6 py-3 rounded-full text-base font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="text-white/70 hover:text-white text-sm font-medium underline underline-offset-4 transition-colors"
               >
-                <User className="w-4 h-4" />
-                <span>Sign Up Free</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </motion.div>
-
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-wrap gap-8 pt-6"
-            >
-              <div className="flex items-center gap-3 text-white/80">
-                <Briefcase className="w-5 h-5 text-emerald-400" />
-                <span className="text-base">1000+ Active Jobs</span>
-              </div>
-              <div className="flex items-center gap-3 text-white/80">
-                <MapPin className="w-5 h-5 text-emerald-400" />
-                <span className="text-base">Local & International</span>
-              </div>
-              <div className="flex items-center gap-3 text-white/80">
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
-                <span className="text-base">Free to Use</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Logo in Bottom Left */}
-        <div className="absolute bottom-24 left-6 z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
-            className="w-8 h-8 bg-white rounded-lg flex items-center justify-center"
-          >
-            <span className="text-gray-900 font-bold text-lg">V</span>
-          </motion.div>
-        </div>
-
-        {/* Statistics Section */}
-     
-      </section>
-
-      {/* Job Categories Section */}
-      <section className="py-16 bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Browse Jobs by Category
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Find opportunities across multiple industries in Uganda, Kenya, Rwanda & East Africa
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {/* Technology & IT */}
-            <Link href="/jobs?category=technology">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <Laptop className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Technology & IT
-                </h3>
-                <p className="text-sm text-gray-600">Software, DevOps, Data & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Sales & Business Development */}
-            <Link href="/jobs?category=sales">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <ChartUp className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Sales & Business
-                </h3>
-                <p className="text-sm text-gray-600">Account Executives, BDRs & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Marketing & Communications */}
-            <Link href="/jobs?category=marketing">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-2xl border border-emerald-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <MessageSquare className="w-10 h-10 text-emerald-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                  Marketing
-                </h3>
-                <p className="text-sm text-gray-600">Digital, Content, Social & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Finance & Accounting */}
-            <Link href="/jobs?category=finance">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <Money className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Finance
-                </h3>
-                <p className="text-sm text-gray-600">Accountants, Analysts & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Customer Success */}
-            <Link href="/jobs?category=customer-success">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-2xl border border-emerald-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <Bullseye className="w-10 h-10 text-emerald-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                  Customer Success
-                </h3>
-                <p className="text-sm text-gray-600">Support, Account Managers & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Product & Project Management */}
-            <Link href="/jobs?category=product">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <Package className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Product & PM
-                </h3>
-                <p className="text-sm text-gray-600">Product, Project Managers & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Design & Creative */}
-            <Link href="/jobs?category=design">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-2xl border border-emerald-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <Palette className="w-10 h-10 text-emerald-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                  Design & Creative
-                </h3>
-                <p className="text-sm text-gray-600">UI/UX, Graphic Design & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Operations & Admin */}
-            <Link href="/jobs?category=operations">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.7 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition-all cursor-pointer group"
-              >
-                <Settings className="w-10 h-10 text-gray-600 mb-4" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-gray-600 transition-colors">
-                  Operations
-                </h3>
-                <p className="text-sm text-gray-600">Office, HR, Admin & more</p>
-              </motion.div>
-            </Link>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.8 }}
-            className="text-center mt-8"
-          >
-            <Link
-              href="/jobs"
-              className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold group"
-            >
-              View All Categories
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Jobs Section */}
-      <FeaturedJobsSection />
-
-      {/* How It Works Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How VizzarJobs Works
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Find your dream job in 3 simple steps
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-12">
-            {/* Step 1 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
-                <span className="text-white text-3xl font-bold">1</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                Create Your Profile
-              </h3>
-              <p className="text-gray-600 text-center text-base">
-                Sign up for free and build your professional profile. 
-                Upload your CV, showcase your skills, and set your job preferences.
-              </p>
-            </motion.div>
-
-            {/* Step 2 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="relative"
-            >
-              <div className="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
-                <span className="text-white text-3xl font-bold">2</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                Browse & Apply
-              </h3>
-              <p className="text-gray-600 text-center text-base">
-                Search thousands of jobs across multiple categories.
-                Filter by location, industry, salary, and apply with one click.
-              </p>
-            </motion.div>
-
-            {/* Step 3 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="relative"
-            >
-              <div className="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl">
-                <span className="text-white text-3xl font-bold">3</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                Get Hired
-              </h3>
-              <p className="text-gray-600 text-center text-base">
-                Connect with employers, schedule interviews, and land your dream job.
-                We're with you every step of the way.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* CTA */}
-          <div className="text-center mt-16">
-            <Link
-              href="/auth/signup"
-              className="inline-flex items-center gap-3 bg-emerald-600 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              Start Your Job Search Today
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Browse by Location Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Browse Jobs by Location
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Find opportunities in major cities across East Africa and remote positions worldwide
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {/* Uganda */}
-            <Link href="/jobs?location=Uganda">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                className="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-emerald-500 hover:shadow-lg transition-all cursor-pointer group text-center"
-              >
-                <div className="text-4xl mb-3">🇺🇬</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-emerald-600 transition-colors">
-                  Uganda
-                </h3>
-                <p className="text-sm text-gray-600">Kampala & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Kenya */}
-            <Link href="/jobs?location=Kenya">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                className="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-emerald-500 hover:shadow-lg transition-all cursor-pointer group text-center"
-              >
-                <div className="text-4xl mb-3">🇰🇪</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-emerald-600 transition-colors">
-                  Kenya
-                </h3>
-                <p className="text-sm text-gray-600">Nairobi & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Rwanda */}
-            <Link href="/jobs?location=Rwanda">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                className="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-emerald-500 hover:shadow-lg transition-all cursor-pointer group text-center"
-              >
-                <div className="text-4xl mb-3">🇷🇼</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-emerald-600 transition-colors">
-                  Rwanda
-                </h3>
-                <p className="text-sm text-gray-600">Kigali & more</p>
-              </motion.div>
-            </Link>
-
-            {/* Tanzania */}
-            <Link href="/jobs?location=Tanzania">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                className="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-emerald-500 hover:shadow-lg transition-all cursor-pointer group text-center"
-              >
-                <div className="text-4xl mb-3">🇹🇿</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-emerald-600 transition-colors">
-                  Tanzania
-                </h3>
-                <p className="text-sm text-gray-600">Dar es Salaam</p>
-              </motion.div>
-            </Link>
-
-            {/* Remote */}
-            <Link href="/jobs?remote=true">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border-2 border-blue-200 hover:border-blue-400 hover:shadow-lg transition-all cursor-pointer group text-center"
-              >
-                <Globe className="w-10 h-10 text-blue-600 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
-                  Remote
-                </h3>
-                <p className="text-sm text-gray-600">Work from anywhere</p>
-              </motion.div>
-            </Link>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="text-center mt-8"
-          >
-            <Link
-              href="/jobs"
-              className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold group"
-            >
-              View All Locations
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why Choose VizzarJobs Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose VizzarJobs?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Your trusted partner for finding professional opportunities across East Africa
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Briefcase,
-                title: "Diverse Job Categories",
-                description: "Access opportunities across Technology, Sales, Marketing, Finance, Customer Success, Product, Design, and Operations."
-              },
-              {
-                icon: MapPin,
-                title: "Regional & International",
-                description: "Find jobs in Uganda, Kenya, Rwanda, Tanzania, and remote positions with companies across the globe."
-              },
-              {
-                icon: Zap,
-                title: "Fast & Easy Applications",
-                description: "Apply to multiple jobs with one click. Track your applications and get real-time updates on your status."
-              },
-              {
-                icon: Shield,
-                title: "Verified Companies",
-                description: "All employers are verified. We ensure job postings are legitimate and companies are trustworthy."
-              },
-              {
-                icon: Award,
-                title: "Career Growth Tools",
-                description: "Access career assessments, resume builders, interview tips, and professional development resources."
-              },
-              {
-                icon: Users,
-                title: "100% Free for Job Seekers",
-                description: "Create your profile, browse jobs, and apply to unlimited positions at no cost. Forever free."
-              }
-            ].map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
-                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
-                >
-                  <div className="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6">
-                    <Icon className="w-7 h-7 text-emerald-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-base">{feature.description}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-24 bg-emerald-600 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Ready to Find Your Dream Job?
-            </h2>
-            <p className="text-base md:text-lg text-emerald-50 mb-8 max-w-2xl mx-auto">
-              Join thousands of professionals finding opportunities across Uganda, Kenya, Rwanda & East Africa
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
-                href="/auth/signup"
-                className="inline-flex items-center gap-2 bg-white text-emerald-600 px-6 py-3 rounded-full text-base font-semibold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                <User className="w-4 h-4" />
-                Create Free Account
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              
-              <Link
-                href="/jobs"
-                className="inline-flex items-center gap-2 bg-emerald-500 text-white px-6 py-3 rounded-full text-base font-semibold hover:bg-emerald-400 transition-all shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                <Search className="w-4 h-4" />
-                Browse Jobs Now
-                <ArrowRight className="w-4 h-4" />
+                Create free profile — get matched
               </Link>
             </div>
 
-            <p className="text-emerald-100 text-xs mt-6">
-              ✓ 100% Free for Job Seekers  •  ✓ No Hidden Fees  •  ✓ Apply to Unlimited Jobs
+            {/* Specific, honest proof bar — no vague claims */}
+            <div className="flex flex-wrap gap-x-8 gap-y-3">
+              <div className="flex items-center gap-2 text-white/60 text-sm">
+                <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                Visa-sponsored roles filtered to the top
+              </div>
+              <div className="flex items-center gap-2 text-white/60 text-sm">
+                <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                Local Uganda, Kenya & Rwanda jobs included
+              </div>
+              <div className="flex items-center gap-2 text-white/60 text-sm">
+                <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                Free for job seekers — always
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PROBLEM QUANTIFIER: Why visa sponsorship matters ─── */}
+      <section className="bg-white border-b border-gray-100 py-14">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="space-y-2"
+            >
+              <p className="text-4xl font-extrabold text-[#0F2C4C]">90%+</p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                of job boards don't let you filter<br />by visa sponsorship availability
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="space-y-2"
+            >
+              <p className="text-4xl font-extrabold text-[#0F2C4C]">5+ countries</p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                sponsoring East African talent —<br />UAE, UK, Canada, Germany, Netherlands
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="space-y-2"
+            >
+              <p className="text-4xl font-extrabold text-[#0F2C4C]">1 platform</p>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                for both international visa-sponsored<br />roles AND local East African jobs
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FEATURED JOBS (visa-sponsored first) ─── */}
+      <FeaturedJobsSection />
+
+      {/* ─── HOW IT WORKS: 3 steps, seeker-focused ─── */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-14"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0F2C4C] mb-3">
+              From Kampala to anywhere — in 3 steps
+            </h2>
+            <p className="text-gray-600 text-lg max-w-xl">
+              No immigration jargon. No gatekeepers. Just verified jobs that will sponsor your visa.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-10">
+            {[
+              {
+                step: "01",
+                icon: User,
+                title: "Build your international profile",
+                desc: "Upload your CV, set your target countries and salary. Our resume builder formats it for international applications automatically.",
+              },
+              {
+                step: "02",
+                icon: Search,
+                title: "Filter to visa-sponsored roles",
+                desc: "Toggle \"Visa Sponsored\" and choose your destination country. Only see roles from employers who will sponsor your work permit.",
+              },
+              {
+                step: "03",
+                icon: Plane,
+                title: "Apply and track your status",
+                desc: "One-click apply. Track every application in your dashboard. Get notified when employers view your profile.",
+              },
+            ].map(({ step, icon: Icon, title, desc }) => (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                <div className="text-6xl font-extrabold text-[#0F2C4C]/8 leading-none mb-4 select-none">
+                  {step}
+                </div>
+                <div className="w-12 h-12 bg-[#0F2C4C] rounded-xl flex items-center justify-center mb-4">
+                  <Icon className="w-6 h-6 text-amber-400" />
+                </div>
+                <h3 className="text-lg font-bold text-[#0F2C4C] mb-2">{title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12">
+            <Link
+              href="/auth/signup"
+              className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-[#0F2C4C] font-bold px-7 py-3.5 rounded-lg text-base transition-all duration-200"
+            >
+              Create free profile
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── JOB CATEGORIES: visa destinations + local ─── */}
+      <section className="py-20 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0F2C4C] mb-3">
+              Browse by destination or industry
+            </h2>
+            <p className="text-gray-600 text-lg">
+              International visa-sponsored roles and local East African jobs — all in one place.
+            </p>
+          </motion.div>
+
+          {/* Destination cards */}
+          <div className="mb-10">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+              Visa-Sponsored Destinations
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[
+                { flag: "🇦🇪", country: "UAE", city: "Dubai & Abu Dhabi" },
+                { flag: "🇬🇧", country: "United Kingdom", city: "London & Manchester" },
+                { flag: "🇨🇦", country: "Canada", city: "Toronto & Vancouver" },
+                { flag: "🇩🇪", country: "Germany", city: "Berlin & Munich" },
+                { flag: "🇳🇱", country: "Netherlands", city: "Amsterdam" },
+              ].map(({ flag, country, city }) => (
+                <Link key={country} href={`/jobs?visaSponsorship=true&location=${country}`}>
+                  <motion.div
+                    whileHover={{ y: -3 }}
+                    className="bg-[#0F2C4C]/5 border border-[#0F2C4C]/10 hover:border-amber-400 hover:bg-amber-50 p-4 rounded-xl cursor-pointer transition-all text-center group"
+                  >
+                    <div className="text-3xl mb-2">{flag}</div>
+                    <p className="text-sm font-bold text-[#0F2C4C] group-hover:text-amber-600 transition-colors">
+                      {country}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5">{city}</p>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Industry cards */}
+          <div>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+              Job Categories
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: Laptop, label: "Technology & IT", href: "/jobs?category=technology", color: "text-[#0F2C4C]" },
+                { icon: ChartUp, label: "Sales & Business", href: "/jobs?category=sales", color: "text-[#0F2C4C]" },
+                { icon: MessageSquare, label: "Marketing", href: "/jobs?category=marketing", color: "text-[#0F2C4C]" },
+                { icon: Money, label: "Finance", href: "/jobs?category=finance", color: "text-[#0F2C4C]" },
+                { icon: Bullseye, label: "Customer Success", href: "/jobs?category=customer-success", color: "text-[#0F2C4C]" },
+                { icon: Package, label: "Product & PM", href: "/jobs?category=product", color: "text-[#0F2C4C]" },
+                { icon: Palette, label: "Design & Creative", href: "/jobs?category=design", color: "text-[#0F2C4C]" },
+                { icon: Settings, label: "Operations", href: "/jobs?category=operations", color: "text-[#0F2C4C]" },
+              ].map(({ icon: Icon, label, href }) => (
+                <Link key={label} href={href}>
+                  <motion.div
+                    whileHover={{ y: -3 }}
+                    className="flex items-center gap-3 bg-gray-50 hover:bg-[#0F2C4C] border border-gray-200 hover:border-[#0F2C4C] p-4 rounded-xl cursor-pointer transition-all group"
+                  >
+                    <Icon className="w-5 h-5 text-[#0F2C4C] group-hover:text-amber-400 shrink-0 transition-colors" />
+                    <span className="text-sm font-semibold text-gray-800 group-hover:text-white transition-colors">
+                      {label}
+                    </span>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY VIZZARJOBS: differentiation over generic features ─── */}
+      <section className="py-20 bg-[#0F2C4C]">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-14"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+              The only East African job board built for international careers
+            </h2>
+            <p className="text-white/60 text-lg max-w-2xl">
+              BrighterMonday and Fuzu list local jobs. LinkedIn buries visa sponsorship info.
+              VizzarJobs puts it front and center.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Plane,
+                title: "Visa sponsorship is a first-class filter",
+                description:
+                  "Not a hidden checkbox buried in job descriptions. Toggle it on and every result is a company that will sponsor your work permit.",
+              },
+              {
+                icon: Globe,
+                title: "Destination-aware job search",
+                description:
+                  "Filter by UAE, UK, Canada, Germany or Netherlands. See salary ranges in local currency. Know what to expect before you apply.",
+              },
+              {
+                icon: FileText,
+                title: "International-format resume builder",
+                description:
+                  "Your CV should look different for a Dubai role vs a Kampala role. Our builder formats both correctly — download as PDF for $2.",
+              },
+              {
+                icon: Shield,
+                title: "Employer verification",
+                description:
+                  "Every company is manually verified. If they claim to sponsor visas, we confirm it. No fake listings, no bait-and-switch job posts.",
+              },
+              {
+                icon: MapPin,
+                title: "Local jobs while you plan ahead",
+                description:
+                  "Still need work in Kampala, Nairobi or Kigali? Local East African jobs are one tab away — same account, same profile.",
+              },
+              {
+                icon: Award,
+                title: "100% free for job seekers",
+                description:
+                  "Create a profile, apply to visa-sponsored roles, build your resume and track applications — all at no cost, forever.",
+              },
+            ].map(({ icon: Icon, title, description }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/8 transition-colors"
+              >
+                <div className="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center mb-4">
+                  <Icon className="w-5 h-5 text-amber-400" />
+                </div>
+                <h3 className="text-base font-bold text-white mb-2">{title}</h3>
+                <p className="text-white/55 text-sm leading-relaxed">{description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── LOCAL EAST AFRICA SECTION ─── */}
+      <section className="py-16 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
+            <div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                Also hiring locally
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#0F2C4C]">
+                Jobs in Uganda, Kenya & Rwanda
+              </h2>
+            </div>
+            <Link
+              href="/jobs"
+              className="inline-flex items-center gap-2 text-[#0F2C4C] hover:text-amber-600 font-semibold text-sm transition-colors group"
+            >
+              Browse all locations
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { flag: "🇺🇬", country: "Uganda", city: "Kampala" },
+              { flag: "🇰🇪", country: "Kenya", city: "Nairobi" },
+              { flag: "🇷🇼", country: "Rwanda", city: "Kigali" },
+              { flag: "🌍", country: "Remote", city: "Work from anywhere" },
+            ].map(({ flag, country, city }) => (
+              <Link
+                key={country}
+                href={country === "Remote" ? "/jobs?remote=true" : `/jobs?location=${country}`}
+              >
+                <motion.div
+                  whileHover={{ y: -3 }}
+                  className="bg-white border-2 border-gray-200 hover:border-[#0F2C4C] p-5 rounded-xl cursor-pointer transition-all group text-center"
+                >
+                  <div className="text-3xl mb-2">{flag}</div>
+                  <p className="text-sm font-bold text-gray-900 group-hover:text-[#0F2C4C] transition-colors">
+                    {country}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">{city}</p>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FINAL CTA: single action, no competing buttons ─── */}
+      <section className="py-24 bg-amber-500">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F2C4C] mb-4">
+              Your next job might be in Dubai.<br />
+              Your next visa application starts here.
+            </h2>
+            <p className="text-[#0F2C4C]/70 text-lg mb-10 max-w-xl mx-auto">
+              Create your free profile, upload your CV, and start applying to visa-sponsored
+              roles in minutes.
+            </p>
+            <Link
+              href="/auth/signup"
+              className="inline-flex items-center gap-2.5 bg-[#0F2C4C] hover:bg-[#1a3d63] text-white font-bold px-10 py-4 rounded-lg text-base transition-all duration-200 shadow-lg"
+            >
+              <User className="w-5 h-5" />
+              Create free account
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <p className="text-[#0F2C4C]/60 text-sm mt-5">
+              Free for job seekers · No credit card · Takes 2 minutes
             </p>
           </motion.div>
         </div>

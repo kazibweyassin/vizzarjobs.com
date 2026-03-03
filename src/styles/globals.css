@@ -9,6 +9,19 @@
 }
 
 :root {
+  /* ─── VizzarJobs Brand Palette ─────────────────────────────────
+     Derived from the "Vizzar" identity: trust (navy) + aspiration (amber/gold)
+     Navy = credibility, professionalism, authority
+     Amber = visas, opportunity, warmth, CTA buttons
+  ─────────────────────────────────────────────────────────────── */
+  --brand-primary: #0F2C4C;        /* VizzarJobs navy — hero, nav, footers */
+  --brand-primary-light: #1a3d63;  /* Lighter navy for hover states */
+  --brand-accent: #F59E0B;         /* Amber — ALL primary CTA buttons */
+  --brand-accent-hover: #FBBF24;   /* Amber hover */
+  --brand-surface: #f8f9fa;        /* Off-white page surface */
+  --brand-text: #0F2C4C;           /* Body text dark */
+  --brand-text-muted: #6B7280;     /* Secondary text */
+
   /* Core Brand Colors - Updated for cleaner design with East Africa focus */
   --color--blue: #0057B8; /* Primary blue */
   --color--red: #FF0000; /* Primary red */
