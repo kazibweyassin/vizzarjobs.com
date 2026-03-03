@@ -1,223 +1,189 @@
-
+﻿
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Briefcase,
   Facebook,
   Twitter,
   Instagram,
   Linkedin,
-  Github,
   Mail,
   MapPin,
   Phone,
+  Plane,
   ChevronRight,
+  ArrowRight,
 } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-[#0F2C4C] text-white">
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-6 pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Logo & Info */}
+          {/* Brand column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-6">
-            
-              <span className="text-2xl font-bold text-white">
-                <Image
-                  src="/logowhite.png"
-                  alt="VizzarJobs"
-                  width={100}
-                  height={100}
-                  className="mr-2 h-auto"
-                />
-              </span>
+            <Link href="/" className="inline-block mb-5">
+              <Image
+                src="/logowhite.png"
+                alt="VizzarJobs"
+                width={120}
+                height={40}
+                className="h-10 w-auto"
+              />
             </Link>
-            <p className="text-gray-300 mb-6 max-w-sm">
-              East Africa's professional job platform. Connecting talented professionals with quality opportunities across Uganda, Kenya, Rwanda, and Tanzania.
+            <p className="text-white/70 mb-2 text-sm leading-relaxed max-w-xs">
+              The only East African job board built for visa-sponsored international careers.
             </p>
-            <div className="flex items-center gap-4">
-              <a 
-                href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a 
-                href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a 
-                href="#"
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a 
-                href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a 
-                href="#" 
-                className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-kale transition-all duration-300 hover:shadow-lg hover:scale-110"
-                aria-label="GitHub"
-              >
-                <Github className="w-4 h-4" />
-              </a>
+            <p className="text-white/50 text-xs mb-6 max-w-xs">
+              We help talented professionals from Uganda, Kenya, Rwanda & Tanzania land jobs abroad â€” with full visa support.
+            </p>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-3">
+              {[
+                { Icon: Facebook, label: "Facebook", href: "#" },
+                { Icon: Twitter, label: "Twitter", href: "#" },
+                { Icon: Instagram, label: "Instagram", href: "#" },
+                { Icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
+              ].map(({ Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10 hover:bg-amber-500 hover:text-[#0F2C4C] transition-all duration-200"
+                  aria-label={label}
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Explore */}
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">Explore</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white/40 mb-5">Explore</h4>
             <ul className="space-y-3">
-              <li>
-                <Link href="/jobs" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Browse Jobs
-                </Link>
-              </li>
-              <li>
-                <Link href="/companies" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Companies
-                </Link>
-              </li>
-              <li>
-                <Link href="/how-it-works" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Contact Us
-                </Link>
-              </li>
+              {[
+                { label: "Browse All Jobs", href: "/jobs" },
+                { label: "Visa Sponsored Jobs", href: "/jobs?visaSponsorship=true", highlight: true },
+                { label: "Companies", href: "/companies" },
+                { label: "How It Works", href: "/how-it-works" },
+                { label: "About Us", href: "/about" },
+              ].map(({ label, href, highlight }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className={`flex items-center gap-1.5 text-sm transition-colors ${
+                      highlight
+                        ? "text-amber-400 hover:text-amber-300 font-medium"
+                        : "text-white/60 hover:text-white"
+                    }`}
+                  >
+                    {highlight && <Plane className="w-3.5 h-3.5" />}
+                    {!highlight && <ChevronRight className="w-3.5 h-3.5 opacity-50" />}
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* For Employers */}
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">For Employers</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white/40 mb-5">For Employers</h4>
             <ul className="space-y-3">
-              <li>
-                <Link href="/post-job" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Post a Job
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Hiring Solutions
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-300 hover:text-blue-400 flex items-center gap-1">
-                  <ChevronRight className="w-4 h-4" />
-                  Success Stories
-                </Link>
-              </li>
+              {[
+                { label: "Post a Job", href: "/post-job" },
+                { label: "Pricing", href: "/pricing" },
+                { label: "Employer Dashboard", href: "/dashboard/employer" },
+                { label: "Contact Sales", href: "/contact" },
+              ].map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5 opacity-50" />
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Information */}
+          {/* Contact */}
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">Contact Us</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white/40 mb-5">Contact</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300">Kampala, Uganda</span>
+              <li className="flex items-start gap-3 text-sm text-white/60">
+                <MapPin className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                Kampala, Uganda
               </li>
-        
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href="tel:+256704833021" className="text-gray-300 hover:text-blue-400">+256 704 833 021</a>
+              <li className="flex items-center gap-3 text-sm">
+                <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                <a href="tel:+256704833021" className="text-white/60 hover:text-white transition-colors">
+                  +256 704 833 021
+                </a>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href="mailto:opportunities-kazibweusama@gmail.com" className="text-gray-300 hover:text-blue-400">opportunities-kazibweusama@gmail.com</a>
+              <li className="flex items-center gap-3 text-sm">
+                <Mail className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                <a href="mailto:hello@vizzarjobs.com" className="text-white/60 hover:text-white transition-colors">
+                  hello@vizzarjobs.com
+                </a>
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Newsletter */}
-      <div className="border-t border-gray-800 py-8">
-        <div className="max-w-7xl mx-auto px-4">
+      {/* Newsletter strip */}
+      <div className="border-t border-white/10 py-8">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="md:w-1/2">
-              <h4 className="text-lg font-semibold text-white mb-2">Stay Updated</h4>
-              <p className="text-gray-400">Get the latest jobs and industry news</p>
+            <div>
+              <h4 className="text-base font-semibold text-white mb-1">
+                Get visa-sponsored job alerts
+              </h4>
+              <p className="text-white/50 text-sm">New opportunities delivered to your inbox weekly.</p>
             </div>
-            <div className="md:w-1/2">
-              <form className="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder="Your email address" 
-                  className="bg-gray-800 border border-gray-700 px-4 py-2 rounded-lg text-gray-300 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  aria-label="Email address"
-                />
-                <button 
-                  type="submit" 
-                  className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 font-medium transition-colors whitespace-nowrap"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
+            <form className="flex gap-2 w-full md:w-auto">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="bg-white/10 border border-white/20 px-4 py-2.5 rounded-lg text-white placeholder:text-white/40 flex-1 md:w-64 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
+                aria-label="Email for alerts"
+              />
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-[#0F2C4C] font-bold text-sm transition-all whitespace-nowrap"
+              >
+                Subscribe <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
           </div>
         </div>
       </div>
 
-      {/* Copyright */}
-      <div className="bg-gray-950 py-6">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="text-gray-400 text-sm">
-              &copy; {currentYear} VizzarJobs. All rights reserved.
-            </div>
-            <div className="flex items-center gap-6">
-              <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-sm">
-                Privacy Policy
-              </Link>
-              <Link href="/terms-of-service" className="text-gray-400 hover:text-white text-sm">
-                Terms of Service
-              </Link>
-              <Link href="/faq" className="text-gray-400 hover:text-white text-sm">
-                FAQ
-              </Link>
-              <Link href="/about" className="text-gray-400 hover:text-white text-sm">
-                About Us
-              </Link>
+      {/* Bottom bar */}
+      <div className="border-t border-white/10 py-5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <p className="text-white/40 text-sm">
+              &copy; {currentYear} VizzarJobs. All rights reserved. Built in Kampala ðŸ‡ºðŸ‡¬
+            </p>
+            <div className="flex items-center gap-5">
+              {[
+                { label: "Privacy Policy", href: "/privacy-policy" },
+                { label: "Terms of Service", href: "/terms-of-service" },
+                { label: "FAQ", href: "/faq" },
+              ].map(({ label, href }) => (
+                <Link key={label} href={href} className="text-white/40 hover:text-white text-sm transition-colors">
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

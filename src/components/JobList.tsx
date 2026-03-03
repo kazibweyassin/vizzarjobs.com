@@ -132,8 +132,8 @@ export function JobList({
             {isFromSearch && (
               <div className="mb-8 bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <Search className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-[#0F2C4C]/5 rounded-lg flex items-center justify-center">
+                    <Search className="w-6 h-6 text-[#0F2C4C]" />
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-gray-900">Search Results</h3>
@@ -154,13 +154,13 @@ export function JobList({
                   onClick={() => setShowMobileFilters(!showMobileFilters)}
                   className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg px-6 py-4 text-gray-700 hover:bg-gray-50 transition-all duration-200 shadow-sm"
                 >
-                  <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <Filter className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
+                    <Filter className="w-4 h-4 text-amber-600" />
                   </div>
                   <span className="font-semibold">Filters</span>
                   {(filters.search || filters.location || filters.visaSponsorship !== undefined || 
                     filters.jobType || filters.experienceLevel || filters.techStack.length > 0) && (
-                    <span className="bg-blue-600 text-white text-xs rounded-full px-3 py-1 font-semibold">
+                    <span className="bg-amber-500 text-[#0F2C4C] text-xs rounded-full px-3 py-1 font-semibold">
                       Active
                     </span>
                   )}
@@ -180,14 +180,14 @@ export function JobList({
             {/* Results Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
               <div>
-                <h1 className="text-4xl font-bold text-blue-600">
-                  Professional Jobs in East Africa
+                <h1 className="text-3xl font-bold text-[#0F2C4C]">
+                  Visa-Sponsored Jobs for East African Professionals
                 </h1>
                 {!isLoading && (
                   <div className="flex items-center mt-3 gap-2">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-lg text-sm font-semibold border border-amber-200">
                       <Briefcase className="w-4 h-4" />
-                      {jobs.length} professional opportunities
+                      {jobs.length} opportunities
                     </span>
                     {filters.search && (
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">
@@ -275,7 +275,7 @@ export function JobList({
                     experienceLevel: undefined,
                     techStack: [],
                   })}
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold transition-all duration-200 shadow-sm"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-amber-500 hover:bg-amber-400 text-[#0F2C4C] font-bold transition-all duration-200 shadow-sm"
                 >
                   <span>Reset filters</span>
                   <ArrowRight className="w-5 h-5" />
@@ -302,7 +302,7 @@ export function JobList({
                     <button
                       onClick={handleLoadMore}
                       disabled={isFetchingNextPage}
-                      className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-sm"
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-[#0F2C4C] hover:bg-[#1a3d63] text-white font-semibold transition-all duration-200 disabled:bg-gray-300 shadow-sm"
                     >
                       {isFetchingNextPage ? (
                         <>

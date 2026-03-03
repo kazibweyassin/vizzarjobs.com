@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -6,22 +6,16 @@ import { type Job, type Company } from "@prisma/client";
 import { Badge } from "~/components/ui/premium-badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { DescriptionPreview } from "~/components/DescriptionPreview";
-import { motion } from "framer-motion";
-import { 
-  MapPin, 
-  DollarSign, 
-  Users, 
-  Clock, 
+import {
+  MapPin,
+  DollarSign,
+  Users,
+  Clock,
   ExternalLink,
-  Award,
   Bookmark,
   Share2,
   CheckCircle,
-  Shield,
-  Sparkles,
-  Brain,
-  Code,
-  Database
+  Plane,
 } from "lucide-react";
 import { saveJob, removeJob, isJobSaved } from "~/lib/savedJobs";
 import { hasApplied, getApplicationStatus, getStatusLabel, getStatusColor } from "~/lib/applications";
@@ -146,21 +140,30 @@ export function JobCard({ job }: JobCardProps) {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-blue-300">
+    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0F2C4C]/30">
       <CardHeader className="pb-3">
+        {/* Visa sponsorship badge â€” shown first as primary signal */}
+        {job.visaSponsorship && (
+          <div className="flex items-center gap-1.5 mb-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+              <Plane className="w-3 h-3" />
+              Visa Sponsored
+            </span>
+          </div>
+        )}
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+            <CardTitle className="text-lg font-semibold text-gray-900 group-hover:text-[#0F2C4C] transition-colors">
               <Link href={`/jobs/${job.id}`} className="hover:underline">
                 {job.title}
               </Link>
             </CardTitle>
             <div className="flex items-center gap-2 mt-1">
               <p className="text-sm font-medium text-gray-600">
-                {typeof job.company === 'object' && job.company?.name 
-                  ? job.company.name 
-                  : typeof job.company === 'string' 
-                    ? job.company 
+                {typeof job.company === 'object' && job.company?.name
+                  ? job.company.name
+                  : typeof job.company === 'string'
+                    ? job.company
                     : "Company"}
               </p>
               {applicationStatus && (
@@ -201,23 +204,15 @@ export function JobCard({ job }: JobCardProps) {
           {/* Tech Stack */}
           {job.techStack && job.techStack.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {job.techStack.slice(0, 4).map((tech, index) => {
-                const isAIML = ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'Pandas', 'NumPy', 'OpenCV', 'NLTK', 'spaCy', 'Transformers', 'MLflow', 'Kubeflow', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'GCP'].includes(tech);
-                return (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    className={`text-xs hover:bg-gray-100 ${
-                      isAIML 
-                        ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                        : 'bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    {isAIML && <Brain className="w-3 h-3 mr-1" />}
-                    {tech}
-                  </Badge>
-                );
-              })}
+              {job.techStack.slice(0, 4).map((tech, index) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="text-xs bg-gray-50 text-gray-700 hover:bg-gray-100"
+                >
+                  {tech}
+                </Badge>
+              ))}
               {job.techStack.length > 4 && (
                 <Badge variant="outline" className="text-xs bg-gray-50 text-gray-500">
                   +{job.techStack.length - 4} more
@@ -227,8 +222,8 @@ export function JobCard({ job }: JobCardProps) {
           )}
 
           {/* Job Description Preview */}
-          <DescriptionPreview 
-            content={job.description} 
+          <DescriptionPreview
+            content={job.description}
             maxLines={2}
             className="text-sm text-gray-600"
           />
@@ -250,20 +245,20 @@ export function JobCard({ job }: JobCardProps) {
                 </div>
               )}
             </div>
-            
+
             <div className="flex items-center gap-2">
-              {/* Save button */}
               <button
                 onClick={handleSaveToggle}
                 className={`p-1.5 rounded-full transition-colors ${
-                  saved ? 'text-blue-600 bg-blue-50 hover:bg-blue-100' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                  saved
+                    ? "text-amber-600 bg-amber-50 hover:bg-amber-100"
+                    : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
                 }`}
                 aria-label={saved ? "Unsave job" : "Save job"}
               >
                 <Bookmark className="w-4 h-4" fill={saved ? "currentColor" : "none"} />
               </button>
-              
-              {/* Share button with dropdown */}
+
               <div className="relative">
                 <button
                   onClick={handleShare}
@@ -272,19 +267,12 @@ export function JobCard({ job }: JobCardProps) {
                 >
                   <Share2 className="w-4 h-4" />
                 </button>
-                
                 {showShareMenu && (
                   <div className="absolute bottom-full mb-2 right-0 bg-white shadow-lg rounded-md border border-gray-200 py-1 w-40 z-10">
-                    <button
-                      onClick={copyJobLink}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm"
-                    >
+                    <button onClick={copyJobLink} className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm">
                       Copy link
                     </button>
-                    <button
-                      onClick={shareViaEmail}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm"
-                    >
+                    <button onClick={shareViaEmail} className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm">
                       Share via email
                     </button>
                   </div>
@@ -292,10 +280,10 @@ export function JobCard({ job }: JobCardProps) {
               </div>
             </div>
           </div>
-          
-          <Link 
+
+          <Link
             href={`/jobs/${job.id}`}
-            className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#0F2C4C] hover:text-amber-600 transition-colors"
           >
             View Details
             <ExternalLink className="w-3 h-3" />
