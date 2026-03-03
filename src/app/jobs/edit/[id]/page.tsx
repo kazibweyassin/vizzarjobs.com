@@ -177,7 +177,7 @@ export default function EditJobPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
+        <Loader2 className="h-12 w-12 animate-spin text-[#0F2C4C]" />
         <p className="mt-4 text-gray-600">Loading job details...</p>
       </div>
     );
@@ -196,7 +196,7 @@ export default function EditJobPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-blue-100">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -217,7 +217,7 @@ export default function EditJobPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Briefcase className="h-5 w-5 text-blue-600" />
+                <Briefcase className="h-5 w-5 text-[#0F2C4C]" />
                 Basic Information
               </CardTitle>
             </CardHeader>
@@ -274,7 +274,7 @@ export default function EditJobPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-600" />
+                <Users className="h-5 w-5 text-[#0F2C4C]" />
                 Job Details
               </CardTitle>
             </CardHeader>
@@ -348,7 +348,7 @@ export default function EditJobPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Code className="h-5 w-5 text-blue-600" />
+                <Code className="h-5 w-5 text-[#0F2C4C]" />
                 Job Description
               </CardTitle>
             </CardHeader>
@@ -425,12 +425,12 @@ export default function EditJobPage() {
               {formData.skills.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.skills.map((skill, index) => (
-                    <div key={index} className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                    <div key={index} className="flex items-center gap-2 px-3 py-1 bg-[#0F2C4C]/10 text-[#0F2C4C] rounded-full text-sm">
                       <span>{skill}</span>
                       <button
                         type="button"
                         onClick={() => removeSkill(index)}
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-[#0F2C4C] hover:text-[#1a3d63]"
                       >
                         ×
                       </button>
@@ -462,12 +462,12 @@ export default function EditJobPage() {
               {formData.techStack.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.techStack.map((tech, index) => (
-                    <div key={index} className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                    <div key={index} className="flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">
                       <span>{tech}</span>
                       <button
                         type="button"
                         onClick={() => removeTechStack(index)}
-                        className="text-green-600 hover:text-green-800"
+                        className="text-[#0F2C4C] hover:text-amber-600"
                       >
                         ×
                       </button>
@@ -482,7 +482,7 @@ export default function EditJobPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-blue-600" />
+                <Star className="h-5 w-5 text-[#0F2C4C]" />
                 Job Options
               </CardTitle>
             </CardHeader>

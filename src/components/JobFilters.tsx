@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { JobType, ExperienceLevel } from "@prisma/client";
@@ -150,13 +150,13 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
       <CardHeader className="pb-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <Filter className="w-5 h-5 text-blue-600" />
+            <Filter className="w-5 h-5 text-[#0F2C4C]" />
             Filters
           </CardTitle>
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1"
+              className="text-sm font-medium text-[#0F2C4C] hover:text-[#1a3d63] transition-colors flex items-center gap-1"
             >
               <X className="w-4 h-4" />
               Reset all
@@ -167,7 +167,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
 
       <CardContent className="space-y-7 py-6">
 
-        {/* ─── VISA SPONSORSHIP: #1 filter, always visible ─── */}
+        {/* â”€â”€â”€ VISA SPONSORSHIP: #1 filter, always visible â”€â”€â”€ */}
         <div className="space-y-3 bg-[#0F2C4C]/5 border border-[#0F2C4C]/15 rounded-xl p-4">
           <label className="text-sm font-bold text-[#0F2C4C] flex items-center gap-2">
             <Plane className="w-4 h-4 text-amber-500" />
@@ -197,7 +197,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
             </button>
           </div>
 
-          {/* Destination filter — only shown when visaSponsorship is true */}
+          {/* Destination filter â€” only shown when visaSponsorship is true */}
           {filters.visaSponsorship === true && (
             <div className="space-y-2 pt-1">
               <p className="text-xs font-semibold text-[#0F2C4C]/60 uppercase tracking-wider">
@@ -205,11 +205,11 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               </p>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { label: "🇦🇪 UAE", value: "UAE" },
-                  { label: "🇬🇧 UK", value: "United Kingdom" },
-                  { label: "🇨🇦 Canada", value: "Canada" },
-                  { label: "🇩🇪 Germany", value: "Germany" },
-                  { label: "🇳🇱 Netherlands", value: "Netherlands" },
+                  { label: "ðŸ‡¦ðŸ‡ª UAE", value: "UAE" },
+                  { label: "ðŸ‡¬ðŸ‡§ UK", value: "United Kingdom" },
+                  { label: "ðŸ‡¨ðŸ‡¦ Canada", value: "Canada" },
+                  { label: "ðŸ‡©ðŸ‡ª Germany", value: "Germany" },
+                  { label: "ðŸ‡³ðŸ‡± Netherlands", value: "Netherlands" },
                 ].map(({ label, value }) => (
                   <button
                     key={value}
@@ -236,7 +236,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Search */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <Search className="w-4 h-4 text-blue-600" />
+            <Search className="w-4 h-4 text-[#0F2C4C]" />
             Find Jobs
           </label>
           <div className="relative">
@@ -245,7 +245,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               placeholder="Job title, company, or keywords..."
               value={filters.search}
               onChange={(e) => updateFilters({ search: e.target.value })}
-              className="w-full pl-4 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 shadow-sm"
+              className="w-full pl-4 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0F2C4C] focus:border-[#0F2C4C] outline-none transition-all text-gray-800 shadow-sm"
             />
             {filters.search && (
               <button
@@ -261,14 +261,14 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Location */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-blue-600" />
+            <MapPin className="w-4 h-4 text-[#0F2C4C]" />
             Location
           </label>
           <div className="relative group">
             <select
               value={filters.location}
               onChange={(e) => updateFilters({ location: e.target.value })}
-              className="w-full pl-4 pr-10 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white text-gray-800 shadow-sm"
+              className="w-full pl-4 pr-10 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0F2C4C] focus:border-[#0F2C4C] outline-none transition-all appearance-none bg-white text-gray-800 shadow-sm"
             >
               <option value="">Any location</option>
               {sortedLocations.map((location) => (
@@ -278,7 +278,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               ))}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
-              <ChevronDown className="h-4 w-4 text-gray-500 group-hover:text-blue-600 transition-colors" />
+              <ChevronDown className="h-4 w-4 text-gray-500 group-hover:text-[#0F2C4C] transition-colors" />
             </div>
           </div>
         </div>
@@ -287,7 +287,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         <div className="border-t border-gray-200 pt-6">
           <button
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            className="w-full flex items-center justify-between text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors"
+            className="w-full flex items-center justify-between text-sm font-medium text-gray-800 hover:text-[#0F2C4C] transition-colors"
           >
             <span className="flex items-center gap-2">
               <Filter className="w-4 h-4" />
@@ -311,7 +311,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Premium Jobs Filter */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <Crown className="w-4 h-4 text-emerald-600" />
+            <Crown className="w-4 h-4 text-amber-500" />
             Premium Jobs
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -319,8 +319,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               onClick={() => updateFilters({ premiumOnly: undefined })}
               className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
                 filters.premiumOnly === undefined
-                  ? "bg-blue-600 text-white font-medium shadow-sm"
-                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+                  ? "bg-[#0F2C4C] text-white font-medium shadow-sm"
+                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-[#0F2C4C]/30 hover:bg-gray-100"
               }`}
             >
               All Jobs
@@ -329,8 +329,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               onClick={() => updateFilters({ premiumOnly: true })}
               className={`px-3 py-2.5 text-sm rounded-lg transition-all ${
                 filters.premiumOnly === true
-                  ? "bg-emerald-500 text-white font-medium shadow-sm"
-                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-emerald-300 hover:bg-gray-100"
+                  ? "bg-amber-500 text-white font-medium shadow-sm"
+                  : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-amber-300 hover:bg-gray-100"
               }`}
             >
               {filters.premiumOnly === true && <Check className="w-4 h-4 inline mr-1.5" />}
@@ -343,7 +343,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Job Type - Pills with subtle hover effects */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-blue-600" />
+            <Briefcase className="w-4 h-4 text-[#0F2C4C]" />
             Job Type
           </label>
           <div className="flex flex-wrap gap-2">
@@ -355,8 +355,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 })}
                 className={`px-4 py-2 text-sm rounded-lg transition-all ${
                   filters.jobType === type.value
-                    ? "bg-blue-600 text-white font-medium shadow-sm"
-                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+                    ? "bg-[#0F2C4C] text-white font-medium shadow-sm"
+                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-[#0F2C4C]/30 hover:bg-gray-100"
                 }`}
               >
                 {filters.jobType === type.value && <Check className="w-3.5 h-3.5 inline mr-1" />}
@@ -369,7 +369,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Experience Level - Modern approach */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-blue-600" />
+            <TrendingUp className="w-4 h-4 text-[#0F2C4C]" />
             Experience Level
           </label>
           <div className="flex flex-wrap gap-2">
@@ -381,8 +381,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 })}
                 className={`px-4 py-2 text-sm rounded-lg transition-all ${
                   filters.experienceLevel === level.value
-                    ? "bg-blue-600 text-white font-medium shadow-sm"
-                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+                    ? "bg-[#0F2C4C] text-white font-medium shadow-sm"
+                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-[#0F2C4C]/30 hover:bg-gray-100"
                 }`}
               >
                 {filters.experienceLevel === level.value && <Check className="w-3.5 h-3.5 inline mr-1" />}
@@ -393,16 +393,16 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         </div>
         
         {/* Tech Specialization - Highlighted section for DevOps, AI, ML roles */}
-        <div className="space-y-2.5 bg-navy/5 p-4 rounded-lg border border-navy/10">
+        <div className="space-y-2.5 bg-[#0F2C4C]/5 p-4 rounded-lg border border-[#0F2C4C]/10">
           <div className="flex justify-between items-center">
-            <label className="text-sm font-medium text-navy flex items-center gap-2">
-              <Code className="w-4 h-4 text-navy" />
+            <label className="text-sm font-medium text-[#0F2C4C] flex items-center gap-2">
+              <Code className="w-4 h-4 text-[#0F2C4C]" />
               Tech Specialization
             </label>
             {filters.techSpecialization && filters.techSpecialization.length > 0 && (
               <button
                 onClick={() => updateFilters({ techSpecialization: [] })}
-                className="text-xs text-navy hover:text-navy/80 transition-colors"
+                className="text-xs text-[#0F2C4C] hover:text-[#0F2C4C]/80 transition-colors"
               >
                 Reset
               </button>
@@ -425,8 +425,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 }}
                 className={`px-4 py-2 text-sm rounded-lg transition-all ${
                   filters.techSpecialization?.includes(role.value)
-                    ? "bg-navy text-white font-medium shadow-sm"
-                    : "bg-white text-navy border border-navy/30 hover:bg-navy/5"
+                    ? "bg-[#0F2C4C] text-white font-medium shadow-sm"
+                    : "bg-white text-[#0F2C4C] border border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/5"
                 }`}
               >
                 {filters.techSpecialization?.includes(role.value) && <Check className="w-3.5 h-3.5 inline mr-1" />}
@@ -434,7 +434,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
               </button>
             ))}
           </div>
-          <div className="text-xs text-navy/70 mt-2">
+          <div className="text-xs text-[#0F2C4C]/70 mt-2">
             Focus on in-demand tech specializations
           </div>
         </div>
@@ -442,7 +442,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Salary Range */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-blue-600" />
+            <DollarSign className="w-4 h-4 text-[#0F2C4C]" />
             Salary Range
           </label>
           <div className="space-y-3">
@@ -456,7 +456,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                     salaryMin: e.target.value ? parseInt(e.target.value) : undefined 
                   })}
                   placeholder="$50,000"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#0F2C4C]"
                 />
               </div>
               <div>
@@ -468,14 +468,14 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                     salaryMax: e.target.value ? parseInt(e.target.value) : undefined 
                   })}
                   placeholder="$150,000"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#0F2C4C]"
                 />
               </div>
             </div>
             {(filters.salaryMin || filters.salaryMax) && (
               <button
                 onClick={() => updateFilters({ salaryMin: undefined, salaryMax: undefined })}
-                className="text-xs text-blue-600 hover:text-blue-800 transition-colors"
+                className="text-xs text-[#0F2C4C] hover:text-[#1a3d63] transition-colors"
               >
                 Clear salary filters
               </button>
@@ -486,7 +486,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         {/* Date Posted */}
         <div className="space-y-2.5">
           <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-blue-600" />
+            <Calendar className="w-4 h-4 text-[#0F2C4C]" />
             Date Posted
           </label>
           <div className="flex flex-wrap gap-2">
@@ -503,8 +503,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 })}
                 className={`px-4 py-2 text-sm rounded-lg transition-all ${
                   filters.postedWithin === option.value
-                    ? "bg-blue-600 text-white font-medium shadow-sm"
-                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+                    ? "bg-[#0F2C4C] text-white font-medium shadow-sm"
+                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-[#0F2C4C]/30 hover:bg-gray-100"
                 }`}
               >
                 {filters.postedWithin === option.value && <Check className="w-3.5 h-3.5 inline mr-1" />}
@@ -518,13 +518,13 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
         <div className="space-y-2.5">
           <div className="flex justify-between items-center">
             <label className="text-sm font-medium text-gray-800 flex items-center gap-2">
-              <Code className="w-4 h-4 text-blue-600" />
+              <Code className="w-4 h-4 text-[#0F2C4C]" />
               Tech Stack
             </label>
             {filters.techStack.length > 0 && (
               <button
                 onClick={() => updateFilters({ techStack: [] })}
-                className="text-xs text-blue-600 hover:text-blue-800 transition-colors"
+                className="text-xs text-[#0F2C4C] hover:text-[#1a3d63] transition-colors"
               >
                 Clear ({filters.techStack.length})
               </button>
@@ -538,8 +538,8 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                 onClick={() => toggleTechStack(tech)}
                 className={`px-3 py-1.5 text-sm rounded-full transition-all ${
                   filters.techStack.includes(tech)
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-blue-300 hover:bg-gray-100"
+                    ? "bg-[#0F2C4C] text-white shadow-sm"
+                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:border-[#0F2C4C]/30 hover:bg-gray-100"
                 }`}
               >
                 {filters.techStack.includes(tech) && <Check className="w-3 h-3 inline mr-1" />}
@@ -551,7 +551,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           {techStacks.length > popularTechStacks.length && (
             <button
               onClick={() => setShowAllTechStacks(!showAllTechStacks)}
-              className="text-sm text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1"
+              className="text-sm text-[#0F2C4C] hover:text-[#0F2C4C] transition-colors flex items-center gap-1"
             >
               {showAllTechStacks ? (
                 <>Show less<ChevronDown className="w-3.5 h-3.5 transform rotate-180" /></>
@@ -571,12 +571,12 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
                   <Badge
                     key={tech}
                     variant="outline"
-                    className="bg-blue-50 text-blue-700 border-blue-200 px-2.5 py-1"
+                    className="bg-[#0F2C4C]/5 text-[#0F2C4C] border-[#0F2C4C]/20 px-2.5 py-1"
                   >
                     {tech}
                     <button
                       onClick={() => toggleTechStack(tech)}
-                      className="ml-1.5 hover:text-blue-900 bg-blue-100 rounded-full p-0.5"
+                      className="ml-1.5 hover:text-[#0F2C4C] bg-[#0F2C4C]/10 rounded-full p-0.5"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -591,7 +591,7 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
           <div className="pt-4 border-t border-gray-100">
             <button
               onClick={clearFilters}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 hover:shadow-lg text-white font-medium rounded-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-[#0F2C4C] hover:bg-[#1a3d63] hover:shadow-lg text-white font-medium rounded-lg transition-all duration-300 text-sm flex items-center justify-center gap-2"
             >
               <Filter className="w-4 h-4" />
               Reset all filters
@@ -602,3 +602,5 @@ export function JobFilters({ filters, onFiltersChange, className }: JobFiltersPr
     </Card>
   );
 }
+
+

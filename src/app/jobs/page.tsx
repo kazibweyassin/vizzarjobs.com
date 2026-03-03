@@ -44,7 +44,7 @@ export default async function JobsPage({
       fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="flex items-center gap-2">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#0F2C4C]" />
             <span className="text-gray-600">Loading jobs...</span>
           </div>
         </div>

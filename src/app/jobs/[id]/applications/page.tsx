@@ -93,7 +93,7 @@ export default function JobApplicationsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PENDING": return "text-yellow-600";
-      case "REVIEWED": return "text-blue-600";
+      case "REVIEWED": return "text-[#0F2C4C]";
       case "ACCEPTED": return "text-green-600";
       case "REJECTED": return "text-red-600";
       default: return "text-gray-600";
@@ -106,7 +106,7 @@ export default function JobApplicationsPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
           <p className="text-gray-600 mb-4">You need to be logged in to view applications.</p>
-          <Link href="/auth/signin" className="text-blue-600 hover:text-blue-800">
+          <Link href="/auth/signin" className="text-[#0F2C4C] hover:text-[#1a3d63]">
             Sign In
           </Link>
         </div>
@@ -118,7 +118,7 @@ export default function JobApplicationsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
+          <Loader2 className="h-12 w-12 animate-spin text-[#0F2C4C] mx-auto mb-4" />
           <p className="text-gray-600">Loading applications...</p>
         </div>
       </div>
@@ -133,7 +133,7 @@ export default function JobApplicationsPage() {
           <p className="text-gray-600 mb-4">Failed to load applications.</p>
           <button 
             onClick={() => refetch()}
-            className="text-blue-600 hover:text-blue-800"
+            className="text-[#0F2C4C] hover:text-[#1a3d63]"
           >
             Try Again
           </button>
@@ -185,7 +185,7 @@ export default function JobApplicationsPage() {
             <div className="mt-4 md:mt-0">
               <Link
                 href={`/jobs/${jobId}`}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0F2C4C]"
               >
                 <Eye className="w-4 h-4" />
                 View Job Details
@@ -200,7 +200,7 @@ export default function JobApplicationsPage() {
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="p-2 bg-blue-100 rounded-lg">
-                  <Briefcase className="w-6 h-6 text-blue-600" />
+                  <Briefcase className="w-6 h-6 text-[#0F2C4C]" />
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Total Applications</p>
@@ -266,7 +266,7 @@ export default function JobApplicationsPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F2C4C]"
             >
               <option value="ALL">All Applications</option>
               <option value="PENDING">Pending</option>
@@ -299,7 +299,7 @@ export default function JobApplicationsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-4">
                       <div className="p-3 bg-blue-100 rounded-full">
-                        <User className="w-6 h-6 text-blue-600" />
+                        <User className="w-6 h-6 text-[#0F2C4C]" />
                       </div>
                       <div>
                         <CardTitle className="text-lg">
@@ -325,7 +325,7 @@ export default function JobApplicationsPage() {
                         {application.user.email && (
                           <div className="flex items-center gap-2 text-sm text-gray-600">
                             <Mail className="w-4 h-4" />
-                            <a href={`mailto:${application.user.email}`} className="hover:text-blue-600">
+                            <a href={`mailto:${application.user.email}`} className="hover:text-[#0F2C4C]">
                               {application.user.email}
                             </a>
                           </div>
@@ -333,7 +333,7 @@ export default function JobApplicationsPage() {
                         {application.user.phone && (
                           <div className="flex items-center gap-2 text-sm text-gray-600">
                             <Phone className="w-4 h-4" />
-                            <a href={`tel:${application.user.phone}`} className="hover:text-blue-600">
+                            <a href={`tel:${application.user.phone}`} className="hover:text-[#0F2C4C]">
                               {application.user.phone}
                             </a>
                           </div>
@@ -364,7 +364,7 @@ export default function JobApplicationsPage() {
                               href={application.user.resume} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                              className="text-[#0F2C4C] hover:text-[#1a3d63] flex items-center gap-1"
                             >
                               View Resume
                               <ExternalLink className="w-3 h-3" />
@@ -383,7 +383,7 @@ export default function JobApplicationsPage() {
                         <select
                           value={application.status}
                           onChange={(e) => handleStatusUpdate(application.id, e.target.value)}
-                          className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F2C4C]"
                           disabled={updateStatusMutation.isPending}
                         >
                           <option value="PENDING">Pending</option>
