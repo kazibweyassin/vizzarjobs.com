@@ -1,104 +1,80 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { 
+import {
   ArrowLeft,
   Users,
   Building2,
   ArrowRight,
-  Sparkles
+  Plane,
 } from "lucide-react";
-import Image from "next/image";
 
 export default function SignUpPage() {
   return (
-    <div className="flex min-h-full flex-col justify-center bg-gray-900 px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-4xl">
-        {/* Logo/Header */}
-        <div className="text-center mb-12">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-gray-300 mb-8 transition-colors group"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="text-sm">Back to home</span>
-          </Link>
-          
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 text-indigo-400 rounded-full text-sm font-medium mb-6 border border-indigo-500/20">
-            <Sparkles className="w-4 h-4" />
-            <span>Join VizzarJobs</span>
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-lg">
+        {/* Back link */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-8 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to home
+        </Link>
+
+        {/* Header */}
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full mb-4">
+            <Plane className="w-3.5 h-3.5" />
+            VizzarJobs
           </div>
-          
-          <h2 className="text-3xl font-bold tracking-tight text-white">
-            Choose your account type
-          </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Select how you want to join our platform
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
+          <p className="text-sm text-gray-500 mt-1">Choose how you want to use VizzarJobs</p>
         </div>
 
         {/* Options */}
-        <div className="mt-10 grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
           {/* Job Seeker */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Link href="/auth/signup/job-seeker">
-              <div className="group relative rounded-lg bg-white/5 p-8 border border-white/10 hover:border-indigo-500/50 hover:bg-white/10 transition-all cursor-pointer">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4 group-hover:bg-indigo-500/30 transition-colors">
-                    <Users className="w-8 h-8 text-indigo-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    I'm a Job Seeker
-                  </h3>
-                  <p className="text-sm text-gray-400 mb-6">
-                    Find your dream job across East Africa
-                  </p>
-                  <div className="flex items-center gap-2 text-indigo-400 font-medium text-sm group-hover:gap-3 transition-all">
-                    <span>Get started</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
+          <Link href="/auth/signup/job-seeker">
+            <div className="group bg-white rounded-xl border border-gray-200 hover:border-[#0F2C4C] p-7 cursor-pointer transition-all hover:shadow-md">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-14 h-14 rounded-xl bg-gray-100 group-hover:bg-[#0F2C4C]/10 flex items-center justify-center mb-4 transition-colors">
+                  <Users className="w-7 h-7 text-gray-500 group-hover:text-[#0F2C4C] transition-colors" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">I&apos;m a Job Seeker</h3>
+                <p className="text-sm text-gray-500 mb-5">
+                  Browse visa-sponsored jobs abroad
+                </p>
+                <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0F2C4C] group-hover:gap-2.5 transition-all">
+                  Get started <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-            </Link>
-          </motion.div>
+            </div>
+          </Link>
 
           {/* Employer */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Link href="/auth/signup/employer">
-              <div className="group relative rounded-lg bg-white/5 p-8 border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all cursor-pointer">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4 group-hover:bg-emerald-500/30 transition-colors">
-                    <Building2 className="w-8 h-8 text-emerald-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    I'm an Employer
-                  </h3>
-                  <p className="text-sm text-gray-400 mb-6">
-                    Hire talented professionals for your team
-                  </p>
-                  <div className="flex items-center gap-2 text-emerald-400 font-medium text-sm group-hover:gap-3 transition-all">
-                    <span>Get started</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
+          <Link href="/auth/signup/employer">
+            <div className="group bg-white rounded-xl border border-gray-200 hover:border-amber-500 p-7 cursor-pointer transition-all hover:shadow-md">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-14 h-14 rounded-xl bg-gray-100 group-hover:bg-amber-50 flex items-center justify-center mb-4 transition-colors">
+                  <Building2 className="w-7 h-7 text-gray-500 group-hover:text-amber-600 transition-colors" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">I&apos;m an Employer</h3>
+                <p className="text-sm text-gray-500 mb-5">
+                  Post jobs &amp; find global talent
+                </p>
+                <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-600 group-hover:gap-2.5 transition-all">
+                  Post a job <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-            </Link>
-          </motion.div>
+            </div>
+          </Link>
         </div>
 
         {/* Footer */}
-        <p className="mt-10 text-center text-sm text-gray-400">
+        <p className="mt-8 text-center text-sm text-gray-500">
           Already have an account?{" "}
-          <Link href="/auth/signin" className="font-semibold text-indigo-400 hover:text-indigo-300">
+          <Link href="/auth/signin" className="font-semibold text-[#0F2C4C] hover:text-amber-600 transition-colors">
             Sign in
           </Link>
         </p>
@@ -106,3 +82,5 @@ export default function SignUpPage() {
     </div>
   );
 }
+
+

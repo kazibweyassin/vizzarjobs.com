@@ -5,7 +5,7 @@ import Link from "next/link";
 import { JobFilters, type JobFiltersState } from "~/components/JobFilters";
 import { PremiumJobCard } from "~/components/PremiumJobCard";
 import { api } from "~/trpc/react";
-import { Loader2, Search, Filter, MapPin, Clock, Globe, Building2, ArrowRight, Briefcase } from "lucide-react";
+import { Loader2, Search, Filter, MapPin, ArrowRight, Briefcase } from "lucide-react";
 import { JobCardSkeleton } from "~/components/ui/skeleton";
 
 interface JobListProps {
@@ -214,34 +214,14 @@ export function JobList({
                 )}
               </div>
               
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <select 
-                    className="appearance-none bg-white/80 backdrop-blur-sm border border-white/20 text-slate-700 py-3 px-4 pr-8 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                    defaultValue="newest"
-                  >
-                    <option value="newest">Newest First</option>
-                    <option value="relevant">Most Relevant</option>
-                    <option value="salary">Highest Salary</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-700">
-                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                    </svg>
-                  </div>
-                </div>
-                
-                <button className="inline-flex items-center justify-center p-3 rounded-xl border border-white/20 bg-white/80 backdrop-blur-sm text-slate-700 hover:bg-white/90 transition-all duration-200 shadow-sm hover:shadow-md">
-                  <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                  </svg>
-                </button>
-                
-                <button className="inline-flex items-center justify-center p-3 rounded-xl border border-white/20 bg-white/80 backdrop-blur-sm text-slate-700 hover:bg-white/90 transition-all duration-200 shadow-sm hover:shadow-md">
-                  <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                  </svg>
-                </button>
+              <div className="flex items-center gap-2">
+                <select
+                  className="appearance-none bg-white border border-gray-200 text-gray-700 text-sm py-2.5 px-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F2C4C] focus:border-[#0F2C4C]"
+                  defaultValue="newest"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="salary">Highest Salary</option>
+                </select>
               </div>
             </div>
 
