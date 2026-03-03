@@ -3,9 +3,17 @@ import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 export async function middleware(request: NextRequest) {
-  const token = await getToken({ 
-    req: request, 
-    secret: process.env.AUTH_SECRET 
+  // NextAuth v5 uses "authjs.session-token" (not the v4 "next-auth.session-token")
+  const cookieName =
+    process.env.NODE_ENV === "production"
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token";
+
+  const token = await getToken({
+    req: request,
+    secret: process.env.AUTH_SECRET,
+    cookieName,
+    salt: cookieName,
   });
 
   // Security headers for all responses
@@ -26,14 +34,12 @@ export async function middleware(request: NextRequest) {
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!token) {
-      // Not authenticated - redirect to sign in
       const signInUrl = new URL('/auth/signin', request.url);
-      signInUrl.searchParams.set('callbackUrl', request.url);
+      signInUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
       return NextResponse.redirect(signInUrl);
     }
     
     if (token.role !== 'ADMIN') {
-      // Authenticated but not admin - show access denied
       return NextResponse.redirect(new URL('/auth/unauthorized', request.url));
     }
   }
@@ -46,7 +52,7 @@ export async function middleware(request: NextRequest) {
   
   if (isProtectedRoute && !token) {
     const signInUrl = new URL('/auth/signin', request.url);
-    signInUrl.searchParams.set('callbackUrl', request.url);
+    signInUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
     return NextResponse.redirect(signInUrl);
   }
 
@@ -65,6 +71,5 @@ export const config = {
     '/profile/:path*',
     '/post-job/:path*',
     '/applications/:path*',
-    '/((?!api|_next/static|_next/image|favicon.ico|auth).*)',
   ],
 };

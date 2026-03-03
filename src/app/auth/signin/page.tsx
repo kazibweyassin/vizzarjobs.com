@@ -1,7 +1,8 @@
 ﻿"use client";
 
 import { signIn, getProviders } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Github,
@@ -30,6 +31,17 @@ const providerIcons: Record<string, typeof Chrome> = {
 };
 
 export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><span className="w-6 h-6 border-2 border-[#0F2C4C] border-t-transparent rounded-full animate-spin" /></div>}>
+      <SignInForm />
+    </Suspense>
+  );
+}
+
+function SignInForm() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+
   const [providers, setProviders] = useState<Record<string, Provider> | null>(null);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +55,7 @@ export default function SignInPage() {
   const handleOAuthSignIn = async (providerId: string) => {
     setIsLoading(providerId);
     try {
-      await signIn(providerId, { callbackUrl: "/" });
+      await signIn(providerId, { callbackUrl });
     } catch (err) {
       console.error("Sign in error:", err);
     } finally {
@@ -63,8 +75,10 @@ export default function SignInPage() {
       });
       if (result?.error) {
         setError("Invalid email or password. Please try again.");
+      } else if (result?.ok) {
+        window.location.href = callbackUrl;
       } else {
-        window.location.href = "/";
+        setError("Sign in failed. Please try again.");
       }
     } catch (err) {
       console.error(err);
@@ -100,7 +114,7 @@ export default function SignInPage() {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Sign in to your account</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Job seekers and employers â€” sign in below.
+            Job seekers and employers — sign in below.
           </p>
         </div>
 
@@ -236,19 +250,4 @@ export default function SignInPage() {
     </div>
   );
 }
-
-
-interface Provider {
-  id: string;
-  name: string;
-  type: string;
-  signinUrl: string;
-  callbackUrl: string;
-}
-
-const providerIcons = {
-  google: Chrome,
-  github: Github,
-  discord: MessageCircle,
-};
 
