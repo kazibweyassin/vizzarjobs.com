@@ -1,4 +1,4 @@
-import { Building2, Contact, LayoutDashboard, Users, Database, Briefcase, UserCheck } from "lucide-react";
+import { Building2, Contact, LayoutDashboard, Users, Database, Briefcase, UserCheck, Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { auth } from "~/server/auth";
@@ -9,9 +9,6 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  
-  // Debug the session to see what's in it
-  console.log("Admin layout session:", JSON.stringify(session, null, 2));
   
   // Check if user is authenticated and has ADMIN role
   // We use type assertion here because we've updated the schema
@@ -43,21 +40,29 @@ export default async function AdminLayout({
         {/* Admin Sidebar */}
         <aside className="w-64 bg-white border-r border-gray-200 h-screen sticky top-0">
           <div className="p-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-blue-600">Admin Dashboard</h2>
+            <h2 className="text-xl font-bold text-[#0F2C4C]">Admin Dashboard</h2>
           </div>
           
           <nav className="p-4 space-y-1">
             <Link 
               href="/admin"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <LayoutDashboard className="w-5 h-5" />
               Dashboard
             </Link>
+
+            <Link 
+              href="/admin/create-job"
+              className="flex items-center gap-2 p-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 hover:bg-amber-100"
+            >
+              <Plus className="w-5 h-5 text-amber-600" />
+              <span className="font-semibold">Create Job</span>
+            </Link>
             
             <Link 
               href="/admin/contact-requests"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <Contact className="w-5 h-5" />
               Contact Requests
@@ -65,7 +70,7 @@ export default async function AdminLayout({
             
             <Link 
               href="/admin/verification"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600 bg-blue-50"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                 <path d="M9 12l2 2 4-4"></path>
@@ -76,7 +81,7 @@ export default async function AdminLayout({
             
             <Link 
               href="/admin/companies"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <Building2 className="w-5 h-5" />
               Companies
@@ -84,7 +89,7 @@ export default async function AdminLayout({
             
             <Link 
               href="/admin/users"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <Users className="w-5 h-5" />
               Users
@@ -92,7 +97,7 @@ export default async function AdminLayout({
             
             <Link 
               href="/admin/candidate-pool"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <UserCheck className="w-5 h-5" />
               Candidate Pool
@@ -100,7 +105,7 @@ export default async function AdminLayout({
             
             <Link 
               href="/admin/seed-jobs"
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#0F2C4C]"
             >
               <Briefcase className="w-5 h-5" />
               Seed Jobs

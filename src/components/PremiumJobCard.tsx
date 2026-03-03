@@ -128,8 +128,8 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
   return (
     <>
       <Card 
-        className={`group overflow-hidden transition-all duration-500 hover:shadow-2xl cursor-pointer border border-white/20 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:scale-[1.02] hover:-translate-y-1 ${
-          job.premium ? 'ring-2 ring-gradient-to-r from-yellow-400 to-orange-500' : ''
+        className={`group overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer border border-gray-200 bg-white ${
+          job.premium ? 'ring-2 ring-amber-400' : ''
         }`}
         onClick={handleCardClick}
         style={{
@@ -146,25 +146,25 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                   className="w-14 h-14 rounded-xl object-cover border border-white/20 shadow-sm"
                 />
               ) : (
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 via-blue-500 to-blue-600 flex items-center justify-center border border-white/20 shadow-lg">
-                  <Building2 className="w-7 h-7 text-white" />
+                <div className="w-14 h-14 rounded-xl bg-[#0F2C4C]/10 flex items-center justify-center border border-gray-200">
+                  <Building2 className="w-7 h-7 text-[#0F2C4C]" />
                 </div>
               )}
               
               <div className="flex-1 min-w-0">
-                <CardTitle className="text-xl font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                <CardTitle className="text-xl font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-[#0F2C4C] transition-colors">
                   {job.title}
                 </CardTitle>
                 <div className="flex items-center text-sm text-slate-600 mb-2">
-                  <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center mr-2">
-                    <Building2 className="w-3 h-3 text-blue-600" />
+                  <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center mr-2">
+                    <Building2 className="w-3 h-3 text-gray-500" />
                   </div>
                   <span className="truncate font-medium">{getCompanyName()}</span>
                 </div>
                 {job.location && (
                   <div className="flex items-center text-sm text-slate-500">
-                    <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-2">
-                      <MapPin className="w-3 h-3 text-green-600" />
+                    <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center mr-2">
+                      <MapPin className="w-3 h-3 text-gray-500" />
                     </div>
                     <span className="truncate">{job.location}</span>
                   </div>
@@ -174,13 +174,13 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
             
             <div className="flex flex-col items-end space-y-2">
               {job.premium && (
-                <Badge className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-lg">
+                <Badge className="flex items-center gap-2 bg-amber-500 text-white border-0">
                   <Crown className="w-4 h-4" />
                   Premium
                 </Badge>
               )}
               {job.featured && (
-                <Badge className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 shadow-lg">
+                <Badge className="flex items-center gap-2 bg-[#0F2C4C] text-white border-0">
                   <Star className="w-4 h-4" />
                   Featured
                 </Badge>
@@ -193,11 +193,11 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
           <div className="space-y-4">
             {/* Job Details */}
             <div className="flex flex-wrap gap-3 text-sm">
-              <div className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium">
                 <Briefcase className="w-4 h-4" />
                 {formatJobType(job.jobType)}
               </div>
-              <div className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-2 bg-amber-50 text-amber-700 rounded-lg font-medium">
                 <Users className="w-4 h-4" />
                 {formatExperienceLevel(job.experienceLevel)}
               </div>
@@ -205,8 +205,8 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
 
             {/* Salary */}
             <div className="flex items-center text-sm text-slate-600">
-              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                <DollarSign className="w-4 h-4 text-blue-600" />
+              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                <DollarSign className="w-4 h-4 text-gray-500" />
               </div>
               <span className="font-semibold">{formatSalary(job.salaryMin, job.salaryMax)}</span>
             </div>
@@ -222,14 +222,14 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
 
             {/* Premium Content Preview */}
             {job.premium && !hasPremiumAccess && (
-              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200 rounded-xl p-4">
-                <div className="flex items-center gap-3 text-sm text-emerald-800 mb-2">
-                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                    <Lock className="w-4 h-4" />
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <div className="flex items-center gap-3 text-sm text-amber-900 mb-2">
+                  <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                    <Lock className="w-4 h-4 text-amber-700" />
                   </div>
                   <span className="font-semibold">Premium Job - Subscribe to view full details</span>
                 </div>
-                <p className="text-xs text-emerald-700 leading-relaxed">
+                <p className="text-xs text-amber-700 leading-relaxed">
                   This job includes additional benefits, detailed requirements, and direct employer contact.
                 </p>
               </div>
@@ -250,7 +250,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                     e.stopPropagation();
                     window.location.href = `/jobs/${job.id}`;
                   }}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm text-[#0F2C4C] hover:text-[#1a3d63] hover:bg-gray-50 rounded-lg transition-all duration-200 font-medium"
                 >
                   <Eye className="w-4 h-4" />
                   View Details
@@ -258,10 +258,10 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                 
                 <button
                   onClick={handleApplyClick}
-                  className={`inline-flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition-all duration-200 shadow-sm hover:shadow-md ${
+                  className={`inline-flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition-all duration-200 ${
                     job.premium && !hasPremiumAccess
-                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600'
-                      : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800'
+                      ? 'bg-amber-500 text-white hover:bg-amber-600'
+                      : 'bg-[#0F2C4C] text-white hover:bg-[#1a3d63]'
                   }`}
                 >
                   {job.premium && !hasPremiumAccess ? (
@@ -287,7 +287,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Crown className="w-8 h-8 text-white" />
               </div>
               
@@ -302,7 +302,7 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
               <div className="space-y-3">
                 <Link
                   href="/pricing"
-                  className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200"
+                  className="block w-full bg-[#0F2C4C] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#1a3d63] transition-all duration-200 text-center"
                 >
                   View Premium Plans
                 </Link>

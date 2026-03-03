@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signIn, getProviders } from "next-auth/react";
-import { motion } from "framer-motion";
-import { 
+import {
   ArrowLeft,
   Building2,
   Mail,
@@ -14,12 +13,9 @@ import {
   User,
   Chrome,
   Github,
-  MessageCircle
 } from "lucide-react";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Separator } from "~/components/ui/separator";
 import { api } from "~/trpc/react";
 
 interface Provider {
@@ -30,10 +26,9 @@ interface Provider {
   callbackUrl: string;
 }
 
-const providerIcons = {
+const providerIcons: Record<string, typeof Chrome> = {
   google: Chrome,
   github: Github,
-  discord: MessageCircle,
 };
 
 export default function EmployerSignUpPage() {
@@ -41,323 +36,181 @@ export default function EmployerSignUpPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [providers, setProviders] = useState<Record<string, Provider> | null>(null);
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [authMode, setAuthMode] = useState<"oauth" | "password">("oauth");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const fetchProviders = async () => {
-      const res = await getProviders();
-      setProviders(res);
-    };
-    fetchProviders();
+    getProviders().then(setProviders).catch(console.error);
   }, []);
 
   const handleOAuthSignUp = async (providerId: string) => {
     setIsLoading(providerId);
     try {
-      await signIn(providerId, { 
-        callbackUrl: "/",
-        role: "EMPLOYER" 
-      });
-    } catch (error) {
-      console.error("Sign up error:", error);
-      setError("An error occurred during sign up");
+      await signIn(providerId, { callbackUrl: "/", role: "EMPLOYER" });
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(null);
     }
   };
 
   const createUserMutation = api.users.createWithPassword.useMutation({
-    onSuccess: () => {
-      setSuccess(true);
-      setError("");
+    onSuccess: async () => {
+      // Auto sign-in immediately after account creation
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+      if (result?.ok) {
+        window.location.href = "/";
+      } else {
+        window.location.href = "/auth/signin";
+      }
     },
-    onError: (error) => {
-      setError(error.message || "An error occurred during sign up");
-    }
+    onError: (err) => {
+      setError(err.message || "An error occurred. Please try again.");
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      setError("Please fill in all fields");
-      return;
-    }
-
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
     if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long");
+      setError("Password must be at least 8 characters");
       return;
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    try {
-      await createUserMutation.mutateAsync({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: "EMPLOYER"
-      });
-    } catch (error) {
-      // Error is handled by the mutation's onError callback
-    }
+    await createUserMutation.mutateAsync({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      role: "EMPLOYER",
+    });
   };
 
-  if (success) {
-    return (
-      <div className="flex min-h-full flex-col justify-center bg-gray-900 px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
-              <Building2 className="w-8 h-8 text-emerald-400" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white mb-2">
-              Account Created!
-            </h2>
-            <p className="text-sm text-gray-400 mb-6">
-              Your employer account is pending verification. You'll be able to post jobs once approved.
-            </p>
-            <Link href="/auth/signin">
-              <Button className="w-full bg-emerald-500 hover:bg-emerald-400 text-white">
-                Sign in to your account
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const oauthProviders = providers
+    ? Object.values(providers).filter((p) => p.id !== "credentials" && providerIcons[p.id])
+    : [];
 
   return (
-    <div className="flex min-h-full flex-col justify-center bg-gray-900 px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        {/* Back Link */}
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Link
           href="/auth/signup"
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-gray-300 mb-8 transition-colors group"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-8 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm">Back</span>
+          <ArrowLeft className="w-4 h-4" />
+          Back
         </Link>
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
-            <Building2 className="w-6 h-6 text-emerald-400" />
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0F2C4C] bg-[#0F2C4C]/10 border border-[#0F2C4C]/20 px-3 py-1.5 rounded-full mb-4">
+            <Building2 className="w-3.5 h-3.5" />
+            Employer Account
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-white">
-            Sign up as Employer
-          </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Create your account to start hiring talent
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Create your employer account</h1>
+          <p className="text-sm text-gray-500 mt-1">Post visa-sponsored jobs and find global talent</p>
         </div>
 
-        {/* Auth Mode Toggle */}
-        <div className="mb-6 flex gap-2 p-1 bg-white/5 rounded-lg border border-white/10">
-          <button
-            type="button"
-            onClick={() => setAuthMode("oauth")}
-            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
-              authMode === "oauth"
-                ? "bg-emerald-500 text-white"
-                : "text-gray-400 hover:text-white"
-            }`}
-          >
-            Quick Sign Up
-          </button>
-          <button
-            type="button"
-            onClick={() => setAuthMode("password")}
-            className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
-              authMode === "password"
-                ? "bg-emerald-500 text-white"
-                : "text-gray-400 hover:text-white"
-            }`}
-          >
-            Email & Password
-          </button>
-        </div>
-
-        {error && (
-          <div className="mb-6 p-3 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-            {error}
-          </div>
-        )}
-
-        {authMode === "oauth" ? (
-          <div className="space-y-4">
-            {providers && Object.values(providers)
-              .filter(provider => provider.id !== "credentials" && providerIcons[provider.id as keyof typeof providerIcons])
-              .map((provider) => {
-                const Icon = providerIcons[provider.id as keyof typeof providerIcons]!;
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 space-y-6">
+          {oauthProviders.length > 0 && (
+            <div className="space-y-3">
+              {oauthProviders.map((provider) => {
+                const Icon = providerIcons[provider.id]!;
                 return (
-                  <Button
-                    key={provider.name}
-                    type="button"
+                  <button
+                    key={provider.id}
                     onClick={() => handleOAuthSignUp(provider.id)}
-                    disabled={isLoading === provider.id}
-                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                    disabled={!!isLoading}
+                    className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-sm font-medium text-gray-700 transition-all disabled:opacity-60"
                   >
                     {isLoading === provider.id ? (
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
                     ) : (
-                      <>
-                        <Icon className="w-5 h-5 mr-2" />
-                        Continue with {provider.name}
-                      </>
+                      <Icon className="w-4 h-4 text-gray-500" />
                     )}
-                  </Button>
+                    Continue with {provider.name}
+                  </button>
                 );
               })}
-            
-            <div className="relative my-6">
-              <Separator className="bg-white/10" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="px-4 bg-gray-900 text-gray-400 text-sm">Or</span>
+              <div className="relative my-2">
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-100" /></div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="px-3 bg-white text-gray-400">or sign up with email</span>
+                </div>
               </div>
             </div>
-            
-            <Button
-              type="button"
-              onClick={() => setAuthMode("password")}
-              variant="outline"
-              className="w-full border-white/10 text-gray-300 hover:bg-white/5"
-            >
-              Use Email & Password Instead
-            </Button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">{error}</div>
+            )}
+
             <div>
-              <Label htmlFor="name" className="block text-sm font-medium text-gray-100">
-                Company/Your Name
-              </Label>
-              <div className="mt-2 relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Enter company or your name"
-                  value={formData.name}
+              <Label htmlFor="name" className="text-sm font-medium text-gray-700">Full Name</Label>
+              <div className="mt-1.5 relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input id="name" type="text" placeholder="Your full name" value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500 focus:ring-emerald-500"
-                  required
-                />
+                  className="pl-10 border-gray-200 focus:border-[#0F2C4C] focus:ring-[#0F2C4C]" required />
               </div>
             </div>
 
             <div>
-              <Label htmlFor="email" className="block text-sm font-medium text-gray-100">
-                Email address
-              </Label>
-              <div className="mt-2 relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={formData.email}
+              <Label htmlFor="email" className="text-sm font-medium text-gray-700">Work Email</Label>
+              <div className="mt-1.5 relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input id="email" type="email" placeholder="you@company.com" value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500 focus:ring-emerald-500"
-                  required
-                />
+                  className="pl-10 border-gray-200 focus:border-[#0F2C4C] focus:ring-[#0F2C4C]" required />
               </div>
             </div>
 
             <div>
-              <Label htmlFor="password" className="block text-sm font-medium text-gray-100">
-                Password
-              </Label>
-              <div className="mt-2 relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Min 8 characters"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500 focus:ring-emerald-500"
-                  required
-                  minLength={8}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
-                >
+              <Label htmlFor="password" className="text-sm font-medium text-gray-700">Password</Label>
+              <div className="mt-1.5 relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input id="password" type={showPassword ? "text" : "password"} placeholder="Min 8 characters"
+                  value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="pl-10 pr-10 border-gray-200 focus:border-[#0F2C4C] focus:ring-[#0F2C4C]" required minLength={8} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
             <div>
-              <Label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-100">
-                Confirm Password
-              </Label>
-              <div className="mt-2 relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500 focus:ring-emerald-500"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
-                >
+              <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm Password</Label>
+              <div className="mt-1.5 relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="Repeat password"
+                  value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  className="pl-10 pr-10 border-gray-200 focus:border-[#0F2C4C] focus:ring-[#0F2C4C]" required />
+                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                   {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <div>
-              <Button
-                type="submit"
-                disabled={createUserMutation.isPending}
-                className="flex w-full justify-center bg-emerald-500 hover:bg-emerald-400 text-white"
-              >
-                {createUserMutation.isPending ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Creating account...
-                  </>
-                ) : (
-                  "Create account"
-                )}
-              </Button>
-            </div>
+            <button type="submit" disabled={createUserMutation.isPending}
+              className="w-full py-2.5 px-4 rounded-lg bg-[#0F2C4C] hover:bg-[#1a3d63] text-white font-semibold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2 mt-2">
+              {createUserMutation.isPending ? (
+                <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />Creating account...</>
+              ) : "Create employer account"}
+            </button>
           </form>
-        )}
+        </div>
 
-        <p className="mt-10 text-center text-sm text-gray-400">
+        <p className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{" "}
-          <Link href="/auth/signin" className="font-semibold text-emerald-400 hover:text-emerald-300">
-            Sign in
-          </Link>
+          <Link href="/auth/signin" className="font-semibold text-[#0F2C4C] hover:text-amber-600 transition-colors">Sign in</Link>
         </p>
       </div>
     </div>
