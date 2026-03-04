@@ -130,8 +130,8 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                   onboardingStatus === "COMPLETED"
                     ? "bg-green-100 text-green-800"
                     : onboardingStatus === "IN_PROGRESS"
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-emerald-100 text-emerald-800"
+                    ? "bg-[#0F2C4C]/8 text-[#0F2C4C]"
+                    : "bg-amber-50 text-amber-700"
                 }
               `}
             >
@@ -147,7 +147,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
               <div className="flex-1">
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
-                    className="h-2 bg-blue-600 rounded-full"
+                    className="h-2 bg-amber-500 rounded-full"
                     style={{ width: `${getProgressPercentage()}%` }}
                   />
                 </div>
@@ -166,7 +166,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                 <div
                   className={`
                     absolute left-3 top-5 -ml-px h-full w-0.5 
-                    ${step.completed ? "bg-blue-600" : "bg-gray-200"}
+                    ${step.completed ? "bg-[#0F2C4C]" : "bg-gray-200"}
                   `}
                   aria-hidden="true"
                 />
@@ -177,7 +177,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                         relative z-10 flex h-6 w-6 items-center justify-center rounded-full 
                         ${
                           step.completed
-                            ? "bg-blue-600 group-hover:bg-blue-800"
+                            ? "bg-[#0F2C4C] group-hover:bg-[#0F2C4C]/80"
                             : "bg-white border-2 border-gray-300 group-hover:border-gray-400"
                         }
                       `}
@@ -200,7 +200,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                         <button
                           className={`
                             font-medium focus:outline-none 
-                            ${step.completed ? "text-blue-600" : "text-gray-700"}
+                            ${step.completed ? "text-[#0F2C4C]" : "text-gray-700"}
                           `}
                           onClick={() => handleToggleStep(step.id, !step.completed)}
                         >
@@ -289,7 +289,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                     id="documentName"
                     value={documentName}
                     onChange={(e) => setDocumentName(e.target.value)}
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[#0F2C4C] focus:outline-none focus:ring-1 focus:ring-[#0F2C4C]/20"
                     placeholder="e.g. Passport"
                     required
                   />
@@ -306,7 +306,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                     id="documentType"
                     value={documentType}
                     onChange={(e) => setDocumentType(e.target.value)}
-                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                    className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[#0F2C4C] focus:outline-none focus:ring-1 focus:ring-[#0F2C4C]/20"
                     required
                   >
                     <option value="">Select document type</option>
@@ -331,7 +331,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                       <div className="flex text-sm text-gray-600">
                         <label
                           htmlFor="documentFile"
-                          className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                          className="relative cursor-pointer rounded-md font-medium text-[#0F2C4C] hover:text-[#0F2C4C]/80 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#0F2C4C]/30"
                         >
                           <span>Upload a file</span>
                           <input
@@ -355,7 +355,7 @@ export function OnboardingSteps({ employeeData }: OnboardingStepsProps) {
                 <button
                   type="submit"
                   disabled={uploading || !documentName || !documentType}
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#0F2C4C] hover:bg-[#0F2C4C]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F2C4C]/30 disabled:bg-[#0F2C4C]/40 disabled:cursor-not-allowed"
                 >
                   {uploading ? (
                     <>

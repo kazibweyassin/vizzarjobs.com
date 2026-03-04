@@ -35,7 +35,7 @@ export default function ApplicationStats({ stats, className = "" }: ApplicationS
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-muted-foreground">Total</span>
-              <Calendar className="h-4 w-4 text-blue-500" />
+              <Calendar className="h-4 w-4 text-[#0F2C4C]/50" />
             </div>
             <div className="text-2xl font-bold">{stats.total}</div>
           </CardContent>
@@ -51,7 +51,7 @@ export default function ApplicationStats({ stats, className = "" }: ApplicationS
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-muted-foreground">Active</span>
-              <Clock className="h-4 w-4 text-blue-500" />
+              <Clock className="h-4 w-4 text-[#0F2C4C]/50" />
             </div>
             <div className="text-2xl font-bold">{stats.active}</div>
           </CardContent>
@@ -115,7 +115,7 @@ export default function ApplicationStats({ stats, className = "" }: ApplicationS
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-muted-foreground">Response Rate</span>
-              <BarChart3 className="h-4 w-4 text-blue-500" />
+              <BarChart3 className="h-4 w-4 text-[#0F2C4C]/50" />
             </div>
             <div className="text-2xl font-bold">{stats.responseRate}%</div>
           </CardContent>

@@ -77,11 +77,11 @@ export function MatchedJobs() {
           <Card key={job.id} className="overflow-hidden">
             <div className="relative">
               {job.featured && (
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-500" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-amber-500" />
               )}
               
               <div className="absolute top-4 right-4">
-                <Badge className="bg-blue-500">
+                <Badge className="bg-[#0F2C4C] text-white">
                   {job.matchScore}% Match
                 </Badge>
               </div>
@@ -106,7 +106,7 @@ export function MatchedJobs() {
                       <span className="flex items-center">
                         {job.company.name}
                         {job.company.verified && (
-                          <CheckCircle2 className="h-3 w-3 text-blue-500 ml-1" />
+                          <CheckCircle2 className="h-3 w-3 text-amber-500 ml-1" />
                         )}
                       </span>
                       
@@ -177,10 +177,10 @@ export function MatchedJobs() {
                 </div>
                 
                 <div className="flex gap-2">
-                  <Button size="sm" variant="outline" asChild>
+                  <Button size="sm" variant="outline" className="border-[#0F2C4C]/20 text-[#0F2C4C] hover:bg-[#0F2C4C]/5" asChild>
                     <a href={`/jobs/${job.id}`}>View Job</a>
                   </Button>
-                  <Button size="sm" asChild>
+                  <Button size="sm" className="bg-[#0F2C4C] hover:bg-[#0F2C4C]/90 text-white" asChild>
                     <a href={`/jobs/${job.id}#apply`}>Apply Now</a>
                   </Button>
                 </div>

@@ -39,7 +39,7 @@ export function Footer() {
               The only East African job board built for visa-sponsored international careers.
             </p>
             <p className="text-white/50 text-xs mb-6 max-w-xs">
-              We help talented professionals from Uganda, Kenya, Rwanda & Tanzania land jobs abroad â€” with full visa support.
+              We help talented professionals from Uganda, Kenya, Rwanda &amp; Tanzania land jobs abroad — with full visa support.
             </p>
 
             {/* Social icons */}
@@ -172,7 +172,7 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <p className="text-white/40 text-sm">
-              &copy; {currentYear} VizzarJobs. All rights reserved. Built in Kampala ðŸ‡ºðŸ‡¬
+              &copy; {currentYear} VizzarJobs. All rights reserved. Built in Kampala 🇺🇬
             </p>
             <div className="flex items-center gap-5">
               {[

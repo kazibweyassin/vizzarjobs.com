@@ -55,8 +55,8 @@ interface ApplicationListProps {
 }
 
 const statusColors: Record<ApplicationStatus, string> = {
-  APPLIED: "bg-blue-100 text-blue-800",
-  IN_REVIEW: "bg-blue-100 text-blue-800",
+  APPLIED: "bg-[#0F2C4C]/8 text-[#0F2C4C]",
+  IN_REVIEW: "bg-[#0F2C4C]/8 text-[#0F2C4C]",
   INTERVIEW: "bg-amber-100 text-amber-800",
   OFFER: "bg-green-100 text-green-800",
   REJECTED: "bg-red-100 text-red-800",
@@ -141,7 +141,7 @@ export default function ApplicationList({ applications, emptyMessage }: Applicat
               <div className="flex justify-between items-start">
                 <div>
                   <CardTitle className="text-xl mb-1">
-                    <Link href={`/jobs/${application.job.id}`} className="hover:text-blue-600">
+                    <Link href={`/jobs/${application.job.id}`} className="hover:text-[#0F2C4C]">
                       {application.job.title}
                     </Link>
                   </CardTitle>
@@ -183,7 +183,7 @@ export default function ApplicationList({ applications, emptyMessage }: Applicat
               </div>
               
               {application.notes && (
-                <div className="mt-4 p-3 bg-blue-50 rounded-md text-sm">
+                <div className="mt-4 p-3 bg-amber-50 rounded-md text-sm border border-amber-100">
                   <div className="font-medium mb-1 flex items-center">
                     <MessageSquare className="h-4 w-4 mr-1" /> Your Notes
                   </div>

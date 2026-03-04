@@ -110,7 +110,7 @@ export function HeroSearch() {
         className="bg-white rounded-xl p-2 shadow-xl flex flex-col md:flex-row"
       >
         <div className="flex-1 flex items-center px-4 relative border-b md:border-b-0 md:border-r border-gray-100 py-2">
-          <Search className="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
+          <Search className="h-5 w-5 text-[#0F2C4C]/40 mr-3 flex-shrink-0" />
           <div className="relative flex-1">
             <input 
               type="text" 
@@ -153,7 +153,7 @@ export function HeroSearch() {
                     }}
                   >
                     <div className="flex items-center">
-                      <span className="text-blue-500 mr-2">#</span>
+                      <span className="text-amber-500 mr-2">#</span>
                       {suggestion}
                     </div>
                   </button>
@@ -216,7 +216,7 @@ export function HeroSearch() {
 
       {showLocationField && (
         <div className="flex-1 flex items-center px-4 py-2 relative">
-          <MapPin className="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
+          <MapPin className="h-5 w-5 text-[#0F2C4C]/40 mr-3 flex-shrink-0" />
           <div className="relative flex-1">
             <input 
               type="text" 
@@ -247,7 +247,7 @@ export function HeroSearch() {
                     }}
                   >
                     <div className="flex items-center">
-                      <MapPin className="h-4 w-4 text-blue-500 mr-2" />
+                      <MapPin className="h-4 w-4 text-[#0F2C4C]/40 mr-2" />
                       {suggestion}
                     </div>
                   </button>
@@ -277,7 +277,7 @@ export function HeroSearch() {
         <button 
           type="button" 
           onClick={() => setShowLocationField(!showLocationField)}
-          className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 px-3 py-3 rounded-lg hover:bg-blue-50 transition-colors"
+          className="text-[#0F2C4C]/70 hover:text-[#0F2C4C] font-medium flex items-center gap-1 px-3 py-3 rounded-lg hover:bg-[#0F2C4C]/5 transition-colors"
         >
           <MapPin className="h-4 w-4" />
           {showLocationField ? "Hide location" : "Add location"}
@@ -285,7 +285,7 @@ export function HeroSearch() {
         
         <button 
           type="submit" 
-          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-md"
+          className="bg-amber-500 hover:bg-amber-400 text-[#0F2C4C] px-8 py-3 rounded-lg font-bold transition-colors shadow-sm"
         >
           Search Jobs
         </button>
