@@ -8,8 +8,9 @@ import { Badge } from "~/components/ui/badge";
 import { 
   MapPin, 
   Clock, 
-  Award, 
-  Building2
+  Plane, 
+  Building2,
+  ArrowRight
 } from "lucide-react";
 
 interface SimpleJobCardProps {
@@ -48,7 +49,7 @@ export function SimpleJobCard({ job, index = 0 }: SimpleJobCardProps) {
   };
   
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-all border border-gray-100 transform hover:-translate-y-1 duration-300">
+    <div className="bg-white rounded-xl overflow-hidden transition-all duration-200 border border-gray-200 hover:border-[#0F2C4C]/30 hover:shadow-md">
       <Link href={`/jobs/${job.id}`} className="block p-6">
         <div className="flex justify-between items-start">
           <div className="flex gap-4">
@@ -64,13 +65,13 @@ export function SimpleJobCard({ job, index = 0 }: SimpleJobCardProps) {
                   />
                 </div>
               ) : (
-                <div className="w-16 h-16 rounded-lg bg-blue-100 flex items-center justify-center border border-gray-100">
-                  <Building2 className="w-8 h-8 text-blue-500" />
+                <div className="w-16 h-16 rounded-lg bg-[#0F2C4C]/8 flex items-center justify-center border border-[#0F2C4C]/15">
+                  <Building2 className="w-8 h-8 text-[#0F2C4C]/60" />
                 </div>
               )}
             </div>
             <div>
-              <h3 className="font-bold text-lg text-gray-900 mb-1 hover:text-blue-600 transition-colors">
+              <h3 className="font-bold text-lg text-gray-900 mb-1 hover:text-[#0F2C4C] transition-colors">
                 {job.title}
               </h3>
               <p className="text-gray-600">{companyName}</p>
@@ -90,9 +91,9 @@ export function SimpleJobCard({ job, index = 0 }: SimpleJobCardProps) {
               </span>
             </div>
             {job.visaSponsorship && (
-              <Badge className="bg-gradient-to-r from-blue-600 to-green-600 flex items-center gap-1 hover:from-blue-700 hover:to-green-700">
-                <Award className="w-3 h-3" />
-                <span>Visa Sponsorship</span>
+              <Badge className="inline-flex items-center gap-1 bg-amber-500 text-white border-0 hover:bg-amber-600">
+                <Plane className="w-3 h-3" />
+                <span>Visa Sponsored</span>
               </Badge>
             )}
           </div>
@@ -123,22 +124,9 @@ export function SimpleJobCard({ job, index = 0 }: SimpleJobCardProps) {
                 {formatSalary(job.salary, job.salaryMax)}
               </div>
             )}
-            <span className="text-blue-600 font-medium text-sm flex items-center gap-1 group">
+            <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0F2C4C] text-white text-xs font-semibold rounded-lg hover:bg-[#0F2C4C]/90 transition-all group">
               View Details
-              <svg
-                className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5l7 7-7 7"
-                ></path>
-              </svg>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </span>
           </div>
         </div>

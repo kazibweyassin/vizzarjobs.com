@@ -146,8 +146,8 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                   className="w-14 h-14 rounded-xl object-cover border border-white/20 shadow-sm"
                 />
               ) : (
-                <div className="w-14 h-14 rounded-xl bg-[#0F2C4C]/10 flex items-center justify-center border border-gray-200">
-                  <Building2 className="w-7 h-7 text-[#0F2C4C]" />
+                <div className="w-14 h-14 rounded-xl bg-[#0F2C4C]/8 flex items-center justify-center border border-[#0F2C4C]/15">
+                  <Building2 className="w-7 h-7 text-[#0F2C4C]/50" />
                 </div>
               )}
               
@@ -156,16 +156,11 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
                   {job.title}
                 </CardTitle>
                 <div className="flex items-center text-sm text-slate-600 mb-2">
-                  <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center mr-2">
-                    <Building2 className="w-3 h-3 text-gray-500" />
-                  </div>
                   <span className="truncate font-medium">{getCompanyName()}</span>
                 </div>
                 {job.location && (
-                  <div className="flex items-center text-sm text-slate-500">
-                    <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center mr-2">
-                      <MapPin className="w-3 h-3 text-gray-500" />
-                    </div>
+                  <div className="flex items-center gap-1.5 text-sm text-slate-500">
+                    <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
                     <span className="truncate">{job.location}</span>
                   </div>
                 )}
@@ -204,10 +199,8 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
             </div>
 
             {/* Salary */}
-            <div className="flex items-center text-sm text-slate-600">
-              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                <DollarSign className="w-4 h-4 text-gray-500" />
-              </div>
+            <div className="flex items-center gap-2 text-sm text-slate-600">
+              <DollarSign className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <span className="font-semibold">{formatSalary(job.salaryMin, job.salaryMax)}</span>
             </div>
 
@@ -237,10 +230,8 @@ export function PremiumJobCard({ job, index = 0 }: PremiumJobCardProps) {
 
             {/* Action Buttons */}
             <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-              <div className="flex items-center text-xs text-slate-500">
-                <div className="w-6 h-6 bg-slate-100 rounded-lg flex items-center justify-center mr-2">
-                  <Clock className="w-3 h-3" />
-                </div>
+              <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                <Clock className="w-3.5 h-3.5" />
                 <span className="font-medium">Posted {new Date(job.createdAt).toLocaleDateString()}</span>
               </div>
               

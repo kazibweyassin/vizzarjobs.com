@@ -116,26 +116,26 @@ export function JobCard({ job }: JobCardProps) {
   const getExperienceColor = (level: string) => {
     switch (level) {
       case "JUNIOR":
-        return "bg-green-100 text-green-800 hover:bg-green-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
       case "MID":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+        return "bg-[#0F2C4C]/8 text-[#0F2C4C] border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/15";
       case "SENIOR":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+        return "bg-[#0F2C4C]/15 text-[#0F2C4C] border-[#0F2C4C]/25 hover:bg-[#0F2C4C]/20";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
+        return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
     }
   };
 
   const getJobTypeColor = (type: string) => {
     switch (type) {
       case "FULL_TIME":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+        return "bg-[#0F2C4C]/8 text-[#0F2C4C] border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/15";
       case "CONTRACT":
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
+        return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
       case "INTERNSHIP":
-        return "bg-green-100 text-green-800 hover:bg-green-200";
+        return "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
+        return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
     }
   };
 
@@ -283,7 +283,7 @@ export function JobCard({ job }: JobCardProps) {
 
           <Link
             href={`/jobs/${job.id}`}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-[#0F2C4C] hover:text-amber-600 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0F2C4C] hover:bg-[#0F2C4C]/90 text-white text-xs font-semibold rounded-lg transition-all"
           >
             View Details
             <ExternalLink className="w-3 h-3" />
