@@ -1,29 +1,131 @@
-# Create T3 App
+# VizzarJobs.com
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+**VizzarJobs.com** is a modern, full-stack web application designed to help users discover new job opportunities efficiently. Built with the **T3 Stack** (Next.js, TypeScript, Prisma, tRPC, TailwindCSS, and more), it demonstrates scalable architecture, best-practice full-stack engineering, and production-level DevOps.
 
-## What's next? How do I make an app with this?
+---
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## 🚀 Project Purpose & Features
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+VizzarJobs.com provides a user-friendly platform for:
+- **Job seekers** to browse, search, and filter positions.
+- **Employers/Recruiters** to post and manage job listings (extend as needed).
+- **Authentication** for user accounts and secure job applications.
+- **Modern UI** leveraging responsive design and accessibility.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
+> _Replace this section with the actual product summary, key features, and unique value your app provides._
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Backend:** [tRPC](https://trpc.io) • [Prisma ORM](https://prisma.io)
+- **Database:** PostgreSQL (or your DB of choice)
+- **UI:** [Tailwind CSS](https://tailwindcss.com/) • React Components
+- **Authentication:** [NextAuth.js](https://next-auth.js.org/) (if used)
+- **Dev Tools:** TypeScript, ESLint, Prettier, Docker support (optional)
+- **Testing:** (add your testing approach if you have any)
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+  app/            # Entry point & route definitions (Next.js)
+  components/     # Reusable React UI components
+  hooks/          # Custom React hooks
+  lib/            # Utilities and helper functions
+  server/         # Backend API logic (tRPC procedures, API handlers)
+  styles/         # Tailwind or global CSS
+  trpc/           # tRPC router and API code
+  types/          # TypeScript type definitions
+prisma/           # Prisma schema & migrations
+public/           # Static assets (images, favicon, etc)
+docs/             # Documentation & setup guides
+```
+
+---
+
+## 🏁 Getting Started
+
+### 1. **Clone & Install**
+
+```bash
+git clone https://github.com/kazibweyassin/vizzarjobs.com.git
+cd vizzarjobs.com
+npm install
+```
+
+### 2. **Environment Setup**
+
+- Copy the example env file to set secrets, DB credentials, etc.  
+  ```bash
+  cp .env.example .env
+  ```
+- Edit `.env` as needed.
+
+### 3. **Prisma Database Setup**
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+### 4. **Run the App Locally**
+
+```bash
+npm run dev
+```
+App will be available at [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 🧑‍💻 Notable Skills Demonstrated
+
+- Full-stack TypeScript development
+- RESTless API development & typesafe communication (tRPC)
+- Relational databases & ORM (Prisma)
+- Modern authentication (optional: NextAuth)
+- Responsive design with Tailwind
+- Modular, scalable folder structure
+- Automated testing/checklists (add more if you have real test coverage)
+- CI/CD & DevOps (describe your deployment pipeline if relevant)
+
+---
+
+## 📖 Setup & Admin Guides
+
+- [ADMIN-SETUP.md](./ADMIN-SETUP.md)
+- [CRON-SETUP.md](./CRON-SETUP.md)
+- [GROWTH-ANALYSIS.md](./GROWTH-ANALYSIS.md)
+- [SIGNUP_IMPROVEMENTS.md](./SIGNUP_IMPROVEMENTS.md)
+- [TESTING-CHECKLIST.md](./TESTING-CHECKLIST.md)
+
+---
+
+## 📄 License
+
+_MIT or add your license here._
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! See [docs/](./docs) for setup tips.
+
+---
+
+## 👤 Author
+
+[Yassin Kazibwe](https://github.com/kazibweyassin)
+
+---
+
+## 🔗 Links & Credits
+
+- [T3 Stack Documentation](https://create.t3.gg/)
+- [Next.js](https://nextjs.org/)
 - [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- [Prisma](https://prisma.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
