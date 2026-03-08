@@ -219,19 +219,3 @@ export default function JobSeekerSignUpPage() {
     </div>
   );
 }
-
-
-interface Provider {
-  id: string;
-  name: string;
-  type: string;
-  signinUrl: string;
-  callbackUrl: string;
-}
-
-const providerIcons = {
-  google: Chrome,
-  github: Github,
-  discord: MessageCircle,
-};
-
