@@ -1,7 +1,8 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { type Job, type Company } from "@prisma/client";
 import { Badge } from "~/components/ui/premium-badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
@@ -17,8 +18,8 @@ import {
   CheckCircle,
   Plane,
 } from "lucide-react";
-import { saveJob, removeJob, isJobSaved } from "~/lib/savedJobs";
-import { hasApplied, getApplicationStatus, getStatusLabel, getStatusColor } from "~/lib/applications";
+import { api } from "~/trpc/react";
+import { getStatusLabel, getStatusColor } from "~/lib/applications";
 
 interface JobCardProps {
   job: Job & {
@@ -27,58 +28,52 @@ interface JobCardProps {
       applications: number;
     };
   };
+  /** Pre-fetched saved state (passed in from a parent that already has the list) */
+  initialSaved?: boolean;
 }
 
-export function JobCard({ job }: JobCardProps) {
-  const [saved, setSaved] = useState(false);
+export function JobCard({ job, initialSaved = false }: JobCardProps) {
+  const { data: session } = useSession();
+  const [saved, setSaved] = useState(initialSaved);
   const [showShareMenu, setShowShareMenu] = useState(false);
-  const [applicationStatus, setApplicationStatus] = useState<string | null>(null);
-  
-  // Check if the job is saved and application status on component mount
-  useEffect(() => {
-    setSaved(isJobSaved(job.id));
-    if (hasApplied(job.id)) {
-      const status = getApplicationStatus(job.id);
-      setApplicationStatus(status);
-    }
-  }, [job.id]);
-  
+
+  // DB-backed toggle mutation
+  const toggleSave = api.savedJobs.toggle.useMutation({
+    onMutate: () => setSaved((prev) => !prev), // optimistic update
+    onError: () => setSaved((prev) => !prev),   // rollback on error
+  });
+
+  // Application status from DB — only query when logged in
+  const { data: appStatus } = api.applications.getApplicationStatus.useQuery(
+    { jobId: job.id },
+    { enabled: !!session?.user, staleTime: 60_000 }
+  );
+
   const handleSaveToggle = () => {
-    if (saved) {
-      removeJob(job.id);
-    } else {
-      saveJob(job.id);
+    if (!session?.user) {
+      window.location.href = `/auth/signin?callbackUrl=/jobs/${job.id}`;
+      return;
     }
-    setSaved(!saved);
+    toggleSave.mutate({ jobId: job.id });
   };
-  
-  const handleShare = () => {
-    setShowShareMenu(!showShareMenu);
-  };
-  
+
+  const handleShare = () => setShowShareMenu((v) => !v);
+
   const copyJobLink = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/jobs/${job.id}`);
+    void navigator.clipboard.writeText(`${window.location.origin}/jobs/${job.id}`);
     setShowShareMenu(false);
-    // You could add a toast notification here
   };
-  
+
   const shareViaEmail = () => {
-    const companyName = typeof job.company === 'object' && job.company?.name 
-      ? job.company.name 
-      : typeof job.company === 'string' 
-        ? job.company 
-        : "Company";
-    
+    const companyName = job.companyRelation?.name ?? "Company";
     const subject = encodeURIComponent(`Job Opportunity: ${job.title} at ${companyName}`);
     const body = encodeURIComponent(
-      `Check out this job on VizzarJobs:\n\n` +
-      `${job.title} at ${companyName}\n\n` +
-      `${window.location.origin}/jobs/${job.id}`
+      `Check out this job on VizzarJobs:\n\n${job.title} at ${companyName}\n\n${window.location.origin}/jobs/${job.id}`
     );
     window.open(`mailto:?subject=${subject}&body=${body}`);
     setShowShareMenu(false);
   };
-  
+
   const formatSalary = (min?: number | null, max?: number | null) => {
     if (!min && !max) return "Salary not specified";
     if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
@@ -89,60 +84,43 @@ export function JobCard({ job }: JobCardProps) {
 
   const formatJobType = (jobType: string) => {
     switch (jobType) {
-      case "FULL_TIME":
-        return "Full Time";
-      case "CONTRACT":
-        return "Contract";
-      case "INTERNSHIP":
-        return "Internship";
-      default:
-        return jobType;
+      case "FULL_TIME": return "Full Time";
+      case "CONTRACT":  return "Contract";
+      case "INTERNSHIP": return "Internship";
+      default: return jobType;
     }
   };
 
   const formatExperienceLevel = (level: string) => {
     switch (level) {
-      case "JUNIOR":
-        return "Junior";
-      case "MID":
-        return "Mid Level";
-      case "SENIOR":
-        return "Senior";
-      default:
-        return level;
+      case "JUNIOR": return "Junior";
+      case "MID":    return "Mid Level";
+      case "SENIOR": return "Senior";
+      default: return level;
     }
   };
 
   const getExperienceColor = (level: string) => {
     switch (level) {
-      case "JUNIOR":
-        return "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
-      case "MID":
-        return "bg-[#0F2C4C]/8 text-[#0F2C4C] border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/15";
-      case "SENIOR":
-        return "bg-[#0F2C4C]/15 text-[#0F2C4C] border-[#0F2C4C]/25 hover:bg-[#0F2C4C]/20";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
+      case "JUNIOR": return "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
+      case "MID":    return "bg-[#0F2C4C]/8 text-[#0F2C4C] border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/15";
+      case "SENIOR": return "bg-[#0F2C4C]/15 text-[#0F2C4C] border-[#0F2C4C]/25 hover:bg-[#0F2C4C]/20";
+      default:       return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
     }
   };
 
   const getJobTypeColor = (type: string) => {
     switch (type) {
-      case "FULL_TIME":
-        return "bg-[#0F2C4C]/8 text-[#0F2C4C] border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/15";
-      case "CONTRACT":
-        return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
-      case "INTERNSHIP":
-        return "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
+      case "FULL_TIME":  return "bg-[#0F2C4C]/8 text-[#0F2C4C] border-[#0F2C4C]/20 hover:bg-[#0F2C4C]/15";
+      case "CONTRACT":   return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
+      case "INTERNSHIP": return "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100";
+      default:           return "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200";
     }
   };
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#0F2C4C]/30">
       <CardHeader className="pb-3">
-        {/* Visa sponsorship badge â€” shown first as primary signal */}
         {job.visaSponsorship && (
           <div className="flex items-center gap-1.5 mb-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
@@ -160,16 +138,15 @@ export function JobCard({ job }: JobCardProps) {
             </CardTitle>
             <div className="flex items-center gap-2 mt-1">
               <p className="text-sm font-medium text-gray-600">
-                {typeof job.company === 'object' && job.company?.name
-                  ? job.company.name
-                  : typeof job.company === 'string'
-                    ? job.company
-                    : "Company"}
+                {job.companyRelation?.name ?? "Company"}
               </p>
-              {applicationStatus && (
-                <Badge variant="outline" className={`border-none text-xs ${getStatusColor(applicationStatus as any)}`}>
+              {appStatus?.status && (
+                <Badge
+                  variant="outline"
+                  className={`border-none text-xs ${getStatusColor(appStatus.status as any)}`}
+                >
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  {getStatusLabel(applicationStatus as any)}
+                  {getStatusLabel(appStatus.status as any)}
                 </Badge>
               )}
             </div>
@@ -179,37 +156,30 @@ export function JobCard({ job }: JobCardProps) {
 
       <CardContent className="pb-4">
         <div className="space-y-3">
-          {/* Location and Job Type */}
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <MapPin className="w-4 h-4" />
               <span>{job.location}, {job.country}</span>
             </div>
-            <Badge variant="outline" className={getJobTypeColor(job.jobType)}>
-              {formatJobType(job.jobType)}
+            <Badge variant="outline" className={getJobTypeColor(job.jobType ?? "")}>
+              {formatJobType(job.jobType ?? "")}
             </Badge>
           </div>
 
-          {/* Salary and Experience Level */}
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-1 text-gray-600">
               <DollarSign className="w-4 h-4" />
               <span>{formatSalary(job.salaryMin, job.salaryMax)}</span>
             </div>
-            <Badge variant="outline" className={getExperienceColor(job.experienceLevel)}>
-              {formatExperienceLevel(job.experienceLevel)}
+            <Badge variant="outline" className={getExperienceColor(job.experienceLevel ?? "")}>
+              {formatExperienceLevel(job.experienceLevel ?? "")}
             </Badge>
           </div>
 
-          {/* Tech Stack */}
           {job.techStack && job.techStack.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {job.techStack.slice(0, 4).map((tech, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className="text-xs bg-gray-50 text-gray-700 hover:bg-gray-100"
-                >
+                <Badge key={index} variant="outline" className="text-xs bg-gray-50 text-gray-700 hover:bg-gray-100">
                   {tech}
                 </Badge>
               ))}
@@ -221,12 +191,7 @@ export function JobCard({ job }: JobCardProps) {
             </div>
           )}
 
-          {/* Job Description Preview */}
-          <DescriptionPreview
-            content={job.description}
-            maxLines={2}
-            className="text-sm text-gray-600"
-          />
+          <DescriptionPreview content={job.description ?? ""} maxLines={2} className="text-sm text-gray-600" />
         </div>
       </CardContent>
 
@@ -249,6 +214,7 @@ export function JobCard({ job }: JobCardProps) {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleSaveToggle}
+                disabled={toggleSave.isPending}
                 className={`p-1.5 rounded-full transition-colors ${
                   saved
                     ? "text-amber-600 bg-amber-50 hover:bg-amber-100"

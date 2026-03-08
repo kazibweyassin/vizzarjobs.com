@@ -58,6 +58,7 @@ model Job {
   certifications String[]      @default([]) // Tech certifications
   projects       String[]      @default([]) // Required project types
   applications   Application[]
+  savedByUsers   SavedJob[]
   company        Company       @relation(fields: [companyId], references: [id], map: "companyRelation")
 
   @@index([companyId])
@@ -152,6 +153,7 @@ model User {
   sessions            Session[]
   subscriptions       Subscription[]
   resumes             Resume[]
+  savedJobs           SavedJob[]
 
   @@index([email])
   @@index([aiMlFocus])
@@ -441,6 +443,19 @@ enum PaymentProvider {
   AIRTEL_MONEY
   PAYSTACK
   MANUAL
+}
+
+model SavedJob {
+  id        String   @id @default(cuid())
+  userId    String
+  jobId     String
+  savedAt   DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([userId])
+  @@map("saved_jobs")
 }
 
 model CandidatePool {

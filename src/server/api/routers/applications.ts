@@ -97,6 +97,22 @@ export const applicationsRouter = createTRPCRouter({
       }
     }),
 
+  /** Get the application status for a single job for the current user */
+  getApplicationStatus: protectedProcedure
+    .input(z.object({ jobId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const application = await ctx.db.application.findUnique({
+        where: {
+          userId_jobId: {
+            userId: ctx.session.user.id,
+            jobId: input.jobId,
+          },
+        },
+        select: { status: true, appliedAt: true },
+      });
+      return application ?? null;
+    }),
+
   getMyApplications: protectedProcedure
     .input(
       z.object({
